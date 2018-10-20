@@ -8,5 +8,6 @@ target 'Cookity' do
   # Pods for Cookity
 
 pod 'RealmSwift'
+pod 'SwipeCellKit' 
 
 end

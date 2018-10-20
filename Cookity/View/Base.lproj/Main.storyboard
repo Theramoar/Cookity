@@ -56,7 +56,7 @@
                                     <outlet property="insertQuantity" destination="dPv-39-Huf" id="Gcd-qS-D4D"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="gray" indentationWidth="10" reuseIdentifier="ProductCell" id="doU-OF-Nae">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="gray" indentationWidth="10" reuseIdentifier="ProductCell" id="doU-OF-Nae" customClass="SwipeTableViewCell" customModule="SwipeCellKit">
                                 <rect key="frame" x="0.0" y="72" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="doU-OF-Nae" id="vbd-dq-nWL">
@@ -70,13 +70,7 @@
                             <outlet property="delegate" destination="tHr-sJ-feW" id="MIn-ga-OMx"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Shopping List" id="bpE-lN-hli">
-                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="refresh" id="S8H-rn-c9R">
-                            <connections>
-                                <action selector="refreshButtonPressed:" destination="tHr-sJ-feW" id="ee7-HI-twk"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Shopping List" id="bpE-lN-hli"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hz9-F0-dFt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
