@@ -7,25 +7,31 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C4B1A022180EC32007CB9FD /* FridgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B1A012180EC32007CB9FD /* FridgeViewController.swift */; };
 		1CA007C82165571B0072A908 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA007C72165571B0072A908 /* AppDelegate.swift */; };
 		1CA007CD2165571B0072A908 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1CA007CB2165571B0072A908 /* Main.storyboard */; };
 		1CA007CF2165571E0072A908 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1CA007CE2165571E0072A908 /* Assets.xcassets */; };
 		1CA007D22165571E0072A908 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1CA007D02165571E0072A908 /* LaunchScreen.storyboard */; };
-		1CA007DC216559360072A908 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA007DB216559360072A908 /* ListViewController.swift */; };
+		1CA007DC216559360072A908 /* CartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA007DB216559360072A908 /* CartViewController.swift */; };
 		1CA007DE216562000072A908 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA007DD216562000072A908 /* Product.swift */; };
+		1CAC8311217C70FA0081F24E /* CartCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC8310217C70FA0081F24E /* CartCollectionViewController.swift */; };
+		1CAC8313217C72070081F24E /* ShoppingCart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC8312217C72070081F24E /* ShoppingCart.swift */; };
 		1CAECA19216BDAB3002D3B6D /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAECA18216BDAB3002D3B6D /* TextFieldCell.swift */; };
 		5F9A7241FC1FB011CBCCE718 /* Pods_Cookity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8029B8F45988A8CDD422D4D9 /* Pods_Cookity.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1C4B1A012180EC32007CB9FD /* FridgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FridgeViewController.swift; sourceTree = "<group>"; };
 		1CA007C42165571B0072A908 /* Cookity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cookity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CA007C72165571B0072A908 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1CA007CC2165571B0072A908 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1CA007CE2165571E0072A908 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1CA007D12165571E0072A908 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1CA007D32165571E0072A908 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1CA007DB216559360072A908 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		1CA007DB216559360072A908 /* CartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewController.swift; sourceTree = "<group>"; };
 		1CA007DD216562000072A908 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
+		1CAC8310217C70FA0081F24E /* CartCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartCollectionViewController.swift; sourceTree = "<group>"; };
+		1CAC8312217C72070081F24E /* ShoppingCart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingCart.swift; sourceTree = "<group>"; };
 		1CAECA18216BDAB3002D3B6D /* TextFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldCell.swift; sourceTree = "<group>"; };
 		7DE9532567103AD0B7243DFF /* Pods-Cookity.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cookity.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Cookity/Pods-Cookity.debug.xcconfig"; sourceTree = "<group>"; };
 		8029B8F45988A8CDD422D4D9 /* Pods_Cookity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Cookity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -79,6 +85,7 @@
 			isa = PBXGroup;
 			children = (
 				1CA007DD216562000072A908 /* Product.swift */,
+				1CAC8312217C72070081F24E /* ShoppingCart.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -86,8 +93,10 @@
 		1CA007E02165629D0072A908 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				1CA007DB216559360072A908 /* ListViewController.swift */,
 				1CAECA18216BDAB3002D3B6D /* TextFieldCell.swift */,
+				1CA007DB216559360072A908 /* CartViewController.swift */,
+				1CAC8310217C70FA0081F24E /* CartCollectionViewController.swift */,
+				1C4B1A012180EC32007CB9FD /* FridgeViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -234,10 +243,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1CAC8311217C70FA0081F24E /* CartCollectionViewController.swift in Sources */,
+				1CAC8313217C72070081F24E /* ShoppingCart.swift in Sources */,
 				1CA007C82165571B0072A908 /* AppDelegate.swift in Sources */,
 				1CA007DE216562000072A908 /* Product.swift in Sources */,
-				1CA007DC216559360072A908 /* ListViewController.swift in Sources */,
+				1CA007DC216559360072A908 /* CartViewController.swift in Sources */,
 				1CAECA19216BDAB3002D3B6D /* TextFieldCell.swift in Sources */,
+				1C4B1A022180EC32007CB9FD /* FridgeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

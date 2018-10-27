@@ -13,5 +13,9 @@ class Product: Object {
     @objc dynamic var name: String = ""
     @objc dynamic var quantity: Int = 0
     @objc dynamic var checked: Bool = false
+    @objc dynamic var inFridge: Bool = false
+    
+    // Creating inverse relationship
+    var parentCategory = LinkingObjects(fromType: ShoppingCart.self, property: "products")
     
 }

@@ -10,17 +10,48 @@ import UIKit
 import RealmSwift
 import SwipeCellKit
 
-class CartViewController: UITableViewController, SwipeTableViewCellDelegate {
+class CartViewController: UITableViewController {
     
     let realm = try! Realm()
     var products: Results<Product>?
-    
-    
+    var selectedCart: ShoppingCart?{
+        // didSet wil trigger once the selectedCart get set with a value
+        didSet{
+          loadProducts()
+        }
+    }
+   
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadProducts()
+        title = selectedCart?.name
     }
     
+    func updateModel(at indexPath: IndexPath){
+        if let product = self.products?[indexPath.row - 1] {
+            do{
+                try self.realm.write {
+                    self.realm.delete(product)
+                }
+            }catch
+            {
+                print("Error while deleting items \(error)")
+            }
+            tableView.reloadData()
+        }
+    }
+
+    // Loadsproducts from the Database to the Array
+    func loadProducts(){
+        products = selectedCart?.products.sorted(byKeyPath: "name")
+    }
+}
+
+
+
+
+
+//MARK: - Extension for TableView Methods
+extension CartViewController: SwipeTableViewCellDelegate {
     
     //MARK: - TableView DataSource Methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -43,11 +74,10 @@ class CartViewController: UITableViewController, SwipeTableViewCellDelegate {
             if let item = products?[indexPath.row - 1]{
                 cell.textLabel?.text = item.name
                 cell.accessoryType = item.checked ? .checkmark : .none
-                }
-            return cell
             }
+            return cell
+        }
     }
-
     
     //MARK: - SwipeTableViewCellDelegate Method
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
@@ -59,21 +89,6 @@ class CartViewController: UITableViewController, SwipeTableViewCellDelegate {
         }
         return [deleteAction]
     }
-        
-    func updateModel(at indexPath: IndexPath){
-        if let product = self.products?[indexPath.row - 1] {
-            do{
-                try self.realm.write {
-                    self.realm.delete(product)
-                }
-            }catch
-            {
-                print("Error while deleting items \(error)")
-            }
-            tableView.reloadData()
-        }
-    }
- 
     
     //MARK: - TableView Delegate Methods
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -87,15 +102,40 @@ class CartViewController: UITableViewController, SwipeTableViewCellDelegate {
             }
         }
         tableView.reloadData()
+        
+        //If all products are checked, App offers to add them to the Fridge
+        var checkForFridge: Bool = true
+        for product in products! {
+            guard product.checked == true else{ return checkForFridge = false }
+        }
+        if checkForFridge == true {
+            let alert = UIAlertController(title: "Add products to the fridge?", message: "", preferredStyle: .actionSheet)
+            let yesAction = UIAlertAction(title: "Yes", style: .default) { (_) in
+                for product in self.products! {
+                    do{
+                        try self.realm.write {
+                            product.inFridge = true}
+                    }
+                    catch{
+                        print("Error while  adding to fridge \(error)")
+                    }
+                }
+            }
+            let noAction = UIAlertAction(title: "No", style: .default) { (_) in
+                return
+            }
+            alert.addAction(yesAction)
+            alert.addAction(noAction)
+            present(alert, animated: true, completion: nil)
+            
+        }
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    
-    // Loadsproducts from the Database to the Array
-    func loadProducts(){
-        products = realm.objects(Product.self)
-    }
 }
+
+
+
 
 
 //MARK: - extension for the first TextField cell of the table
@@ -132,15 +172,17 @@ extension CartViewController: TextFieldDelegate {
             present(alert, animated: true, completion: nil)
             return
         }
-        newProduct.name = productName
-        newProduct.quantity = Int(productQuantity)!
         
-        do{
-            try realm.write {
-                realm.add(newProduct)
+        if let currentCart = selectedCart {
+            do{
+                try realm.write {
+                    newProduct.name = productName
+                    newProduct.quantity = Int(productQuantity)!
+                    currentCart.products.append(newProduct)
+                }
+            }catch{
+                print("Error saving context in Product \(error)")
             }
-        }catch{
-            print("Error saving context in Product \(error)")
         }
         tableView.reloadData()
     }
