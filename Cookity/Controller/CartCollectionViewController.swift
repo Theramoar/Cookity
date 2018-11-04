@@ -73,14 +73,35 @@ class CartCollectionViewController: UITableViewController, SwipeTableViewCellDel
     }
     
     func addProductsToFridge(at indexPath: IndexPath){
-        guard let products = self.shoppingCarts?[indexPath.row].products else { return }
+        guard let products = self.shoppingCarts?[indexPath.row].products.filter("inFridge == NO") else { return }
         for product in products {
+            
+            //Checks if the similar product is already in the fridge
+            var productsInFridge: Results<Product>?
+            productsInFridge = realm.objects(Product.self).filter("inFridge == YES")
+            for fridgeProduct in productsInFridge!{
+                // if products name and measure coincide, adds quantity and deletes product from the shopping list
+                if product.name == fridgeProduct.name && product.measure == fridgeProduct.measure{
+                    do{
+                        try self.realm.write {
+                            fridgeProduct.quantity += product.quantity
+                            self.realm.delete(product)
+                        }
+                    }
+                    catch{
+                        print("Error while  adding to fridge \(error)")
+                    }
+                    break
+                }
+            }
+            if product.isInvalidated == false{
             do{
                 try self.realm.write {
                     product.inFridge = true
                 }
             }catch{
                 print("Error while appending products to the fridge \(error)")
+                }
             }
         }
     }
@@ -112,15 +133,12 @@ extension CartCollectionViewController {
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         guard orientation == .right else {return nil}
         
-        
-        
         let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
             self.updateModel(at: indexPath)
         }
         
         let appendAction = SwipeAction(style: .default, title: "Add to Fridge") { (action, indexPath) in
             self.addProductsToFridge(at: indexPath)
-            self.updateModel(at: indexPath)
         }
         return [deleteAction, appendAction]
     }

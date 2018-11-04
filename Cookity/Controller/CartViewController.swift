@@ -42,7 +42,7 @@ class CartViewController: UITableViewController {
 
     // Loadsproducts from the Database to the Array
     func loadProducts(){
-        products = selectedCart?.products.sorted(byKeyPath: "name")
+        products = selectedCart?.products.filter("inFridge == NO")
     }
 }
 
@@ -71,8 +71,26 @@ extension CartViewController: SwipeTableViewCellDelegate {
         else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ProductCell", for: indexPath) as! SwipeTableViewCell
             cell.delegate = self as SwipeTableViewCellDelegate
-            if let item = products?[indexPath.row - 1]{
-                cell.textLabel?.text = item.name
+            if let item = products?[indexPath.row - 1] {
+                var measure = item.measure
+                switch measure {
+                case "Mililiters":
+                    measure = "ml"
+                case "Kilograms":
+                    measure = "kg"
+                case "Litres":
+                    measure = "l"
+                case "Grams":
+                    measure = "g"
+                default:
+                    if item.quantity == 1 {
+                        measure = "piece of"
+                    }
+                    else{
+                        measure = "pieces of"
+                    }
+                }
+                cell.textLabel?.text = "\(item.quantity) \(measure) \(item.name)"
                 cell.accessoryType = item.checked ? .checkmark : .none
             }
             return cell
@@ -112,13 +130,36 @@ extension CartViewController: SwipeTableViewCellDelegate {
             let alert = UIAlertController(title: "Add products to the fridge?", message: "", preferredStyle: .actionSheet)
             let yesAction = UIAlertAction(title: "Yes", style: .default) { (_) in
                 for product in self.products! {
+                    
+                    //Checks if the similar product is already in the fridge
+                    var productsInFridge: Results<Product>?
+                    productsInFridge = self.realm.objects(Product.self).filter("inFridge == YES")
+                    for fridgeProduct in productsInFridge!{
+                        // if products name and measure coincide, adds quantity and deletes product from the shopping list
+                        if product.name == fridgeProduct.name && product.measure == fridgeProduct.measure{
+                           do{
+                            try self.realm.write {
+                                fridgeProduct.quantity += product.quantity
+                                self.realm.delete(product)
+                                }
+                           }
+                           catch{
+                                print("Error while  adding to fridge \(error)")
+                            }
+                            break
+                        }
+                    }
+                    if product.isInvalidated == false{
                     do{
                         try self.realm.write {
-                            product.inFridge = true}
+                            product.inFridge = true
+                        }
                     }
                     catch{
                         print("Error while  adding to fridge \(error)")
+                        }
                     }
+                    self.tableView.reloadData()
                 }
             }
             let noAction = UIAlertAction(title: "No", style: .default) { (_) in
@@ -139,10 +180,12 @@ extension CartViewController: SwipeTableViewCellDelegate {
 
 
 //MARK: - extension for the first TextField cell of the table
-extension CartViewController: TextFieldDelegate {
+extension CartViewController: TextFieldDelegate{
+    
+    
     
     //MARK: - TextFieldDelegate Method
-    func saveProduct(productName: String, productQuantity: String)
+    func saveProduct(productName: String, productQuantity: String, productMeasure: String)
     {
         let newProduct = Product()
         
@@ -178,6 +221,7 @@ extension CartViewController: TextFieldDelegate {
                 try realm.write {
                     newProduct.name = productName
                     newProduct.quantity = Int(productQuantity)!
+                    newProduct.measure = productMeasure
                     currentCart.products.append(newProduct)
                 }
             }catch{

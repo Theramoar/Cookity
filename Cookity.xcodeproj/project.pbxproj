@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		1C4B1A022180EC32007CB9FD /* FridgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B1A012180EC32007CB9FD /* FridgeViewController.swift */; };
+		1C4B1A0421884EA9007CB9FD /* CookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B1A0321884EA9007CB9FD /* CookViewController.swift */; };
+		1C4B1A06218866E3007CB9FD /* CookTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B1A05218866E2007CB9FD /* CookTableViewCell.swift */; };
+		1C4B1A0821887081007CB9FD /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B1A0721887081007CB9FD /* Recipe.swift */; };
 		1CA007C82165571B0072A908 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA007C72165571B0072A908 /* AppDelegate.swift */; };
 		1CA007CD2165571B0072A908 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1CA007CB2165571B0072A908 /* Main.storyboard */; };
 		1CA007CF2165571E0072A908 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1CA007CE2165571E0072A908 /* Assets.xcassets */; };
@@ -22,6 +25,9 @@
 
 /* Begin PBXFileReference section */
 		1C4B1A012180EC32007CB9FD /* FridgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FridgeViewController.swift; sourceTree = "<group>"; };
+		1C4B1A0321884EA9007CB9FD /* CookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookViewController.swift; sourceTree = "<group>"; };
+		1C4B1A05218866E2007CB9FD /* CookTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookTableViewCell.swift; sourceTree = "<group>"; };
+		1C4B1A0721887081007CB9FD /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
 		1CA007C42165571B0072A908 /* Cookity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cookity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CA007C72165571B0072A908 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1CA007CC2165571B0072A908 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -86,6 +92,7 @@
 			children = (
 				1CA007DD216562000072A908 /* Product.swift */,
 				1CAC8312217C72070081F24E /* ShoppingCart.swift */,
+				1C4B1A0721887081007CB9FD /* Recipe.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -97,6 +104,8 @@
 				1CA007DB216559360072A908 /* CartViewController.swift */,
 				1CAC8310217C70FA0081F24E /* CartCollectionViewController.swift */,
 				1C4B1A012180EC32007CB9FD /* FridgeViewController.swift */,
+				1C4B1A0321884EA9007CB9FD /* CookViewController.swift */,
+				1C4B1A05218866E2007CB9FD /* CookTableViewCell.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -248,8 +257,11 @@
 				1CA007C82165571B0072A908 /* AppDelegate.swift in Sources */,
 				1CA007DE216562000072A908 /* Product.swift in Sources */,
 				1CA007DC216559360072A908 /* CartViewController.swift in Sources */,
+				1C4B1A0821887081007CB9FD /* Recipe.swift in Sources */,
 				1CAECA19216BDAB3002D3B6D /* TextFieldCell.swift in Sources */,
+				1C4B1A0421884EA9007CB9FD /* CookViewController.swift in Sources */,
 				1C4B1A022180EC32007CB9FD /* FridgeViewController.swift in Sources */,
+				1C4B1A06218866E3007CB9FD /* CookTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

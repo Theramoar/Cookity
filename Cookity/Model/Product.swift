@@ -9,11 +9,21 @@
 import Foundation
 import RealmSwift
 
+//enum Measures: String {
+//    case pieces = "Pieces"
+//    case litres = "Litres"
+//    case mililitres = "mililitres"
+//    case kilograms = "kilograms"
+//    case grams = "grams"
+//}
+
 class Product: Object {
     @objc dynamic var name: String = ""
     @objc dynamic var quantity: Int = 0
     @objc dynamic var checked: Bool = false
     @objc dynamic var inFridge: Bool = false
+    @objc dynamic var checkForRecipe = false
+    @objc dynamic var measure: String = ""
     
     // Creating inverse relationship
     var parentCategory = LinkingObjects(fromType: ShoppingCart.self, property: "products")
