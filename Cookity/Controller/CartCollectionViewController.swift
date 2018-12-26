@@ -20,6 +20,10 @@ class CartCollectionViewController: UITableViewController, SwipeTableViewCellDel
         super.viewDidLoad()
         loadCarts()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        tableView.reloadData()
+    }
 
     //MARK: - Buttons and additional methods
     @IBAction func addShoppingCart(_ sender: UIBarButtonItem) {
@@ -29,6 +33,7 @@ class CartCollectionViewController: UITableViewController, SwipeTableViewCellDel
         
         let action = UIAlertAction(title: "Add", style: .default) { (action) in
             
+            guard textField.text!.isEmpty != true else { return }
             let cart = ShoppingCart()
             cart.name = textField.text!
             self.saveCart(cart: cart)

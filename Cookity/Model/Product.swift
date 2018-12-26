@@ -9,13 +9,6 @@
 import Foundation
 import RealmSwift
 
-//enum Measures: String {
-//    case pieces = "Pieces"
-//    case litres = "Litres"
-//    case mililitres = "mililitres"
-//    case kilograms = "kilograms"
-//    case grams = "grams"
-//}
 
 class Product: Object {
     @objc dynamic var name: String = ""

@@ -7,3 +7,12 @@
 //
 
 import Foundation
+import RealmSwift
+
+
+class Recipe: Object {
+    
+    @objc dynamic var name: String = ""
+    let products = List<Product>()
+    var recipeSteps = List<String>()
+}

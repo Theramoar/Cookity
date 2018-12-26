@@ -27,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("Error in Realm \(error)")
         }
         // Realm Data manipulation Ends
+        
         return true
     }
 }

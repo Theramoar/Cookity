@@ -10,10 +10,12 @@ import UIKit
 import RealmSwift
 import SwipeCellKit
 
-class CartViewController: UITableViewController {
+class CartViewController: UITableViewController, PopUpDelegate {
     
     let realm = try! Realm()
+    let config = Configuration()
     var products: Results<Product>?
+    var selectedIndexPath: IndexPath? //variable is used to store the IndexPath selected by LongTap Gesture
     var selectedCart: ShoppingCart?{
         // didSet wil trigger once the selectedCart get set with a value
         didSet{
@@ -24,9 +26,17 @@ class CartViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = selectedCart?.name
+        
+        //add long gesture recognizer
+        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.longPressed))
+        self.view.addGestureRecognizer(longPressRecognizer)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
+        tapGesture.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tapGesture)
     }
     
-    func updateModel(at indexPath: IndexPath){
+    func deleteProduct(at indexPath: IndexPath){
         if let product = self.products?[indexPath.row - 1] {
             do{
                 try self.realm.write {
@@ -36,7 +46,7 @@ class CartViewController: UITableViewController {
             {
                 print("Error while deleting items \(error)")
             }
-            tableView.reloadData()
+            updateView()
         }
     }
 
@@ -44,6 +54,41 @@ class CartViewController: UITableViewController {
     func loadProducts(){
         products = selectedCart?.products.filter("inFridge == NO")
     }
+    
+    //PopUpDelegate method used to reload data while dismissing popup View Controller
+    func updateView() {
+        tableView.reloadData()
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return true
+    }
+    
+    @objc func viewTapped() {
+        self.view.endEditing(true)
+    }
+
+    
+    @objc func longPressed(longPressRecognizer: UILongPressGestureRecognizer) {
+        
+        // find the IndexPath of the cell which was "longtouched"
+        let touchPoint = longPressRecognizer.location(in: self.view)
+        selectedIndexPath = tableView.indexPathForRow(at: touchPoint)
+        if selectedIndexPath != nil {
+            performSegue(withIdentifier: "popupEdit", sender: self)
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationVC = segue.destination as! PopupEditViewController
+        destinationVC.delegate = self
+        if let indexPath = selectedIndexPath, let product = products?[indexPath.row - 1] {
+            destinationVC.selectedProduct = product
+        }
+        
+    }
+    
 }
 
 
@@ -51,7 +96,7 @@ class CartViewController: UITableViewController {
 
 
 //MARK: - Extension for TableView Methods
-extension CartViewController: SwipeTableViewCellDelegate {
+extension CartViewController: SwipeTableViewCellDelegate, UITextFieldDelegate {
     
     //MARK: - TableView DataSource Methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -66,6 +111,9 @@ extension CartViewController: SwipeTableViewCellDelegate {
         if indexPath.row == 0 {
             let textCell = tableView.dequeueReusableCell(withIdentifier: "TextCell") as! TextFieldCell
             textCell.delegate = self
+            textCell.insertMeasure.delegate = self
+            textCell.insertProduct.delegate = self
+            textCell.insertQuantity.delegate = self
             return textCell
         }
         else {
@@ -73,24 +121,19 @@ extension CartViewController: SwipeTableViewCellDelegate {
             cell.delegate = self as SwipeTableViewCellDelegate
             if let item = products?[indexPath.row - 1] {
                 var measure = item.measure
-                switch measure {
-                case "Mililiters":
-                    measure = "ml"
-                case "Kilograms":
-                    measure = "kg"
-                case "Litres":
-                    measure = "l"
-                case "Grams":
-                    measure = "g"
-                default:
+                
+                let (presentedQuantity, presentedMeasure) = config.presentNumbers(quantity: item.quantity, measure: measure)
+                
+                if measure == "pcs"{
                     if item.quantity == 1 {
                         measure = "piece of"
                     }
-                    else{
+                    else {
                         measure = "pieces of"
                     }
                 }
-                cell.textLabel?.text = "\(item.quantity) \(measure) \(item.name)"
+                
+                cell.textLabel?.text = "\(presentedQuantity) \(presentedMeasure) \(item.name)"
                 cell.accessoryType = item.checked ? .checkmark : .none
             }
             return cell
@@ -103,7 +146,7 @@ extension CartViewController: SwipeTableViewCellDelegate {
         
         let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
             // handle action by updating model with deletion
-            self.updateModel(at: indexPath)
+            self.deleteProduct(at: indexPath)
         }
         return [deleteAction]
     }
@@ -119,7 +162,7 @@ extension CartViewController: SwipeTableViewCellDelegate {
                 print("Error while updating items \(error)")
             }
         }
-        tableView.reloadData()
+        updateView()
         
         //If all products are checked, App offers to add them to the Fridge
         var checkForFridge: Bool = true
@@ -173,6 +216,8 @@ extension CartViewController: SwipeTableViewCellDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
+    
+    
 }
 
 
@@ -189,6 +234,7 @@ extension CartViewController: TextFieldDelegate{
     {
         let newProduct = Product()
         
+        //выделить алерт в отдельную функцию => bool и обратится к ней в popupedit
         let alert = UIAlertController(title: "title", message: "message", preferredStyle: .alert)
         let action = UIAlertAction(title: "Okay", style: .cancel) { (_) in
             return
@@ -209,26 +255,29 @@ extension CartViewController: TextFieldDelegate{
             return
         }
         
-        guard Int(productQuantity) != nil else {
+        guard Float(productQuantity) != nil else {
             alert.title = "Incorrect Quantity"
             alert.message = "Please enter the quantity in numbers"
             present(alert, animated: true, completion: nil)
             return
         }
         
+        let measure = config.configMeasure(measure: productMeasure)
+        let (savedQuantity, savedMeasure) = config.configNumbers(quantity: productQuantity, measure: measure)
+        
         if let currentCart = selectedCart {
             do{
                 try realm.write {
                     newProduct.name = productName
-                    newProduct.quantity = Int(productQuantity)!
-                    newProduct.measure = productMeasure
+                    newProduct.quantity = savedQuantity
+                    newProduct.measure = savedMeasure
                     currentCart.products.append(newProduct)
                 }
             }catch{
                 print("Error saving context in Product \(error)")
             }
         }
-        tableView.reloadData()
+        updateView()
     }
 }
 
