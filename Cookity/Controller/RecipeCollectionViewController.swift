@@ -38,10 +38,6 @@ class RecipeCollectionViewController: UIViewController {
       performSegue(withIdentifier: "goToCookingArea", sender: self)
     }
     
-//    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
-//        performSegue(withIdentifier: "goToCookingArea", sender: self)
-//    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToRecipe" {
            let destinationVC = segue.destination as! RecipeViewController
@@ -49,6 +45,9 @@ class RecipeCollectionViewController: UIViewController {
                 destinationVC.selectedRecipe = recipeList?[indexPath.row]
             }
         }
+//        else if segue.identifier == "goToCookingArea" {
+//            let destinationVC = segue.destination as! CookViewController
+//        }
     }
     
 }

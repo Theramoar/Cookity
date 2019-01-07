@@ -10,7 +10,9 @@ import UIKit
 import RealmSwift
 
 class RecipeViewController: UIViewController {
-
+    
+    
+    
     let realm = try! Realm()
     let config = Configuration()
     var productsForRecipe: Results<Product>?
@@ -19,6 +21,8 @@ class RecipeViewController: UIViewController {
     var chosenProducts = [String : Product]() // The variable is used to store the products chosen from the Fridge list. The Key - name of the Recipe Product
     @IBOutlet weak var productTable: UITableView!
     let sections = ["Ingridients:", "Cooking steps:"]
+    
+    var isDeleted: Bool = false
     
     var selectedRecipe: Recipe?{
         // didSet wil trigger once the selectedCart get set with a value
@@ -33,10 +37,17 @@ class RecipeViewController: UIViewController {
         productTable.dataSource = self
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        if isDeleted, let nav = self.navigationController {
+            isDeleted = false
+            nav.popToRootViewController(animated: true)
+        }
+    }
+    
     func loadProducts(){
         productsForRecipe = selectedRecipe?.products.sorted(byKeyPath: "name")
-        productsInFridge = realm.objects(Product.self).filter("inFridge == YES")
         recipeSteps = selectedRecipe?.recipeSteps.sorted(byKeyPath: "self")
+        productsInFridge = realm.objects(Product.self).filter("inFridge == YES")
     }
    
     
@@ -52,6 +63,25 @@ class RecipeViewController: UIViewController {
         }
             return false
     }
+    
+    
+    
+    @IBAction func editButtonPressed(_ sender: UIBarButtonItem) {
+        performSegue(withIdentifier: "EditCookingArea", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        let destinationVC = segue.destination as! CookViewController
+        
+        if selectedRecipe != nil {
+            destinationVC.editedRecipe = selectedRecipe
+            destinationVC.recipeVC = self
+        }
+    }
+        
+    
+    
     
     //Creates a new shopping list the adds the products from recipe to it
     @IBAction func createButtonPressed(_ sender: UIButton) {
@@ -76,8 +106,7 @@ class RecipeViewController: UIViewController {
             print("Error while saving cart \(error)")
         }
     }
-    
-    
+
     
     @IBAction func cookButtonPressed(_ sender: UIButton) {
         
