@@ -11,6 +11,7 @@
 		1C4B1A0421884EA9007CB9FD /* CookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B1A0321884EA9007CB9FD /* CookViewController.swift */; };
 		1C4B1A06218866E3007CB9FD /* CookTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B1A05218866E2007CB9FD /* CookTableViewCell.swift */; };
 		1C4B1A0821887081007CB9FD /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B1A0721887081007CB9FD /* Recipe.swift */; };
+		1C72FBAD222D29A100735546 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C72FBAC222D29A100735546 /* DataManager.swift */; };
 		1CA007C82165571B0072A908 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA007C72165571B0072A908 /* AppDelegate.swift */; };
 		1CA007CD2165571B0072A908 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1CA007CB2165571B0072A908 /* Main.storyboard */; };
 		1CA007D22165571E0072A908 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1CA007D02165571E0072A908 /* LaunchScreen.storyboard */; };
@@ -35,6 +36,7 @@
 		1C4B1A0321884EA9007CB9FD /* CookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookViewController.swift; sourceTree = "<group>"; };
 		1C4B1A05218866E2007CB9FD /* CookTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookTableViewCell.swift; sourceTree = "<group>"; };
 		1C4B1A0721887081007CB9FD /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
+		1C72FBAC222D29A100735546 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		1CA007C42165571B0072A908 /* Cookity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cookity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CA007C72165571B0072A908 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1CA007CC2165571B0072A908 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -112,16 +114,13 @@
 		1CA007E02165629D0072A908 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				1C72FBAC222D29A100735546 /* DataManager.swift */,
 				1CBEB20F21B70CD00036E996 /* Configuration.swift */,
-				1CAECA18216BDAB3002D3B6D /* TextFieldCell.swift */,
 				1CA007DB216559360072A908 /* CartViewController.swift */,
 				1CAC8310217C70FA0081F24E /* CartCollectionViewController.swift */,
 				1C4B1A012180EC32007CB9FD /* FridgeViewController.swift */,
 				1C4B1A0321884EA9007CB9FD /* CookViewController.swift */,
-				1C4B1A05218866E2007CB9FD /* CookTableViewCell.swift */,
-				1CBF527621D2CFB700972CB5 /* RecipeStepTableViewCell.swift */,
 				1CBEB20921AAC9300036E996 /* RecipeCollectionViewController.swift */,
-				1CBEB20B21AAD6C30036E996 /* RecipeCollectionViewCell.swift */,
 				1CBEB20D21AAE97B0036E996 /* RecipeViewController.swift */,
 				1CCC6375219383B40066919E /* PopupEditViewController.swift */,
 			);
@@ -131,6 +130,10 @@
 		1CA007E1216562D20072A908 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				1CAECA18216BDAB3002D3B6D /* TextFieldCell.swift */,
+				1C4B1A05218866E2007CB9FD /* CookTableViewCell.swift */,
+				1CBEB20B21AAD6C30036E996 /* RecipeCollectionViewCell.swift */,
+				1CBF527621D2CFB700972CB5 /* RecipeStepTableViewCell.swift */,
 				1CA007CB2165571B0072A908 /* Main.storyboard */,
 				1CA007D02165571E0072A908 /* LaunchScreen.storyboard */,
 			);
@@ -279,6 +282,7 @@
 				1CBEB21021B70CD00036E996 /* Configuration.swift in Sources */,
 				1CCC6376219383B40066919E /* PopupEditViewController.swift in Sources */,
 				1CBEB20C21AAD6C30036E996 /* RecipeCollectionViewCell.swift in Sources */,
+				1C72FBAD222D29A100735546 /* DataManager.swift in Sources */,
 				1CA007DC216559360072A908 /* CartViewController.swift in Sources */,
 				1C4B1A0821887081007CB9FD /* Recipe.swift in Sources */,
 				1CAECA19216BDAB3002D3B6D /* TextFieldCell.swift in Sources */,

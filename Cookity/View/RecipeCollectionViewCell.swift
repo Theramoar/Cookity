@@ -9,8 +9,5 @@
 import UIKit
 
 class RecipeCollectionViewCell: UICollectionViewCell {
-    
-    
     @IBOutlet weak var recipeName: UILabel!
-    
 }
