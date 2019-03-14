@@ -7,18 +7,15 @@
 //
 
 import UIKit
-import RealmSwift
 
-protocol PopUpDelegate {
-    func updateView()
-}
 
 class PopupEditViewController: UIViewController, UITextFieldDelegate {
 
-    let realm = try! Realm()
-    let config = Configuration()
+    private let config = Configuration()
+    private let dataManager = RealmDataManager()
+    
     var selectedProduct: Product?
-    var delegate: PopUpDelegate?
+    var parentVC: UIViewController?
     let measuresArray = ["Pieces", "Litres", "Mililiters", "Grams", "Kilograms"]
     
     @IBOutlet weak var editView: UIView!
@@ -40,17 +37,9 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
         tapGesture.cancelsTouchesInView = false
         self.view.addGestureRecognizer(tapGesture)
-        
-        if let product = selectedProduct{
-            var (presentedQuantity, presentedMeasure) = config.presentNumbers(quantity: product.quantity, measure: product.measure)
-            presentedMeasure = config.configMeasure(measure: presentedMeasure)
-            
-            nameText.text = product.name
-            quantityText.text = presentedQuantity
-            measureText.text = presentedMeasure
-        }
-       
+        dataManager.loadFromRealm(vc: self, parentObject: selectedProduct)
     }
+    
     
     @objc func viewTapped() {
        self.view.endEditing(true)
@@ -63,46 +52,39 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate {
     
     
     @IBAction func doneButtonPressed(_ sender: UIButton) {
+        
+        guard let productName = nameText.text, let productQuantity = quantityText.text else { return }
+        
         let alert = UIAlertController(title: "title", message: "message", preferredStyle: .alert)
-        let action = UIAlertAction(title: "Okay", style: .cancel) { (_) in
-            return
-        }
-        alert.addAction(action)
-
-        guard nameText.text != "" else {
-            alert.title = "No Name"
-            alert.message = "Please enter product name"
+        let dataIsCorrect = alert.checkData(productName: productName, productQuantity: productQuantity)
+        guard dataIsCorrect else {
             present(alert, animated: true, completion: nil)
             return
         }
-
-        guard quantityText.text != "" else {
-            alert.title = "No Quantity"
-            alert.message = "Please enter product quantity"
-            present(alert, animated: true, completion: nil)
-            return
-        }
-
-        guard Float(quantityText.text!) != nil else {
-            alert.title = "Incorrect Quantity"
-            alert.message = "Please enter the quantity in numbers"
-            present(alert, animated: true, completion: nil)
-            return
-        }
-
+        
         let measure = config.configMeasure(measure: measureText.text!)
-        let (savedQuantity, savedMeasure) = config.configNumbers(quantity: quantityText.text!, measure: measure)
-
-        do{
-            try realm.write {
-                selectedProduct?.name = nameText.text!
-                selectedProduct?.quantity = savedQuantity
-                selectedProduct?.measure = savedMeasure
-            }
-        }catch{
-            print("Error while updating items \(error)")
+        let (savedQuantity, savedMeasure) = config.configNumbers(quantity: productQuantity, measure: measure)
+        
+        guard let selectedProduct = selectedProduct else { return }
+        dataManager.changeElementIn(object: selectedProduct,
+                                    keyValue: "name",
+                                    objectParameter: selectedProduct.name,
+                                    newParameter: productName)
+        dataManager.changeElementIn(object: selectedProduct,
+                                    keyValue: "quantity",
+                                    objectParameter: selectedProduct.quantity,
+                                    newParameter: savedQuantity)
+        dataManager.changeElementIn(object: selectedProduct,
+                                    keyValue: "measure",
+                                    objectParameter: selectedProduct.measure,
+                                    newParameter: savedMeasure)
+        
+        if let parentVC = parentVC as? CartViewController {
+            parentVC.tableView.reloadData()
         }
-        delegate?.updateView()
+        else if let parentVC = parentVC as? FridgeViewController {
+            parentVC.fridgeTableView.reloadData()
+        }
         self.dismiss(animated: true, completion: nil)
     }
 }

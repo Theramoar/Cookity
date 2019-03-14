@@ -7,14 +7,19 @@
 //
 
 import UIKit
-import RealmSwift
 
 
 protocol TextFieldDelegate {
     func saveProduct (productName: String, productQuantity: String, productMeasure: String)
 }
 
-
+enum Measures: String, CaseIterable {
+    case pieces = "Pieces"
+    case litres = "Litres"
+    case mililitres = "Mililiters"
+    case grams = "Grams"
+    case kilograms = "Kilograms"
+}
 
 class TextFieldCell: UITableViewCell{
     
@@ -22,7 +27,6 @@ class TextFieldCell: UITableViewCell{
     @IBOutlet weak var insertQuantity: UITextField!
     @IBOutlet weak var insertMeasure: UITextField!
     let measuresArray = ["Pieces", "Litres", "Mililiters", "Grams", "Kilograms"]
-    let realm = try! Realm()
     var delegate: TextFieldDelegate?
     
     

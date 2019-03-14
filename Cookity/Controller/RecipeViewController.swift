@@ -11,23 +11,19 @@ import RealmSwift
 
 class RecipeViewController: UIViewController {
     
+    private let config = Configuration()
+    private let dataManager = RealmDataManager()
     
-    
-    let realm = try! Realm()
-    let config = Configuration()
     var productsForRecipe: Results<Product>?
     var productsInFridge: Results<Product>?
-    var recipeSteps: Results<String>?
+    var recipeSteps: Results<RecipeStep>?
     var chosenProducts = [String : Product]() // The variable is used to store the products chosen from the Fridge list. The Key - name of the Recipe Product
     @IBOutlet weak var productTable: UITableView!
     let sections = ["Ingridients:", "Cooking steps:"]
     
-    var isDeleted: Bool = false
-    
     var selectedRecipe: Recipe?{
-        // didSet wil trigger once the selectedCart get set with a value
         didSet{
-            loadProducts()
+            dataManager.loadFromRealm(vc: self, parentObject: selectedRecipe)
         }
     }
     
@@ -38,21 +34,11 @@ class RecipeViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        if isDeleted, let nav = self.navigationController {
-            isDeleted = false
-            nav.popToRootViewController(animated: true)
-        }
+        productTable.reloadData()
     }
-    
-    func loadProducts(){
-        productsForRecipe = selectedRecipe?.products.sorted(byKeyPath: "name")
-        recipeSteps = selectedRecipe?.recipeSteps.sorted(byKeyPath: "self")
-        productsInFridge = realm.objects(Product.self).filter("inFridge == YES")
-    }
-   
+
     
     func compareFridgeToRecipe(selectedProduct: Product) -> Bool{
-
         if productsInFridge != nil{
             for product in productsInFridge!{
                 if selectedProduct.name == product.name{
@@ -70,10 +56,9 @@ class RecipeViewController: UIViewController {
         performSegue(withIdentifier: "EditCookingArea", sender: self)
     }
     
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
         let destinationVC = segue.destination as! CookViewController
-        
         if selectedRecipe != nil {
             destinationVC.editedRecipe = selectedRecipe
             destinationVC.recipeVC = self
@@ -97,14 +82,7 @@ class RecipeViewController: UIViewController {
                 newCart.products.append(coppiedProduct)
             }
         }
-        
-        do{
-            try realm.write {
-                realm.add(newCart)
-            }
-        }catch{
-            print("Error while saving cart \(error)")
-        }
+        dataManager.saveToRealm(parentObject: nil, object: newCart)
     }
 
     
@@ -117,22 +95,11 @@ class RecipeViewController: UIViewController {
                 if let selectedProduct = chosenProducts[recipeProduct.name] {
                     //If the quantity of the product in Recipe is less than in the Fridge substracts it, else deletes it from the fridge
                     if recipeProduct.quantity >= selectedProduct.quantity {
-                        do{
-                            try realm.write {
-                                self.realm.delete(selectedProduct)
-                            }
-                        }catch{
-                            print("Error while cooking items \(error)")
-                        }
+                        dataManager.deleteFromRealm(object: selectedProduct)
                     }
                     else{
-                        do{
-                            try realm.write {
-                                selectedProduct.quantity -= recipeProduct.quantity
-                            }
-                        }catch{
-                            print("Error while cooking items \(error)")
-                        }
+                        let newQuantity = selectedProduct.quantity - recipeProduct.quantity
+                        dataManager.changeElementIn(object: selectedProduct, keyValue: "quantity", objectParameter: selectedProduct.quantity, newParameter: newQuantity)
                     }
                 }
             }
@@ -190,7 +157,7 @@ extension RecipeViewController: UITableViewDelegate, UITableViewDataSource{
         else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "recipeProductCell", for: indexPath)
             if let recipeStep = recipeSteps?[indexPath.row] {
-                cell.textLabel?.text = recipeStep
+                cell.textLabel?.text = recipeStep.name
             }
             cell.selectionStyle = .none
             return cell

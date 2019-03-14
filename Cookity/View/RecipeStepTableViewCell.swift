@@ -25,10 +25,6 @@ class RecipeStepTableViewCell: UITableViewCell {
             delegate?.saveStep(step: step)
             recipeStep?.text = ""
         }
-    }
-    //Попробовать передать строку через completion handler
-    func saveRecipeStep(step: String, completion: (String) -> ()) {
-        guard step != "" else { return }
-        completion(step)
+        
     }
 }

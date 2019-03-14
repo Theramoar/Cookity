@@ -10,11 +10,10 @@ import UIKit
 import RealmSwift
 import SwipeCellKit
 
-class FridgeViewController: UIViewController, PopUpDelegate {
+class FridgeViewController: UIViewController {
 
-
-    let realm = try! Realm()
-    let config = Configuration()
+    private let config = Configuration()
+    private let dataManager = RealmDataManager()
     var products: Results<Product>?
     var selectedIndexPath: IndexPath? //variable is used to store the IndexPath selected by LongTap Gesture
     var chosenIndexPaths = [Int : IndexPath]() // dictionary is used to store the indexPaths of chosen cells, Key value is the number of cell is used to find the cell in the dictionary
@@ -29,7 +28,8 @@ class FridgeViewController: UIViewController, PopUpDelegate {
         
         fridgeTableView.delegate = self
         fridgeTableView.dataSource = self
-        loadProducts()
+        
+        dataManager.loadFromRealm(vc: self, parentObject: nil)
         
         //add long gesture recognizer
         let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.longPressed))
@@ -37,34 +37,8 @@ class FridgeViewController: UIViewController, PopUpDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        updateView()
-    }
-   
-    
-    func loadProducts(){
-        products = realm.objects(Product.self).filter("inFridge == YES")
-    }
-    
-    
-    //PopUpDelegate method used to reload data while dismissing popup View Controller
-    func updateView() {
         fridgeTableView.reloadData()
     }
-    
-    func deleteProduct(at indexPath: IndexPath){
-        if let product = self.products?[indexPath.row] {
-            do{
-                try self.realm.write {
-                    self.realm.delete(product)
-                }
-            }catch
-            {
-                print("Error while deleting items \(error)")
-            }
-            updateView()
-        }
-    }
-    
     
     // Methods for buttons
     @objc func longPressed(longPressRecognizer: UILongPressGestureRecognizer) {
@@ -93,7 +67,7 @@ class FridgeViewController: UIViewController, PopUpDelegate {
             let destinationVC = segue.destination as! PopupEditViewController
             if let indexPath = selectedIndexPath, let product = products?[indexPath.row] {
                 destinationVC.selectedProduct = product
-                destinationVC.delegate = self
+                destinationVC.parentVC = self
             }
         }
         else if segue.identifier == "goToCookingAreaFromFridge" {
@@ -131,7 +105,10 @@ extension FridgeViewController: UITableViewDelegate, UITableViewDataSource, Swip
         guard orientation == .right else { return nil }
         
         let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
-            self.deleteProduct(at: indexPath)
+            if let product = self.products?[indexPath.row] {
+                self.dataManager.deleteFromRealm(object: product)
+                self.fridgeTableView.reloadData()
+            }
         }
         return [deleteAction]
     }
@@ -158,13 +135,11 @@ extension FridgeViewController: UITableViewDelegate, UITableViewDataSource, Swip
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if let product = products?[indexPath.row]{
-            do{
-                try realm.write {
-                    product.checkForRecipe = !product.checkForRecipe
-                }
-            }catch{
-                print("Error while updating items \(error)")
-            }
+            
+            dataManager.changeElementIn(object: product,
+                                        keyValue: "checkForRecipe",
+                                        objectParameter: product.checkForRecipe,
+                                        newParameter: !product.checkForRecipe)
             
             if  product.checkForRecipe == true{
                 fridgeTableView.cellForRow(at: indexPath)?.textLabel?.textColor = UIColor.green
@@ -188,124 +163,3 @@ extension FridgeViewController: UITableViewDelegate, UITableViewDataSource, Swip
         }
     }
 }
-
-
-
-
-//{
-//    //
-//    var recipe = Recipe()
-//    if editedRecipe != nil {
-//        recipe = editedRecipe!
-//    }
-//
-//    let alert = UIAlertController(title: "Amount is not entered!", message: "Enter the amount used for for the recipe", preferredStyle: .alert)
-//    let action = UIAlertAction(title: "OK", style: .default) { (_) in
-//        return
-//    }
-//    alert.addAction(action)
-//    
-//    //Check for the entered recipe name correctness
-//    if recipeName?.text != ""{
-//        do{
-//            try realm.write {
-//                realm.add(recipe)
-//                recipe.name = (recipeName?.text)!
-//            }
-//        }catch{
-//            print("Error saving context in Product \(error)")
-//        }
-//    }
-//    else {
-//        alert.title = "Recipe name is not entered!"
-//        alert.message = "Enter the recipe name"
-//        present(alert, animated: true, completion: nil)
-//        return
-//    }
-//    //
-//    //1st circle is used to iterate over the array and check if all entered quantities are correct
-//    let cells = productsTable.visibleCells as! Array<UITableViewCell>
-//
-//    for (_, indexPath) in chosenIndexPaths{
-//        let cell = productsTable.cellForRow(at: indexPath) as! CookTableViewCell
-//
-//        //throws the alert if entered quantity is empty and breaks the cooking and deletes the recipe from database
-//
-//        guard Float(cell.quantityForRecipe.text!) != nil  else {
-//            deleteRecipe(recipe: recipe)
-//            alert.title = "Amount is not entered!"
-//            alert.message = "Enter the amount used for for the recipe"
-//            present(alert, animated: true, completion: nil)
-//            return
-//        }
-//
-//        if let product = products?[indexPath.row]{
-//            let (quantity, _) = config.configNumbers(quantity: cell.quantityForRecipe.text!, measure: product.measure)
-//            //throws the alert if entered quantity suprass the amount in the fridge and breaks the cooking and deletes the recipe from database
-//            guard product.quantity >= quantity else{
-//                deleteRecipe(recipe: recipe)
-//                alert.title = "Not enough products"
-//                alert.message = "You don't have enough \(product.name) in your fridge"
-//                present(alert, animated: true, completion: nil)
-//                return
-//            }
-//        }
-//    }
-//    //
-//    //        //2nd circle is used for the Data manipulation
-//    //        for (_, indexPath) in chosenIndexPaths{
-//    //            let cell = productsTable.cellForRow(at: indexPath) as! CookTableViewCell
-//    //
-//    //            if let product = products?[indexPath.row]{
-//    //                let (quantity, measure) = config.configNumbers(quantity: cell.quantityForRecipe.text!, measure: product.measure)
-//    //
-//    //            // 1 - Saves Data for the new Recipe
-//    //                    let productForRecipe = Product()
-//    //                    do{
-//    //                        try realm.write {
-//    //                            productForRecipe.name = product.name
-//    //                            productForRecipe.quantity = quantity
-//    //                            productForRecipe.measure = measure
-//    //                            recipe.products.append(productForRecipe)
-//    //                        }
-//    //                    }catch{
-//    //                        print("Error saving context in Product \(error)")
-//    //                    }
-//    //
-//    //            // 2 - Manages the products in the Fridge
-//    //            // if the entered amount equals to the amount in the fridge - deletes the product from database, otherwise substract the quantity
-//    ////                if product.quantity == quantity {
-//    ////                    do{
-//    ////                        try realm.write {
-//    ////                            self.realm.delete(product)
-//    ////                        }
-//    ////                    }catch{
-//    ////                        print("Error while cooking items \(error)")
-//    ////                    }
-//    ////                } else{
-//    ////                    do{
-//    ////                        try realm.write {
-//    ////                            product.quantity -= quantity
-//    ////                            product.checkForRecipe = false
-//    ////                        }
-//    ////                    }catch{
-//    ////                        print("Error while cooking items \(error)")
-//    ////                        }
-//    ////                }
-//    //            }
-//    //        }
-//    //        chosenIndexPaths.removeAll()
-//    //
-//    //        if let recipeArray = recipeSteps {
-//    //            for recipeStep in recipeArray {
-//    //                do{
-//    //                    try realm.write {
-//    //                        recipe.recipeSteps.append(recipeStep)
-//    //                    }
-//    //                }catch{
-//    //                    print("Error saving context in recipe \(error)")
-//    //                }
-//    //            }
-//    //        }
-//    self.dismiss(animated: true, completion: nil)
-//}

@@ -14,26 +14,22 @@ class RecipeCollectionViewController: UIViewController {
     
     @IBOutlet weak var recipeCollection: UICollectionView!
     var recipeList: Results<Recipe>?
-    let realm = try! Realm()
+    private let dataManager = RealmDataManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         recipeCollection.delegate = self
         recipeCollection.dataSource = self
-        loadRecipes()
+        
+        dataManager.loadFromRealm(vc: self, parentObject: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         recipeCollection.reloadData()
     }
+
     
-    func loadRecipes(){
-        recipeList = realm.objects(Recipe.self)
-    }
-    
-    
-    
-   
     @IBAction func addButtonPressed(_ sender: UIButton) {
       performSegue(withIdentifier: "goToCookingArea", sender: self)
     }
@@ -45,9 +41,6 @@ class RecipeCollectionViewController: UIViewController {
                 destinationVC.selectedRecipe = recipeList?[indexPath.row]
             }
         }
-//        else if segue.identifier == "goToCookingArea" {
-//            let destinationVC = segue.destination as! CookViewController
-//        }
     }
     
 }

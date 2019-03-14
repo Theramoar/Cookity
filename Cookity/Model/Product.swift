@@ -19,6 +19,6 @@ class Product: Object {
     @objc dynamic var measure: String = ""
     
     // Creating inverse relationship
-    var parentCategory = LinkingObjects(fromType: ShoppingCart.self, property: "products")
+//    var parentCategory = LinkingObjects(fromType: ShoppingCart.self, property: "products")
     
 }

@@ -7,11 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C3D63582231A66800FC4485 /* RecipeStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3D63572231A66800FC4485 /* RecipeStep.swift */; };
+		1C3D635A22354CAE00FC4485 /* AlertExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3D635922354CAE00FC4485 /* AlertExtension.swift */; };
+		1C3D635D2235851E00FC4485 /* ProductTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3D635C2235851E00FC4485 /* ProductTableViewCell.swift */; };
+		1C3D635F2238339800FC4485 /* SwipeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3D635E2238339800FC4485 /* SwipeTableViewController.swift */; };
 		1C4B1A022180EC32007CB9FD /* FridgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B1A012180EC32007CB9FD /* FridgeViewController.swift */; };
 		1C4B1A0421884EA9007CB9FD /* CookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B1A0321884EA9007CB9FD /* CookViewController.swift */; };
 		1C4B1A06218866E3007CB9FD /* CookTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B1A05218866E2007CB9FD /* CookTableViewCell.swift */; };
 		1C4B1A0821887081007CB9FD /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B1A0721887081007CB9FD /* Recipe.swift */; };
-		1C72FBAD222D29A100735546 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C72FBAC222D29A100735546 /* DataManager.swift */; };
+		1C72FBAD222D29A100735546 /* RealmDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C72FBAC222D29A100735546 /* RealmDataManager.swift */; };
 		1CA007C82165571B0072A908 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA007C72165571B0072A908 /* AppDelegate.swift */; };
 		1CA007CD2165571B0072A908 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1CA007CB2165571B0072A908 /* Main.storyboard */; };
 		1CA007D22165571E0072A908 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1CA007D02165571E0072A908 /* LaunchScreen.storyboard */; };
@@ -32,11 +36,15 @@
 
 /* Begin PBXFileReference section */
 		0B8C92B62FE3AF11FE18BB20 /* Pods_Cookity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Cookity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C3D63572231A66800FC4485 /* RecipeStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeStep.swift; sourceTree = "<group>"; };
+		1C3D635922354CAE00FC4485 /* AlertExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertExtension.swift; sourceTree = "<group>"; };
+		1C3D635C2235851E00FC4485 /* ProductTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductTableViewCell.swift; sourceTree = "<group>"; };
+		1C3D635E2238339800FC4485 /* SwipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeTableViewController.swift; sourceTree = "<group>"; };
 		1C4B1A012180EC32007CB9FD /* FridgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FridgeViewController.swift; sourceTree = "<group>"; };
 		1C4B1A0321884EA9007CB9FD /* CookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookViewController.swift; sourceTree = "<group>"; };
 		1C4B1A05218866E2007CB9FD /* CookTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookTableViewCell.swift; sourceTree = "<group>"; };
 		1C4B1A0721887081007CB9FD /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
-		1C72FBAC222D29A100735546 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		1C72FBAC222D29A100735546 /* RealmDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDataManager.swift; sourceTree = "<group>"; };
 		1CA007C42165571B0072A908 /* Cookity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cookity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CA007C72165571B0072A908 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1CA007CC2165571B0072A908 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -70,10 +78,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1C3D635B2235559A00FC4485 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				1CA007C72165571B0072A908 /* AppDelegate.swift */,
+				1C3D635922354CAE00FC4485 /* AlertExtension.swift */,
+				1CBEB20F21B70CD00036E996 /* Configuration.swift */,
+				1C72FBAC222D29A100735546 /* RealmDataManager.swift */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		1CA007BB2165571A0072A908 = {
 			isa = PBXGroup;
 			children = (
-				1CA007D32165571E0072A908 /* Info.plist */,
 				1CA007C62165571B0072A908 /* Cookity */,
 				1CBEB2AF21CE7DBD0036E996 /* Assets.xcassets */,
 				1CA007C52165571B0072A908 /* Products */,
@@ -93,7 +111,8 @@
 		1CA007C62165571B0072A908 /* Cookity */ = {
 			isa = PBXGroup;
 			children = (
-				1CA007C72165571B0072A908 /* AppDelegate.swift */,
+				1CA007D32165571E0072A908 /* Info.plist */,
+				1C3D635B2235559A00FC4485 /* Supporting Files */,
 				1CA007DF2165628C0072A908 /* Model */,
 				1CA007E02165629D0072A908 /* Controller */,
 				1CA007E1216562D20072A908 /* View */,
@@ -106,6 +125,7 @@
 			children = (
 				1CA007DD216562000072A908 /* Product.swift */,
 				1CAC8312217C72070081F24E /* ShoppingCart.swift */,
+				1C3D63572231A66800FC4485 /* RecipeStep.swift */,
 				1C4B1A0721887081007CB9FD /* Recipe.swift */,
 			);
 			path = Model;
@@ -114,14 +134,13 @@
 		1CA007E02165629D0072A908 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				1C72FBAC222D29A100735546 /* DataManager.swift */,
-				1CBEB20F21B70CD00036E996 /* Configuration.swift */,
-				1CA007DB216559360072A908 /* CartViewController.swift */,
+				1C3D635E2238339800FC4485 /* SwipeTableViewController.swift */,
 				1CAC8310217C70FA0081F24E /* CartCollectionViewController.swift */,
+				1CA007DB216559360072A908 /* CartViewController.swift */,
 				1C4B1A012180EC32007CB9FD /* FridgeViewController.swift */,
-				1C4B1A0321884EA9007CB9FD /* CookViewController.swift */,
 				1CBEB20921AAC9300036E996 /* RecipeCollectionViewController.swift */,
 				1CBEB20D21AAE97B0036E996 /* RecipeViewController.swift */,
+				1C4B1A0321884EA9007CB9FD /* CookViewController.swift */,
 				1CCC6375219383B40066919E /* PopupEditViewController.swift */,
 			);
 			path = Controller;
@@ -130,6 +149,7 @@
 		1CA007E1216562D20072A908 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				1C3D635C2235851E00FC4485 /* ProductTableViewCell.swift */,
 				1CAECA18216BDAB3002D3B6D /* TextFieldCell.swift */,
 				1C4B1A05218866E2007CB9FD /* CookTableViewCell.swift */,
 				1CBEB20B21AAD6C30036E996 /* RecipeCollectionViewCell.swift */,
@@ -278,11 +298,15 @@
 				1CBEB20E21AAE97B0036E996 /* RecipeViewController.swift in Sources */,
 				1CBEB20A21AAC9300036E996 /* RecipeCollectionViewController.swift in Sources */,
 				1CA007C82165571B0072A908 /* AppDelegate.swift in Sources */,
+				1C3D635A22354CAE00FC4485 /* AlertExtension.swift in Sources */,
+				1C3D635D2235851E00FC4485 /* ProductTableViewCell.swift in Sources */,
 				1CA007DE216562000072A908 /* Product.swift in Sources */,
 				1CBEB21021B70CD00036E996 /* Configuration.swift in Sources */,
+				1C3D63582231A66800FC4485 /* RecipeStep.swift in Sources */,
+				1C3D635F2238339800FC4485 /* SwipeTableViewController.swift in Sources */,
 				1CCC6376219383B40066919E /* PopupEditViewController.swift in Sources */,
 				1CBEB20C21AAD6C30036E996 /* RecipeCollectionViewCell.swift in Sources */,
-				1C72FBAD222D29A100735546 /* DataManager.swift in Sources */,
+				1C72FBAD222D29A100735546 /* RealmDataManager.swift in Sources */,
 				1CA007DC216559360072A908 /* CartViewController.swift in Sources */,
 				1C4B1A0821887081007CB9FD /* Recipe.swift in Sources */,
 				1CAECA19216BDAB3002D3B6D /* TextFieldCell.swift in Sources */,
@@ -438,7 +462,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7367KKMU64;
-				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Cookity/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -457,7 +481,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7367KKMU64;
-				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Cookity/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

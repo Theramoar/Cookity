@@ -6,7 +6,7 @@
 //  Copyright © 2018 Mihails Kuznecovs. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 
 class Configuration {
@@ -83,12 +83,11 @@ class Configuration {
             savedMeasure = "Grams"
         case "Pieces":
             savedMeasure = "pcs"
-        default:
+        case "pcs":
             savedMeasure = "Pieces"
+        default:
+            savedMeasure = "pcs"
     }
         return savedMeasure
     }
-    
-    
-
 }

@@ -10,15 +10,19 @@ import UIKit
 import RealmSwift
 import SwipeCellKit
 
-class CartCollectionViewController: UITableViewController, SwipeTableViewCellDelegate {
+class CartCollectionViewController: UIViewController, SwipeTableViewCellDelegate {
     
 
+    @IBOutlet weak var tableView: UITableView!
     var shoppingCarts: Results<ShoppingCart>?
-    let realm = try! Realm()
+    var productsInFridge: Results<Product>?
+    private let dataManager = RealmDataManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadCarts()
+        tableView.delegate = self
+        tableView.dataSource = self
+        dataManager.loadFromRealm(vc: self, parentObject: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -26,8 +30,10 @@ class CartCollectionViewController: UITableViewController, SwipeTableViewCellDel
     }
 
     //MARK: - Buttons and additional methods
+    
+    
+    
     @IBAction func addShoppingCart(_ sender: UIBarButtonItem) {
-        
         let alert = UIAlertController(title: "Title", message: "Message", preferredStyle: .alert)
         var textField = UITextField()
         
@@ -36,7 +42,8 @@ class CartCollectionViewController: UITableViewController, SwipeTableViewCellDel
             guard textField.text!.isEmpty != true else { return }
             let cart = ShoppingCart()
             cart.name = textField.text!
-            self.saveCart(cart: cart)
+            self.dataManager.saveToRealm(parentObject: nil, object: cart)
+            self.tableView.reloadData()
         }
         
         alert.addTextField { (alertTextField) in
@@ -46,69 +53,35 @@ class CartCollectionViewController: UITableViewController, SwipeTableViewCellDel
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
     }
+    
    
     //MARK: - Data Manipulation Methods
-    func saveCart(cart: ShoppingCart){
-        do{
-            try realm.write {
-                realm.add(cart)
-            }
-        }catch{
-            print("Error while saving cart \(error)")
-        }
-       self.tableView.reloadData()
-    }
-    
-    func loadCarts(){
-        shoppingCarts = realm.objects(ShoppingCart.self)
-    }
-    
-    func updateModel(at indexPath: IndexPath){
-        if let cart = self.shoppingCarts?[indexPath.row] {
-            do{
-                try self.realm.write {
-                    self.realm.delete(cart)
-                }
-            }catch
-            {
-                print("Error while deleting items \(error)")
-            }
-            tableView.reloadData()
-        }
-    }
-    
     func addProductsToFridge(at indexPath: IndexPath){
         guard let products = self.shoppingCarts?[indexPath.row].products.filter("inFridge == NO") else { return }
+        
         for product in products {
-            
             //Checks if the similar product is already in the fridge
-            var productsInFridge: Results<Product>?
-            productsInFridge = realm.objects(Product.self).filter("inFridge == YES")
             for fridgeProduct in productsInFridge!{
                 // if products name and measure coincide, adds quantity and deletes product from the shopping list
                 if product.name == fridgeProduct.name && product.measure == fridgeProduct.measure{
-                    do{
-                        try self.realm.write {
-                            fridgeProduct.quantity += product.quantity
-                            self.realm.delete(product)
-                        }
-                    }
-                    catch{
-                        print("Error while  adding to fridge \(error)")
-                    }
+                    
+                    let newQuantity = fridgeProduct.quantity + product.quantity
+                    dataManager.changeElementIn(object: fridgeProduct,
+                                                keyValue: "quantity",
+                                                objectParameter: fridgeProduct.quantity,
+                                                newParameter: newQuantity)
+                    dataManager.deleteFromRealm(object: product)
                     break
                 }
             }
             if product.isInvalidated == false{
-            do{
-                try self.realm.write {
-                    product.inFridge = true
-                }
-            }catch{
-                print("Error while appending products to the fridge \(error)")
-                }
+                dataManager.changeElementIn(object: product,
+                                            keyValue: "inFridge",
+                                            objectParameter: product.inFridge,
+                                            newParameter: true)
             }
         }
+        tableView.reloadData()
     }
 }
 
@@ -117,14 +90,14 @@ class CartCollectionViewController: UITableViewController, SwipeTableViewCellDel
 
 
 //MARK: - Extension for TableView Methods
-extension CartCollectionViewController {
+extension CartCollectionViewController: UITableViewDelegate, UITableViewDataSource {
     
     //MARK: - TableView DataSource Methods
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return shoppingCarts?.count ?? 1
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CartCell", for: indexPath) as! SwipeTableViewCell
         cell.delegate = self as SwipeTableViewCellDelegate
         
@@ -139,7 +112,10 @@ extension CartCollectionViewController {
         guard orientation == .right else {return nil}
         
         let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
-            self.updateModel(at: indexPath)
+            if let cart = self.shoppingCarts?[indexPath.row] {
+                self.dataManager.deleteFromRealm(object: cart)
+                self.tableView.reloadData()
+            }
         }
         
         let appendAction = SwipeAction(style: .default, title: "Add to Fridge") { (action, indexPath) in
@@ -148,10 +124,13 @@ extension CartCollectionViewController {
         return [deleteAction, appendAction]
     }
     
+    
+    
     //MARK: - TableView Delegate Methods
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "goToCart", sender: self)
     }
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationVC = segue.destination as! CartViewController
