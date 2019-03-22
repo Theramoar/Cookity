@@ -32,6 +32,9 @@
 		1CBF527721D2CFB700972CB5 /* RecipeStepTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CBF527621D2CFB700972CB5 /* RecipeStepTableViewCell.swift */; };
 		1CCC6376219383B40066919E /* PopupEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CCC6375219383B40066919E /* PopupEditViewController.swift */; };
 		3A52DC7F3D045742F39E9C43 /* Pods_Cookity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B8C92B62FE3AF11FE18BB20 /* Pods_Cookity.framework */; };
+		BB0F24DB223EC4F700A3D8EF /* CreateListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0F24DA223EC4F700A3D8EF /* CreateListCell.swift */; };
+		BB0F24DD2240313E00A3D8EF /* RecipeStepCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0F24DC2240313E00A3D8EF /* RecipeStepCell.swift */; };
+		BB0F24DF2242D04800A3D8EF /* MeasurePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0F24DE2242D04800A3D8EF /* MeasurePicker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +65,9 @@
 		1CBEB2AF21CE7DBD0036E996 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1CBF527621D2CFB700972CB5 /* RecipeStepTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeStepTableViewCell.swift; sourceTree = "<group>"; };
 		1CCC6375219383B40066919E /* PopupEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupEditViewController.swift; sourceTree = "<group>"; };
+		BB0F24DA223EC4F700A3D8EF /* CreateListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateListCell.swift; sourceTree = "<group>"; };
+		BB0F24DC2240313E00A3D8EF /* RecipeStepCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeStepCell.swift; sourceTree = "<group>"; };
+		BB0F24DE2242D04800A3D8EF /* MeasurePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurePicker.swift; sourceTree = "<group>"; };
 		BE061007BD97220A92EF05D9 /* Pods-Cookity.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cookity.release.xcconfig"; path = "Pods/Target Support Files/Pods-Cookity/Pods-Cookity.release.xcconfig"; sourceTree = "<group>"; };
 		DEDE6A691C1DBBA1F1CA80EC /* Pods-Cookity.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cookity.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Cookity/Pods-Cookity.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -85,6 +91,7 @@
 				1C3D635922354CAE00FC4485 /* AlertExtension.swift */,
 				1CBEB20F21B70CD00036E996 /* Configuration.swift */,
 				1C72FBAC222D29A100735546 /* RealmDataManager.swift */,
+				BB0F24DE2242D04800A3D8EF /* MeasurePicker.swift */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -152,8 +159,10 @@
 				1C3D635C2235851E00FC4485 /* ProductTableViewCell.swift */,
 				1CAECA18216BDAB3002D3B6D /* TextFieldCell.swift */,
 				1C4B1A05218866E2007CB9FD /* CookTableViewCell.swift */,
+				BB0F24DA223EC4F700A3D8EF /* CreateListCell.swift */,
 				1CBEB20B21AAD6C30036E996 /* RecipeCollectionViewCell.swift */,
 				1CBF527621D2CFB700972CB5 /* RecipeStepTableViewCell.swift */,
+				BB0F24DC2240313E00A3D8EF /* RecipeStepCell.swift */,
 				1CA007CB2165571B0072A908 /* Main.storyboard */,
 				1CA007D02165571E0072A908 /* LaunchScreen.storyboard */,
 			);
@@ -294,10 +303,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				1CAC8311217C70FA0081F24E /* CartCollectionViewController.swift in Sources */,
+				BB0F24DB223EC4F700A3D8EF /* CreateListCell.swift in Sources */,
 				1CAC8313217C72070081F24E /* ShoppingCart.swift in Sources */,
 				1CBEB20E21AAE97B0036E996 /* RecipeViewController.swift in Sources */,
 				1CBEB20A21AAC9300036E996 /* RecipeCollectionViewController.swift in Sources */,
 				1CA007C82165571B0072A908 /* AppDelegate.swift in Sources */,
+				BB0F24DF2242D04800A3D8EF /* MeasurePicker.swift in Sources */,
 				1C3D635A22354CAE00FC4485 /* AlertExtension.swift in Sources */,
 				1C3D635D2235851E00FC4485 /* ProductTableViewCell.swift in Sources */,
 				1CA007DE216562000072A908 /* Product.swift in Sources */,
@@ -311,6 +322,7 @@
 				1C4B1A0821887081007CB9FD /* Recipe.swift in Sources */,
 				1CAECA19216BDAB3002D3B6D /* TextFieldCell.swift in Sources */,
 				1C4B1A0421884EA9007CB9FD /* CookViewController.swift in Sources */,
+				BB0F24DD2240313E00A3D8EF /* RecipeStepCell.swift in Sources */,
 				1C4B1A022180EC32007CB9FD /* FridgeViewController.swift in Sources */,
 				1C4B1A06218866E3007CB9FD /* CookTableViewCell.swift in Sources */,
 				1CBF527721D2CFB700972CB5 /* RecipeStepTableViewCell.swift in Sources */,

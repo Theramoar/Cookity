@@ -7,35 +7,38 @@
 //
 
 import UIKit
+import SwipeCellKit
+import RealmSwift
 
 
+enum CookSections: String, CaseIterable {
+    case productSection = "Choose ingridients for the recipe:"
+    case stepSection = "Describe cooking process:"
+}
 
-class CookViewController: UIViewController {
+class CookViewController: SwipeTableViewController {
 
-
-    let config = Configuration()
-    let dataManager = RealmDataManager()
+    var isEdited: Bool = false // used for to disable touches while textfield are edited.
     
     @IBOutlet weak var productsTable: UITableView!
     @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var recipeName: UITextField!
     
     var recipeVC: RecipeViewController? // VC of the Recipe that is edited
-    
     var recipeSteps: [RecipeStep]?
     var products = [Product]()
-    var chosenIndexPaths = [Int : IndexPath]() // это надо?? видимо нет
-    let sections = ["Choose ingridients for the recipe:", "Describe cooking process:"]
-    var RecipeIsEdited: Bool = false // is used to detect if the recipe is new and disable delete button
-    
+    let sections = CookSections.allCases
     var editedRecipe: Recipe? {
         didSet{
             dataManager.loadFromRealm(vc: self, parentObject: editedRecipe)
-            RecipeIsEdited = true // эта переменная нужна?
         }
     }
     
-    var isEdited: Bool = false // used for to disable touches while textfield are edited.
+    //Temporary storage for edited values, until they are checked and saved into the Realm
+    var editedQuantity = [Product : Int]()
+    var editedMeasure = [Product : String]()
+    var editedName = [Product: String]()
+    var editedRecipeStep = [RecipeStep: String]()
     
     
     override func viewDidLoad() {
@@ -44,11 +47,10 @@ class CookViewController: UIViewController {
         productsTable.delegate = self
         productsTable.dataSource = self
         productsTable.keyboardDismissMode = .interactive
-        
-        if RecipeIsEdited == true {
+        if editedRecipe != nil {
             recipeName.text = editedRecipe?.name
         }
-        else if !RecipeIsEdited {
+        else {
             deleteButton.isEnabled = false
             deleteButton.isHidden = true
         }
@@ -61,10 +63,10 @@ class CookViewController: UIViewController {
         //Used for the table moving while keyboard appear
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear), name: UIResponder.keyboardWillHideNotification, object: nil)
-
-        dataManager.loadFromRealm(vc: self, parentObject: editedRecipe) // это надо?!
     }
     
+    
+    //MARK:- User Interaction Methods
     @objc func keyboardWillAppear(notification: NSNotification){
         productsTable.allowsSelection = false
         isEdited = true
@@ -96,7 +98,7 @@ class CookViewController: UIViewController {
         return true
     }
     
-    
+    //MARK:- Data Management Methods
     func saveStep(step: String) {
         let newStep = RecipeStep()
         newStep.name = step
@@ -106,8 +108,170 @@ class CookViewController: UIViewController {
         productsTable.reloadData()
     }
     
+    override func deleteObject(at indexPath: IndexPath) {
+        
+        let object: Object?
+        
+        switch indexPath.section {
+        case 0:
+            object = products[indexPath.row - 1]
+        case 1:
+            object = (recipeSteps?[indexPath.row - 1])!
+        default:
+            return
+        }
+        
+        if let recipe = editedRecipe {
+            if let product = object as? Product {
+                for editedProduct in recipe.products {
+                    guard !(product.isSameObject(as: editedProduct)) else {
+                        dataManager.deleteFromRealm(object: product)
+                        break
+                    }
+                }
+                products.remove(at: indexPath.row - 1)
+            }
+            else if let recipeStep = object as? RecipeStep {
+                for editedStep in recipe.recipeSteps {
+                    guard !(recipeStep.isSameObject(as: editedStep)) else {
+                        dataManager.deleteFromRealm(object: recipeStep)
+                        break
+                    }
+                }
+                recipeSteps?.remove(at: indexPath.row - 1)
+            }
+        }
+        productsTable.reloadData()
+    }
     
     
+    func isEnteredDataCorrect() -> Bool {
+        let alert = UIAlertController(title: "", message: "", preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .default) { (_) in return }
+        alert.addAction(action)
+        
+        if (productsTable.numberOfRows(inSection: 0)-1) >= 1 {
+            for row in 1...(productsTable.numberOfRows(inSection: 0)-1) {
+                
+                let cell = productsTable.cellForRow(at: NSIndexPath(row: row, section: 0) as IndexPath) as! CookTableViewCell
+                
+                let selectedIndexPath = productsTable.indexPath(for: cell)
+                //throws the alert if entered quantity is empty and breaks the cooking.
+                
+                guard let name = cell.productName.text,
+                    let quantity = cell.quantityForRecipe.text,
+                    let measure = cell.productMeasure.text
+                    else { return false }
+                
+                guard alert.check(data: name, dataName: .name),
+                    alert.check(data: quantity, dataName: .quantity)
+                    else {
+                        editedQuantity.removeAll()
+                        editedMeasure.removeAll()
+                        editedName.removeAll()
+                        present(alert, animated: true, completion: nil)
+                        return false
+                }
+                
+                
+                if let indexPath = selectedIndexPath {
+                    let product = products[indexPath.row - 1]
+                    let configedMeasure = Configuration.configMeasure(measure: measure)
+                    let (quantity, finalMeasure) = Configuration.configNumbers(quantity: quantity, measure: configedMeasure)
+                    
+                    editedQuantity[product] = quantity
+                    editedMeasure[product] = finalMeasure
+                    editedName[product] = name
+                }
+            }
+        }
+        
+        if (productsTable.numberOfRows(inSection: 1)-1) >= 1 {
+            for row in 1...(productsTable.numberOfRows(inSection: 1)-1) {
+                let cell = productsTable.cellForRow(at: NSIndexPath(row: row, section: 1) as IndexPath) as! RecipeStepCell
+                let selectedIndexPath = productsTable.indexPath(for: cell)
+                guard let recipeName = recipeName.text,
+                    let recipeStepText = cell.recipeStepCell.text
+                    else { return false }
+                
+                guard
+                    alert.check(data: recipeName, dataName: .recipeName),
+                    alert.check(data: recipeStepText, dataName: .recipeStep)
+                    else {
+                        editedQuantity.removeAll()
+                        editedMeasure.removeAll()
+                        editedName.removeAll()
+                        present(alert, animated: true, completion: nil)
+                        return false
+                }
+                
+                guard let indexPath = selectedIndexPath else { return false }
+                guard let recipeStep = recipeSteps?[indexPath.row - 1] else { return false }
+                
+                editedRecipeStep[recipeStep] = recipeStepText
+                //доделать и отрефакторить
+            }
+        }
+        return true
+    }
+    
+    func saveRecipe() {
+        var recipe: Recipe
+        
+        if editedRecipe != nil {
+            recipe = editedRecipe!
+            let newName = (recipeName?.text)!
+            dataManager.changeElementIn(object: recipe, keyValue: "name", objectParameter: recipe.name, newParameter: newName)
+            
+        }
+        else {
+            recipe = Recipe()
+            recipe.name = (recipeName?.text)!
+            dataManager.saveToRealm(parentObject: nil, object: recipe)
+        }
+        
+        for product in products {
+            if recipe.products.isEmpty {
+                dataManager.saveToRealm(parentObject: recipe, object: product)
+            }
+            
+            for recipeProduct in recipe.products {
+                let lastProduct = recipe.products.last
+                if product.isSameObject(as: recipeProduct) {
+                    dataManager.changeElementIn(object: product, keyValue: "quantity", objectParameter: product.quantity, newParameter: editedQuantity[product]!)  // почему тут Optional?
+                    dataManager.changeElementIn(object: product, keyValue: "measure", objectParameter: product.measure, newParameter: editedMeasure[product]!)
+                    dataManager.changeElementIn(object: product, keyValue: "name", objectParameter: product.name, newParameter: editedName[product]!)
+                    break
+                }
+                else if recipeProduct.isSameObject(as: lastProduct){
+                    product.quantity = editedQuantity[product]!
+                    product.measure = editedMeasure[product]!
+                    product.name = editedName[product]!
+                    dataManager.saveToRealm(parentObject: recipe, object: product)
+                }
+            }
+        }
+        
+        if let recipeSteps = recipeSteps {
+            for recipeStep in recipeSteps {
+                if recipe.recipeSteps.isEmpty {
+                    dataManager.saveToRealm(parentObject: recipe, object: recipeStep)
+                }
+                for savedStep in recipe.recipeSteps {
+                    let lastStep = recipe.recipeSteps.last
+                    if recipeStep.isSameObject(as: savedStep) {
+                        dataManager.changeElementIn(object: savedStep, keyValue: "name", objectParameter: savedStep.name, newParameter: editedRecipeStep[recipeStep])
+                        break
+                    }
+                    else if savedStep.isSameObject(as: lastStep)  {
+                        dataManager.saveToRealm(parentObject: recipe, object: recipeStep)
+                    }
+                }
+            }
+        }
+    }
+    
+
     //MARK: - Methods for Buttons
     @IBAction func deleteButtonPressed(_ sender: UIButton) {
         if let recipe = editedRecipe {
@@ -135,112 +299,8 @@ class CookViewController: UIViewController {
     
     
     @IBAction func cookButtonPressed(_ sender: UIButton) {
-        
-        let alert = UIAlertController(title: "Amount is not entered!", message: "Enter the amount used for for the recipe", preferredStyle: .alert)
-        let action = UIAlertAction(title: "OK", style: .default) { (_) in
-            return
-        }
-        alert.addAction(action)
-        
-        //Temporary storage for edited values, until they are checked and saved into the Realm
-        var editedQuantity = [Product : Int]()
-        var editedMeasure = [Product : String]()
-        
-        //1st circle is used to iterate over the array and check if all entered quantities are correct
-        for row in 1...(productsTable.numberOfRows(inSection: 0)-1) {
-            
-            let cell = productsTable.cellForRow(at: NSIndexPath(row: row, section: 0) as IndexPath) as! CookTableViewCell
-            
-            let selectedIndexPath = productsTable.indexPath(for: cell)
-            //throws the alert if entered quantity is empty and breaks the cooking.
-            guard Float(cell.quantityForRecipe.text!) != nil  else {
-                editedQuantity.removeAll()
-                editedMeasure.removeAll()
-                alert.title = "Amount is not entered!"
-                alert.message = "Enter the amount used for for the recipe"
-                present(alert, animated: true, completion: nil)
-                return
-            }
-            
-            if let indexPath = selectedIndexPath {
-                let product = products[indexPath.row - 1]
-                let (quantity, measure) = config.configNumbers(quantity: cell.quantityForRecipe.text!, measure: product.measure)
-                
-                guard quantity != 0 else{
-                    editedQuantity.removeAll()
-                    editedMeasure.removeAll()
-                    alert.title = "The amount of \(product.name) is 0"
-                    alert.message = "Please enter the sufficient amount"
-                    present(alert, animated: true, completion: nil)
-                    return
-                }
-                
-                editedQuantity[product] = quantity
-                editedMeasure[product] = measure
-            }
-        }
-        
-        //Check for the entered recipe name correctness
-        guard recipeName?.text != "" else {
-            editedQuantity.removeAll()
-            editedMeasure.removeAll()
-            alert.title = "Recipe name is not entered!"
-            alert.message = "Enter the recipe name"
-            present(alert, animated: true, completion: nil)
-            return
-        }
-        
-        //Starts Data Manipulation
-        var recipe: Recipe
-
-        if editedRecipe != nil {
-            recipe = editedRecipe!
-            let newName = (recipeName?.text)!
-            dataManager.changeElementIn(object: recipe, keyValue: "name", objectParameter: recipe.name, newParameter: newName)
-
-        }
-        else {
-            recipe = Recipe()
-            recipe.name = (recipeName?.text)!
-            dataManager.saveToRealm(parentObject: nil, object: recipe)
-        }
-        
-        for product in products {
-            if recipe.products.isEmpty {
-                dataManager.saveToRealm(parentObject: recipe, object: product)
-            }
-            for recipeProduct in recipe.products {
-                let lastProduct = recipe.products.last
-                if product.isSameObject(as: recipeProduct) {
-                    dataManager.changeElementIn(object: product, keyValue: "quantity", objectParameter: product.quantity, newParameter: editedQuantity[product]!)  // почему тут Optional?
-                    dataManager.changeElementIn(object: product, keyValue: "measure", objectParameter: product.measure, newParameter: editedMeasure[product]!)
-                    break
-                }
-                else if recipeProduct.isSameObject(as: lastProduct){
-                    dataManager.saveToRealm(parentObject: recipe, object: product)
-                }
-            }
-        }
-        
-        if let recipeSteps = recipeSteps {
-            for recipeStep in recipeSteps {
-                if recipe.recipeSteps.isEmpty {
-                    dataManager.saveToRealm(parentObject: recipe, object: recipeStep)
-                }
-                for savedStep in recipe.recipeSteps {
-                    let lastStep = recipe.recipeSteps.last
-                    if recipeStep.isSameObject(as: savedStep) {
-                        break
-                    }
-                    else if savedStep.isSameObject(as: lastStep)  {
-                        dataManager.saveToRealm(parentObject: recipe, object: recipeStep)
-                    }
-                }
-            }
-        }
-        
-        editedQuantity.removeAll()
-        editedMeasure.removeAll()
+        guard isEnteredDataCorrect() else { return }
+        saveRecipe()
         self.dismiss(animated: true, completion: nil)
     }
 }
@@ -257,7 +317,7 @@ extension CookViewController: UITableViewDelegate, UITableViewDataSource, UIText
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section]
+        return sections[section].rawValue
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -282,17 +342,16 @@ extension CookViewController: UITableViewDelegate, UITableViewDataSource, UIText
                 textCell.insertMeasure.delegate = self
                 textCell.insertProduct.delegate = self
                 textCell.insertQuantity.delegate = self
-                
+
                 return textCell
             }
             else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "CookCell", for: indexPath) as! CookTableViewCell
+                cell.delegate = self as SwipeTableViewCellDelegate
                 cell.quantityForRecipe.delegate = self
-                cell.selectionStyle = .none
+                
                 let product = products[indexPath.row - 1]
-                let measure = config.configMeasure(measure: product.measure)
-                cell.textLabel?.text = "\(product.name) - (in \(measure))"
-                cell.quantityForRecipe.text = "\(product.quantity)"
+                cell.product = product
                 
                 return cell
             }
@@ -302,15 +361,16 @@ extension CookViewController: UITableViewDelegate, UITableViewDataSource, UIText
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AddRecipeCell", for: indexPath) as! RecipeStepTableViewCell
                 cell.delegate = self
                 cell.recipeStep.delegate = self
-                cell.selectionStyle = .none
+                
                 return cell
             }
             else {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCell", for: indexPath)
+                let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCell", for: indexPath) as! RecipeStepCell
+                cell.delegate = self as SwipeTableViewCellDelegate
                 if let recipeStep = recipeSteps?[indexPath.row - 1] {
-                    cell.textLabel?.text = recipeStep.name
+                    cell.recipeStep = recipeStep
                 }
-                cell.selectionStyle = .none
+                
                 return cell
             }
         }
@@ -327,14 +387,18 @@ extension CookViewController: TextFieldDelegate {
         let newProduct = Product()
         
         let alert = UIAlertController(title: "title", message: "message", preferredStyle: .alert)
-        let dataIsCorrect = alert.checkData(productName: productName, productQuantity: productQuantity)
-        guard dataIsCorrect else {
+        
+        guard
+            alert.check(data: productName, dataName: .name),
+            alert.check(data: productQuantity, dataName: .quantity)
+        else {
             present(alert, animated: true, completion: nil)
             return
         }
+    
         
-        let measure = config.configMeasure(measure: productMeasure)
-        let (savedQuantity, savedMeasure) = config.configNumbers(quantity: productQuantity, measure: measure)
+        let measure = Configuration.configMeasure(measure: productMeasure)
+        let (savedQuantity, savedMeasure) = Configuration.configNumbers(quantity: productQuantity, measure: measure)
         
         newProduct.name = productName
         newProduct.quantity = savedQuantity
@@ -344,3 +408,4 @@ extension CookViewController: TextFieldDelegate {
         productsTable.reloadData()
     }
 }
+

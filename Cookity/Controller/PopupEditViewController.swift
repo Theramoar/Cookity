@@ -11,12 +11,11 @@ import UIKit
 
 class PopupEditViewController: UIViewController, UITextFieldDelegate {
 
-    private let config = Configuration()
     private let dataManager = RealmDataManager()
     
     var selectedProduct: Product?
     var parentVC: UIViewController?
-    let measuresArray = ["Pieces", "Litres", "Mililiters", "Grams", "Kilograms"]
+    let measures = Measures.allCases
     
     @IBOutlet weak var editView: UIView!
     @IBOutlet weak var nameText: UITextField!
@@ -29,7 +28,7 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate {
         
         nameText.delegate = self
         quantityText.delegate = self
-
+    
         let measurePicker = UIPickerView()
         measurePicker.delegate = self
         measureText.inputView = measurePicker
@@ -53,17 +52,24 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func doneButtonPressed(_ sender: UIButton) {
         
-        guard let productName = nameText.text, let productQuantity = quantityText.text else { return }
+        guard let productName = nameText.text,
+            let productQuantity = quantityText.text,
+            let productMeasure = measureText.text
+            else { return }
         
         let alert = UIAlertController(title: "title", message: "message", preferredStyle: .alert)
-        let dataIsCorrect = alert.checkData(productName: productName, productQuantity: productQuantity)
-        guard dataIsCorrect else {
+        let action = UIAlertAction(title: "OK", style: .default) { (_) in return }
+        alert.addAction(action)
+
+        guard alert.check(data: productName, dataName: .name),
+            alert.check(data: productQuantity, dataName: .quantity)
+        else {
             present(alert, animated: true, completion: nil)
             return
         }
-        
-        let measure = config.configMeasure(measure: measureText.text!)
-        let (savedQuantity, savedMeasure) = config.configNumbers(quantity: productQuantity, measure: measure)
+
+        let measure = Configuration.configMeasure(measure: productMeasure)
+        let (savedQuantity, savedMeasure) = Configuration.configNumbers(quantity: productQuantity, measure: measure)
         
         guard let selectedProduct = selectedProduct else { return }
         dataManager.changeElementIn(object: selectedProduct,
@@ -90,9 +96,6 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate {
 }
 
 
-
-
-
 extension PopupEditViewController: UIPickerViewDataSource, UIPickerViewDelegate{
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -100,14 +103,14 @@ extension PopupEditViewController: UIPickerViewDataSource, UIPickerViewDelegate{
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return measuresArray.count
+        return measures.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return measuresArray[row]
+        return measures[row].rawValue
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        measureText.text = measuresArray[row]
+        measureText.text = measures[row].rawValue
     }
 }

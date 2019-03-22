@@ -13,7 +13,6 @@ import RealmSwift
 class RealmDataManager {
     
     private let realm = try! Realm()
-    private let config = Configuration()
     
     
     func loadFromRealm(vc: UIViewController?, parentObject: Object?) {
@@ -44,8 +43,8 @@ class RealmDataManager {
         }
         else if let vc = vc as? PopupEditViewController, let product = parentObject as? Product {
             
-            var (presentedQuantity, presentedMeasure) = config.presentNumbers(quantity: product.quantity, measure: product.measure)
-            presentedMeasure = config.configMeasure(measure: presentedMeasure)
+            var (presentedQuantity, presentedMeasure) = Configuration.presentNumbers(quantity: product.quantity, measure: product.measure)
+            presentedMeasure = Configuration.configMeasure(measure: presentedMeasure)
             
             vc.nameText.text = product.name
             vc.quantityText.text = presentedQuantity

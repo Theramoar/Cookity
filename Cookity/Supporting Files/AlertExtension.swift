@@ -8,30 +8,29 @@
 
 import UIKit
 
+
+
+enum AlertMessage: String, CaseIterable {
+    case name = "Name"
+    case quantity = "Quantity"
+    case recipeName = "Recipe Name"
+    case recipeStep = "Recipe Step"
+}
+
 extension UIAlertController {
-    
-    func checkData(productName: String, productQuantity: String) -> Bool {
-        let action = UIAlertAction(title: "Okay", style: .cancel) { (_) in
-            return
-        }
-        self.addAction(action)
-        
-        guard productName != "" else {
-            self.title = "No Name"
-            self.message = "Please enter product name"
+
+    func check(data: String, dataName: AlertMessage) -> Bool {
+        guard data != "" else {
+            self.title = "\(dataName) is not entered!"
+            self.message = "Enter the \(dataName)"
             return false
         }
-        
-        guard productQuantity != "" else {
-            self.title = "No Quantity"
-            self.message = "Please enter product quantity"
-            return false
-        }
-        
-        guard Float(productQuantity) != nil else {
-            self.title = "Incorrect Quantity"
-            self.message = "Please enter the quantity in numbers"
-            return false
+        if dataName == .quantity {
+            guard Float(data) != nil else {
+                self.title = "Incorrect \(dataName.rawValue)"
+                self.message = "Please enter the \(dataName.rawValue) in numbers"
+                return false
+            }
         }
         return true
     }

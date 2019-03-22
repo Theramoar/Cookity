@@ -12,7 +12,7 @@ import UIKit
 class Configuration {
     
     
-    func configNumbers(quantity: String, measure: String) -> (Int, String) {
+    static func configNumbers(quantity: String, measure: String) -> (Int, String) {
         
         var newQuantity: Int = 0
         var newMeasure = measure
@@ -36,7 +36,7 @@ class Configuration {
     }
     
     
-    func presentNumbers(quantity: Int, measure: String) -> (String, String) {
+    static func presentNumbers(quantity: Int, measure: String) -> (String, String) {
         
         var presentedMeasure = measure
         
@@ -60,15 +60,15 @@ class Configuration {
     }
     
     
-    func configMeasure(measure: String) -> String {
+    static func configMeasure(measure: String) -> String {
         
         var savedMeasure = measure
-        
+
         switch savedMeasure {
         case "Mililiters":
             savedMeasure = "ml"
         case "ml":
-            savedMeasure = "Mililitres"
+            savedMeasure = "Mililiters"
         case "Kilograms":
             savedMeasure = "kg"
         case "kg":

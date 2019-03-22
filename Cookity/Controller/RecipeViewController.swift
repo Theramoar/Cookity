@@ -11,7 +11,6 @@ import RealmSwift
 
 class RecipeViewController: UIViewController {
     
-    private let config = Configuration()
     private let dataManager = RealmDataManager()
     
     var productsForRecipe: Results<Product>?
@@ -68,11 +67,8 @@ class RecipeViewController: UIViewController {
     
     
     
-    //Creates a new shopping list the adds the products from recipe to it
+    //Creates a new shopping list the adds the products from recipe to it    
     @IBAction func createButtonPressed(_ sender: UIButton) {
-        
-        //Добавить возможность добавить только те продукты которых нет в холодильнике
-        
         let newCart = ShoppingCart()
         newCart.name = selectedRecipe?.name ?? "Selected Recipe"
         
@@ -84,7 +80,7 @@ class RecipeViewController: UIViewController {
         }
         dataManager.saveToRealm(parentObject: nil, object: newCart)
     }
-
+    
     
     @IBAction func cookButtonPressed(_ sender: UIButton) {
         
@@ -124,35 +120,41 @@ extension RecipeViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return productsForRecipe?.count ?? 0
+            return productsForRecipe?.count.advanced(by: 1) ?? 0
         }
         else {
             return recipeSteps?.count ?? 0
         }
-        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if indexPath.section == 0 {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "recipeProductCell", for: indexPath)
-        
-        if let product = productsForRecipe?[indexPath.row] {
             
-            let (presentedQuantity, presentedMeasure) = config.presentNumbers(quantity: product.quantity, measure: product.measure)
-            
-            var description = "(You don't have any)"
-            if compareFridgeToRecipe(selectedProduct: product) == true {
-                if let selectedProduct = chosenProducts[product.name]{
+            if indexPath.row < (productsForRecipe?.count)! {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "recipeProductCell", for: indexPath)
+                
+                if let product = productsForRecipe?[indexPath.row] {
                     
-                    let (selectedQuantity, selectedMeasure) = config.presentNumbers(quantity: selectedProduct.quantity, measure: selectedProduct.measure)
-                    description = "(You have \(selectedQuantity) \(selectedMeasure))"
+                    let (presentedQuantity, presentedMeasure) = Configuration.presentNumbers(quantity: product.quantity, measure: product.measure)
+                    
+                    var description = "(You don't have any)"
+                    if compareFridgeToRecipe(selectedProduct: product) == true {
+                        if let selectedProduct = chosenProducts[product.name]{
+                            
+                            let (selectedQuantity, selectedMeasure) = Configuration.presentNumbers(quantity: selectedProduct.quantity, measure: selectedProduct.measure)
+                            description = "(You have \(selectedQuantity) \(selectedMeasure))"
+                        }
+                    }
+                    cell.textLabel?.text = "\(product.name) - \(presentedQuantity) \(presentedMeasure) \(description)"
                 }
+                
+                return cell
             }
-            cell.textLabel?.text = "\(product.name) - \(presentedQuantity) \(presentedMeasure) \(description)"
-        }
-        
-            return cell
+            else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "createShoppingListCell", for: indexPath) as! CreateListCell
+                return cell
+            }
         }
         else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "recipeProductCell", for: indexPath)
@@ -163,6 +165,4 @@ extension RecipeViewController: UITableViewDelegate, UITableViewDataSource{
             return cell
         }
     }
-    
-    
 }

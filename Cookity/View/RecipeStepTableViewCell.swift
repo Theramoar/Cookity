@@ -18,6 +18,10 @@ class RecipeStepTableViewCell: UITableViewCell {
     @IBOutlet weak var recipeStep: UITextField!
     var delegate: RecipeStepDelegate?
     
+    override func awakeFromNib() {
+        self.selectionStyle = .none
+    }
+    
     @IBAction func addButtonPressed(_ sender: UIButton) {
         
         if let step = recipeStep?.text {

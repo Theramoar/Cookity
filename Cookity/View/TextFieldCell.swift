@@ -26,14 +26,14 @@ class TextFieldCell: UITableViewCell{
     @IBOutlet weak var insertProduct: UITextField!
     @IBOutlet weak var insertQuantity: UITextField!
     @IBOutlet weak var insertMeasure: UITextField!
-    let measuresArray = ["Pieces", "Litres", "Mililiters", "Grams", "Kilograms"]
+    let measures = Measures.allCases
     var delegate: TextFieldDelegate?
     
     
     override func awakeFromNib() {
+
         let measurePicker = UIPickerView()
         measurePicker.delegate = self
-        insertMeasure.text = "Pieces"
         insertMeasure.inputView = measurePicker
     }
     
@@ -54,20 +54,20 @@ class TextFieldCell: UITableViewCell{
 
 //MARK: - Extension for measure TextField UIPickerView
 extension TextFieldCell: UIPickerViewDataSource, UIPickerViewDelegate{
-    
+
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
-    
+
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return measuresArray.count
+        return measures.count
     }
-    
+
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return measuresArray[row]
+        return measures[row].rawValue
     }
-    
+
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        insertMeasure.text = measuresArray[row]
+        insertMeasure.text = measures[row].rawValue
     }
 }

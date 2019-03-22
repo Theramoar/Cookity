@@ -10,10 +10,9 @@ import UIKit
 import RealmSwift
 import SwipeCellKit
 
-class CartViewController: UIViewController {
+class CartViewController: SwipeTableViewController {
     
-    let config = Configuration()
-    let dataManager = RealmDataManager()
+//    let dataManager = RealmDataManager()
     var productsInFridge: Results<Product>?
     var products: Results<Product>?
     let measures = Measures.allCases
@@ -40,6 +39,8 @@ class CartViewController: UIViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.separatorStyle = .none
+        
         productTextField.delegate = self
         quantityTextField.delegate = self
         measureTextField.delegate = self
@@ -47,19 +48,6 @@ class CartViewController: UIViewController {
         let measurePicker = UIPickerView()
         measurePicker.delegate = self
         measurePicker.dataSource = self
-        
-//        let toolBar = UIToolbar()
-//        toolBar.barStyle = UIBarStyle.default
-//        toolBar.isTranslucent = true
-//        toolBar.tintColor = UIColor(red: 76/255, green: 217/255, blue: 100/255, alpha: 1)
-//        toolBar.sizeToFit()
-//
-//        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.plain, target: self, action: "donePicker")
-//        toolBar.setItems([doneButton], animated: false)
-//        toolBar.isUserInteractionEnabled = true
-//
-//        measurePicker.addSubview(toolBar)
-//        measurePicker.frame.size.height = 260.0
         measureTextField.inputView = measurePicker
 
         
@@ -71,56 +59,49 @@ class CartViewController: UIViewController {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
         tapGesture.cancelsTouchesInView = false
         tableView.addGestureRecognizer(tapGesture)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
     
     
-    @objc func keyboardWillAppear(notification: NSNotification){
-        tableView.allowsSelection = false
+    @objc func keyboardWillChangeFrame(notification: NSNotification) {
         guard let userInfo = notification.userInfo else { return }
         guard let keyboardSize = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
-        let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as! Double
-        let curve = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as! Int
-        
-        textFieldView.frame.origin.y = view.frame.height - keyboardSize.height - textFieldView.frame.height
-
-        let movementDuration: TimeInterval = duration
-        UIView.beginAnimations(nil, context: nil)
-        UIView.setAnimationBeginsFromCurrentState(true)
-        UIView.setAnimationDuration(duration)
-        let animationCurve = UIView.AnimationCurve.init(rawValue: curve)
-        UIView.setAnimationCurve(animationCurve!)
-        
-        isEdited = true
-
-        
-        
+        if keyboardSize.origin.y == 667.0 {
+            textFieldView.frame.origin.y = self.view.frame.height - textFieldView.frame.height
+            isEdited = false
+        }
+        else {
+            //Блок используется для того, чтобы убрать анимацию текстового поля при смене клавиатуры (чтобы текстовое поле не отрывалось от клавиатуры)
+            if isEdited == true {
+                UIView.setAnimationsEnabled(false)
+            }
+            
+            textFieldView.frame.origin.y = view.frame.height - keyboardSize.height - textFieldView.frame.height
+            isEdited = true
+        }
     }
-
-    @objc func keyboardWillDisappear(notification: NSNotification) {
-        textFieldView.frame.origin.y = self.view.frame.height - textFieldView.frame.height
-        isEdited = false
-    }
-
+    
     
     @objc func viewTapped() {
         if isEdited == false {
             tableView.allowsSelection = true
         }
+        UIView.setAnimationsEnabled(true)
         self.view.endEditing(true)
         isEdited = false
     }
+
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        UIView.setAnimationsEnabled(true)
         self.view.endEditing(true)
         return true
     }
     
+    
     @objc func longPressed(longPressRecognizer: UILongPressGestureRecognizer) {
         // find the IndexPath of the cell which was "longtouched"
-        let touchPoint = longPressRecognizer.location(in: self.view)
+        let touchPoint = longPressRecognizer.location(in: self.tableView)
         selectedIndexPath = tableView.indexPathForRow(at: touchPoint)
         if selectedIndexPath != nil {
             performSegue(withIdentifier: "popupEdit", sender: self)
@@ -129,14 +110,14 @@ class CartViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationVC = segue.destination as! PopupEditViewController
-        if let indexPath = selectedIndexPath, let product = products?[indexPath.row - 1] {
+        if let indexPath = selectedIndexPath, let product = products?[indexPath.row] {
             destinationVC.selectedProduct = product
             destinationVC.parentVC = self
         }
     }
     
     @IBAction func addButtonPressed(_ sender: UIButton) {
-        UIView.commitAnimations()
+        UIView.setAnimationsEnabled(true)
         if let nameText = productTextField?.text,
             let quantityText = quantityTextField?.text,
             let measureText = measureTextField.text {
@@ -157,16 +138,19 @@ class CartViewController: UIViewController {
         let newProduct = Product()
        
         let alert = UIAlertController(title: "title", message: "message", preferredStyle: .alert)
-        let dataIsCorrect = alert.checkData(productName: productName, productQuantity: productQuantity)
-        guard dataIsCorrect else {
-            present(alert, animated: true, completion: nil)
-            return
-        }
+        let action = UIAlertAction(title: "OK", style: .default) { (_) in return }
+        alert.addAction(action)
         
-        let measure = config.configMeasure(measure: productMeasure)
-        let (savedQuantity, savedMeasure) = config.configNumbers(quantity: productQuantity, measure: measure)
+        guard alert.check(data: productName, dataName: AlertMessage.name),
+            alert.check(data: productQuantity, dataName: AlertMessage.quantity)
+            else {
+                present(alert, animated: true, completion: nil)
+                return
+            }
         
-        print("saved - \(savedMeasure)")
+        let measure = Configuration.configMeasure(measure: productMeasure)
+        let (savedQuantity, savedMeasure) = Configuration.configNumbers(quantity: productQuantity, measure: measure)
+        
         if let currentCart = selectedCart {
             newProduct.name = productName
             newProduct.quantity = savedQuantity
@@ -176,10 +160,17 @@ class CartViewController: UIViewController {
         tableView.reloadData()
     }
     
+    override func deleteObject(at indexPath: IndexPath) {
+        if let product = products?[indexPath.row] {
+            dataManager.deleteFromRealm(object: product)
+            tableView.reloadData()
+        }
+    }
+    
 }
 
 //MARK: - Extension for TableView Methods
-extension CartViewController: UITableViewDelegate, UITableViewDataSource, SwipeTableViewCellDelegate, UITextFieldDelegate {
+extension CartViewController: UITableViewDelegate, UITableViewDataSource, /*SwipeTableViewCellDelegate,*/ UITextFieldDelegate {
     
     //MARK: - TableView DataSource Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -188,41 +179,14 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource, SwipeT
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ProductCell", for: indexPath) as! SwipeTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ProductCell", for: indexPath) as! ProductTableViewCell
             cell.delegate = self as SwipeTableViewCellDelegate
-            if let item = products?[indexPath.row] {
-                var measure = item.measure
+            if let item = products?[indexPath.row] {                
+                cell.product = item
+                cell.isChecked = item.checked
                 
-                let (presentedQuantity, presentedMeasure) = config.presentNumbers(quantity: item.quantity, measure: measure)
-                
-                if measure == "pcs"{
-                    if item.quantity == 1 {
-                        measure = "piece of"
-                    }
-                    else {
-                        measure = "pieces of"
-                    }
-                }
-                
-                cell.textLabel?.text = "\(presentedQuantity) \(presentedMeasure) \(item.name)"
-                cell.accessoryType = item.checked ? .checkmark : .none
             }
             return cell
-    }
-    
-    //MARK: - SwipeTableViewCellDelegate Method
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-        guard orientation == .right else { return nil }
-        
-        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
-            
-            if let product = self.products?[indexPath.row] {
-                self.dataManager.deleteFromRealm(object: product)
-                self.tableView.reloadData()
-            }
-            
-        }
-        return [deleteAction]
     }
     
     //MARK: - TableView Delegate Methods

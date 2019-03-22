@@ -12,4 +12,5 @@ import RealmSwift
 class RecipeStep: Object {
     
     @objc dynamic var name: String = ""
+    var parentCategory = LinkingObjects(fromType: Recipe.self, property: "recipeSteps")
 }
