@@ -9,7 +9,7 @@
 import UIKit
 
 
-class PopupEditViewController: UIViewController, UITextFieldDelegate {
+class PopupEditViewController: UIViewController, UITextFieldDelegate, MeasurePickerDelegate {
 
     private let dataManager = RealmDataManager()
     
@@ -22,6 +22,11 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var measureText: UITextField!
     @IBOutlet weak var quantityText: UITextField!
     
+    var pickedMeasure: String? {
+        didSet {
+            measureText.text = pickedMeasure
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,14 +34,19 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate {
         nameText.delegate = self
         quantityText.delegate = self
     
-        let measurePicker = UIPickerView()
-        measurePicker.delegate = self
+        let measurePicker = MeasurePicker()
+        measurePicker.mpDelegate = self
         measureText.inputView = measurePicker
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
         tapGesture.cancelsTouchesInView = false
         self.view.addGestureRecognizer(tapGesture)
         dataManager.loadFromRealm(vc: self, parentObject: selectedProduct)
+        
+        let size = CGSize(width: 30, height: 30)
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = UIBezierPath(roundedRect: editView.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: size).cgPath
+        editView.layer.mask = shapeLayer
     }
     
     
@@ -92,25 +102,5 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate {
             parentVC.fridgeTableView.reloadData()
         }
         self.dismiss(animated: true, completion: nil)
-    }
-}
-
-
-extension PopupEditViewController: UIPickerViewDataSource, UIPickerViewDelegate{
-    
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return measures.count
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return measures[row].rawValue
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        measureText.text = measures[row].rawValue
     }
 }

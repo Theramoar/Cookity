@@ -127,6 +127,15 @@ extension RecipeViewController: UITableViewDelegate, UITableViewDataSource{
         }
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 0 ,indexPath.row == productsForRecipe?.count {
+            return 60
+        }
+        else {
+            return 40
+        }
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if indexPath.section == 0 {
@@ -148,7 +157,7 @@ extension RecipeViewController: UITableViewDelegate, UITableViewDataSource{
                     }
                     cell.textLabel?.text = "\(product.name) - \(presentedQuantity) \(presentedMeasure) \(description)"
                 }
-                
+                cell.selectionStyle = .none
                 return cell
             }
             else {

@@ -29,29 +29,10 @@ class CartCollectionViewController: SwipeTableViewController {
     }
 
     //MARK: - Buttons and additional methods
-    @IBAction func addShoppingCart(_ sender: UIBarButtonItem) {
-        let alert = UIAlertController(title: "Title", message: "Message", preferredStyle: .alert)
-        var textField = UITextField()
-        
-        let action = UIAlertAction(title: "Add", style: .default) { (action) in
-            
-            guard textField.text!.isEmpty != true else { return }
-            let cart = ShoppingCart()
-            cart.name = textField.text!
-            self.dataManager.saveToRealm(parentObject: nil, object: cart)
-            self.tableView.reloadData()
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
-        
-        
-        alert.addTextField { (alertTextField) in
-            alertTextField.placeholder = "Add new Shopping Cart"
-            textField = alertTextField
-        }
-        alert.addAction(action)
-        alert.addAction(cancelAction)
-        present(alert, animated: true, completion: nil)
+    @IBAction func addCartPressed(_ sender: UIButton) {
+        performSegue(withIdentifier: "addShoppingCart", sender: self)
     }
+    
     
    
     //MARK: - Data Manipulation Methods
@@ -112,6 +93,8 @@ extension CartCollectionViewController: UITableViewDelegate, UITableViewDataSour
     
     //MARK: - TableView DataSource Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        tableView.rowHeight = 60
+        tableView.separatorInset = .init(top: 0, left: 30, bottom: 0, right: 30)
         return shoppingCarts?.count ?? 1
     }
     
@@ -132,10 +115,15 @@ extension CartCollectionViewController: UITableViewDelegate, UITableViewDataSour
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let destinationVC = segue.destination as! CartViewController
-        
-        if let indexPath = tableView.indexPathForSelectedRow{
-            destinationVC.selectedCart = shoppingCarts?[indexPath.row]
+        if segue.identifier == "goToCart" {
+            let destinationVC = segue.destination as! CartViewController
+            if let indexPath = tableView.indexPathForSelectedRow{
+                destinationVC.selectedCart = shoppingCarts?[indexPath.row]
+            }
+        }
+        else if segue.identifier == "addShoppingCart" {
+            let destinationVC = segue.destination as! AddCartViewController
+            destinationVC.parentVC = self
         }
     }
 }

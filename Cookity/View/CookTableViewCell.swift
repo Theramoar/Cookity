@@ -9,9 +9,7 @@
 import UIKit
 import SwipeCellKit
 
-class CookTableViewCell: SwipeTableViewCell {
-    
-    let measures = Measures.allCases
+class CookTableViewCell: SwipeTableViewCell, MeasurePickerDelegate {
     
     @IBOutlet weak var productName: UITextField!
     @IBOutlet weak var productMeasure: UITextField!
@@ -27,31 +25,17 @@ class CookTableViewCell: SwipeTableViewCell {
         }
     }
     
+    var pickedMeasure: String? {
+        didSet {
+            productMeasure.text = pickedMeasure
+        }
+    }
+    
     override func awakeFromNib() {
-        let measurePicker = UIPickerView()
-        measurePicker.delegate = self
+        let measurePicker = MeasurePicker()
+        measurePicker.mpDelegate = self
         productMeasure?.inputView = measurePicker
         
         self.selectionStyle = .none
-    }
-}
-
-
-extension CookTableViewCell: UIPickerViewDataSource, UIPickerViewDelegate{
-
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return measures.count
-    }
-
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return measures[row].rawValue
-    }
-
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        productMeasure.text = measures[row].rawValue
     }
 }

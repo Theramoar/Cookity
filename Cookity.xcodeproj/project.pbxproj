@@ -35,6 +35,8 @@
 		BB0F24DB223EC4F700A3D8EF /* CreateListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0F24DA223EC4F700A3D8EF /* CreateListCell.swift */; };
 		BB0F24DD2240313E00A3D8EF /* RecipeStepCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0F24DC2240313E00A3D8EF /* RecipeStepCell.swift */; };
 		BB0F24DF2242D04800A3D8EF /* MeasurePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0F24DE2242D04800A3D8EF /* MeasurePicker.swift */; };
+		BB0F24E12246F27800A3D8EF /* AddCartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0F24E02246F27800A3D8EF /* AddCartViewController.swift */; };
+		BB0F24E52247872D00A3D8EF /* TextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0F24E42247872D00A3D8EF /* TextFieldView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +70,8 @@
 		BB0F24DA223EC4F700A3D8EF /* CreateListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateListCell.swift; sourceTree = "<group>"; };
 		BB0F24DC2240313E00A3D8EF /* RecipeStepCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeStepCell.swift; sourceTree = "<group>"; };
 		BB0F24DE2242D04800A3D8EF /* MeasurePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurePicker.swift; sourceTree = "<group>"; };
+		BB0F24E02246F27800A3D8EF /* AddCartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCartViewController.swift; sourceTree = "<group>"; };
+		BB0F24E42247872D00A3D8EF /* TextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldView.swift; sourceTree = "<group>"; };
 		BE061007BD97220A92EF05D9 /* Pods-Cookity.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cookity.release.xcconfig"; path = "Pods/Target Support Files/Pods-Cookity/Pods-Cookity.release.xcconfig"; sourceTree = "<group>"; };
 		DEDE6A691C1DBBA1F1CA80EC /* Pods-Cookity.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cookity.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Cookity/Pods-Cookity.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -145,7 +149,9 @@
 				1CAC8310217C70FA0081F24E /* CartCollectionViewController.swift */,
 				1CA007DB216559360072A908 /* CartViewController.swift */,
 				1C4B1A012180EC32007CB9FD /* FridgeViewController.swift */,
+				BB0F24E42247872D00A3D8EF /* TextFieldView.swift */,
 				1CBEB20921AAC9300036E996 /* RecipeCollectionViewController.swift */,
+				BB0F24E02246F27800A3D8EF /* AddCartViewController.swift */,
 				1CBEB20D21AAE97B0036E996 /* RecipeViewController.swift */,
 				1C4B1A0321884EA9007CB9FD /* CookViewController.swift */,
 				1CCC6375219383B40066919E /* PopupEditViewController.swift */,
@@ -311,12 +317,14 @@
 				BB0F24DF2242D04800A3D8EF /* MeasurePicker.swift in Sources */,
 				1C3D635A22354CAE00FC4485 /* AlertExtension.swift in Sources */,
 				1C3D635D2235851E00FC4485 /* ProductTableViewCell.swift in Sources */,
+				BB0F24E12246F27800A3D8EF /* AddCartViewController.swift in Sources */,
 				1CA007DE216562000072A908 /* Product.swift in Sources */,
 				1CBEB21021B70CD00036E996 /* Configuration.swift in Sources */,
 				1C3D63582231A66800FC4485 /* RecipeStep.swift in Sources */,
 				1C3D635F2238339800FC4485 /* SwipeTableViewController.swift in Sources */,
 				1CCC6376219383B40066919E /* PopupEditViewController.swift in Sources */,
 				1CBEB20C21AAD6C30036E996 /* RecipeCollectionViewCell.swift in Sources */,
+				BB0F24E52247872D00A3D8EF /* TextFieldView.swift in Sources */,
 				1C72FBAD222D29A100735546 /* RealmDataManager.swift in Sources */,
 				1CA007DC216559360072A908 /* CartViewController.swift in Sources */,
 				1C4B1A0821887081007CB9FD /* Recipe.swift in Sources */,

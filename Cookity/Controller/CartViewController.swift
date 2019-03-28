@@ -10,26 +10,44 @@ import UIKit
 import RealmSwift
 import SwipeCellKit
 
-class CartViewController: SwipeTableViewController {
+class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEditedDelegate {
     
-//    let dataManager = RealmDataManager()
+    
     var productsInFridge: Results<Product>?
     var products: Results<Product>?
-    let measures = Measures.allCases
     
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var textFieldView: UIView!
-    @IBOutlet weak var heightConstraint: NSLayoutConstraint!
     @IBOutlet weak var productTextField: UITextField!
     @IBOutlet weak var quantityTextField: UITextField!
     @IBOutlet weak var measureTextField: UITextField!
+    @IBOutlet weak var tfView: TextFieldView!
+    @IBOutlet weak var addButton: UIButton!
     
+    // не надо
+    var measurePicker: MeasurePicker!
     var selectedIndexPath: IndexPath? //variable is used to store the IndexPath selected by LongTap Gesture
-    var isEdited: Bool = false // used for to disable touches while textfield are edited.
+    
+    // used for to disable touches while textfield are edited.
+    var isEdited: Bool = false {
+        didSet {
+            if isEdited == true {
+                tableView.allowsSelection = false
+            }
+            else {
+                tableView.allowsSelection = true
+            }
+        }
+    }
+
     var selectedCart: ShoppingCart?{
-        // didSet wil trigger once the selectedCart get set with a value
         didSet{
             dataManager.loadFromRealm(vc: self, parentObject: selectedCart)
+        }
+    }
+    
+    var pickedMeasure: String? {
+        didSet {
+            measureTextField.text = pickedMeasure
         }
     }
    
@@ -40,57 +58,27 @@ class CartViewController: SwipeTableViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none
+        tableView.keyboardDismissMode = .onDrag
+        
+        tfView.delegate = self
+//        self.view.addSubview(tfView)
         
         productTextField.delegate = self
         quantityTextField.delegate = self
         measureTextField.delegate = self
 
-        let measurePicker = UIPickerView()
-        measurePicker.delegate = self
-        measurePicker.dataSource = self
+        measurePicker = MeasurePicker()
+        measurePicker.mpDelegate = self
         measureTextField.inputView = measurePicker
-
-        
-        
-        //add long gesture recognizer
-        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.longPressed))
-        self.view.addGestureRecognizer(longPressRecognizer)
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
         tapGesture.cancelsTouchesInView = false
-        tableView.addGestureRecognizer(tapGesture)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
-    }
-    
-    
-    @objc func keyboardWillChangeFrame(notification: NSNotification) {
-        guard let userInfo = notification.userInfo else { return }
-        guard let keyboardSize = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
-        if keyboardSize.origin.y == 667.0 {
-            textFieldView.frame.origin.y = self.view.frame.height - textFieldView.frame.height
-            isEdited = false
-        }
-        else {
-            //Блок используется для того, чтобы убрать анимацию текстового поля при смене клавиатуры (чтобы текстовое поле не отрывалось от клавиатуры)
-            if isEdited == true {
-                UIView.setAnimationsEnabled(false)
-            }
-            
-            textFieldView.frame.origin.y = view.frame.height - keyboardSize.height - textFieldView.frame.height
-            isEdited = true
-        }
-    }
-    
-    
-    @objc func viewTapped() {
-        if isEdited == false {
-            tableView.allowsSelection = true
-        }
-        UIView.setAnimationsEnabled(true)
-        self.view.endEditing(true)
-        isEdited = false
-    }
+        self.view.addGestureRecognizer(tapGesture)
 
+        //add long gesture recognizer
+        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.longPressed))
+        self.view.addGestureRecognizer(longPressRecognizer)
+    }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         UIView.setAnimationsEnabled(true)
@@ -98,6 +86,18 @@ class CartViewController: SwipeTableViewController {
         return true
     }
     
+    
+    @objc func viewTapped(sender: UITapGestureRecognizer) {
+        //wait for isEdited to change its value
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+            if self.isEdited == false {
+                self.tableView.allowsSelection = true
+            }
+            UIView.setAnimationsEnabled(true)
+            self.view.endEditing(true)
+            self.isEdited = false
+        }
+    }
     
     @objc func longPressed(longPressRecognizer: UILongPressGestureRecognizer) {
         // find the IndexPath of the cell which was "longtouched"
@@ -118,22 +118,26 @@ class CartViewController: SwipeTableViewController {
     
     @IBAction func addButtonPressed(_ sender: UIButton) {
         UIView.setAnimationsEnabled(true)
-        if let nameText = productTextField?.text,
-            let quantityText = quantityTextField?.text,
-            let measureText = measureTextField.text {
-            saveProduct(productName: nameText, productQuantity: quantityText, productMeasure: measureText)
-        } else {
-            fatalError("Fatal Error in the text fields")
-        }
+        guard addProduct() else { return }
         productTextField.text = ""
         quantityTextField.text = ""
         measureTextField.text = ""
-        self.view.endEditing(true)
-        isEdited = false
+    }
+    
+    func addProduct() -> Bool {
+        guard let nameText = productTextField?.text,
+            let quantityText = quantityTextField?.text,
+            let measureText = measureTextField.text
+        else { return false }
+        
+        if saveProduct(productName: nameText, productQuantity: quantityText, productMeasure: measureText) {
+            return true
+        }
+        return false
     }
     
     
-    func saveProduct(productName: String, productQuantity: String, productMeasure: String)
+    func saveProduct(productName: String, productQuantity: String, productMeasure: String) -> Bool
     {
         let newProduct = Product()
        
@@ -145,7 +149,7 @@ class CartViewController: SwipeTableViewController {
             alert.check(data: productQuantity, dataName: AlertMessage.quantity)
             else {
                 present(alert, animated: true, completion: nil)
-                return
+                return false
             }
         
         let measure = Configuration.configMeasure(measure: productMeasure)
@@ -158,6 +162,7 @@ class CartViewController: SwipeTableViewController {
             dataManager.saveToRealm(parentObject: currentCart, object: newProduct)
         }
         tableView.reloadData()
+        return true
     }
     
     override func deleteObject(at indexPath: IndexPath) {
@@ -170,7 +175,7 @@ class CartViewController: SwipeTableViewController {
 }
 
 //MARK: - Extension for TableView Methods
-extension CartViewController: UITableViewDelegate, UITableViewDataSource, /*SwipeTableViewCellDelegate,*/ UITextFieldDelegate {
+extension CartViewController: UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
     //MARK: - TableView DataSource Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -239,29 +244,3 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource, /*Swip
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
-
-
-
-
-
-//MARK:- UIPickerViewDataSource UIPickerViewDelegate Methods
-extension CartViewController: UIPickerViewDataSource, UIPickerViewDelegate{
-    
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return measures.count
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return measures[row].rawValue
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        measureTextField.text = measures[row].rawValue
-    }
-}
-
-

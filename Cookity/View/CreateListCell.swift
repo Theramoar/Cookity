@@ -8,6 +8,14 @@
 
 import UIKit
 
-class CreateListCell: UITableViewCell {
+
+ class CreateListCell: UITableViewCell {
     
+    @IBOutlet weak var createListButton: UIButton! {
+        didSet {
+            createListButton.layer.cornerRadius = createListButton.frame.size.height / 2.5
+            createListButton.layer.borderColor = green.cgColor
+            createListButton.layer.borderWidth = 2
+        }
+    }
 }

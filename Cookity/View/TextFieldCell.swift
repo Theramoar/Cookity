@@ -13,27 +13,23 @@ protocol TextFieldDelegate {
     func saveProduct (productName: String, productQuantity: String, productMeasure: String)
 }
 
-enum Measures: String, CaseIterable {
-    case pieces = "Pieces"
-    case litres = "Litres"
-    case mililitres = "Mililiters"
-    case grams = "Grams"
-    case kilograms = "Kilograms"
-}
-
-class TextFieldCell: UITableViewCell{
+class TextFieldCell: UITableViewCell, MeasurePickerDelegate{
     
     @IBOutlet weak var insertProduct: UITextField!
     @IBOutlet weak var insertQuantity: UITextField!
     @IBOutlet weak var insertMeasure: UITextField!
-    let measures = Measures.allCases
     var delegate: TextFieldDelegate?
     
+    var pickedMeasure: String? {
+        didSet {
+            insertMeasure.text = pickedMeasure
+        }
+    }
     
     override func awakeFromNib() {
 
-        let measurePicker = UIPickerView()
-        measurePicker.delegate = self
+        let measurePicker = MeasurePicker()
+        measurePicker.mpDelegate = self
         insertMeasure.inputView = measurePicker
     }
     
@@ -46,28 +42,5 @@ class TextFieldCell: UITableViewCell{
         }
         insertProduct.text = ""
         insertQuantity.text = ""
-    }
-}
-
-
-
-
-//MARK: - Extension for measure TextField UIPickerView
-extension TextFieldCell: UIPickerViewDataSource, UIPickerViewDelegate{
-
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return measures.count
-    }
-
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return measures[row].rawValue
-    }
-
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        insertMeasure.text = measures[row].rawValue
     }
 }
