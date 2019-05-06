@@ -17,9 +17,11 @@ class SwipeTableViewController: UIViewController, SwipeTableViewCellDelegate {
         
         guard orientation == .right else { return nil }
         
-        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
+        let deleteAction = SwipeAction(style: .destructive, title: nil) { action, indexPath in
             self.deleteObject(at: indexPath)
         }
+        deleteAction.backgroundColor = UIColor(red: 211/255, green: 68/255, blue: 53/255, alpha: 1)
+        deleteAction.image = UIImage(named: "delete")
         
         return [deleteAction]
     }

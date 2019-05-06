@@ -26,7 +26,8 @@ extension UIAlertController {
             return false
         }
         if dataName == .quantity {
-            guard Float(data) != nil else {
+            let quantity = data.replacingOccurrences(of: ",", with: ".")
+            guard Float(quantity) != nil else {
                 self.title = "Incorrect \(dataName.rawValue)"
                 self.message = "Please enter the \(dataName.rawValue) in numbers"
                 return false

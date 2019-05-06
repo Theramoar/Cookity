@@ -31,22 +31,28 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate, MeasurePic
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if let parentVC = parentVC {
+            DecorationHandler.putShadowOnView(vc: parentVC)
+        }
+        
         nameText.delegate = self
         quantityText.delegate = self
+        nameText.autocapitalizationType = .sentences
+        measureText.autocapitalizationType = .sentences
     
         let measurePicker = MeasurePicker()
         measurePicker.mpDelegate = self
         measureText.inputView = measurePicker
+        
+        quantityText.keyboardType = .decimalPad
+        quantityText.autocapitalizationType = .sentences
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
         tapGesture.cancelsTouchesInView = false
         self.view.addGestureRecognizer(tapGesture)
         dataManager.loadFromRealm(vc: self, parentObject: selectedProduct)
         
-        let size = CGSize(width: 30, height: 30)
-        let shapeLayer = CAShapeLayer()
-        shapeLayer.path = UIBezierPath(roundedRect: editView.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: size).cgPath
-        editView.layer.mask = shapeLayer
+        editView.layer.cornerRadius = editView.frame.size.height / 8
     }
     
     
@@ -101,6 +107,7 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate, MeasurePic
         else if let parentVC = parentVC as? FridgeViewController {
             parentVC.fridgeTableView.reloadData()
         }
+        shadow.removeFromSuperview()
         self.dismiss(animated: true, completion: nil)
     }
 }

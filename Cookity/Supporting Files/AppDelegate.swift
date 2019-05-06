@@ -30,5 +30,48 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        
+        guard url.pathExtension == "btkr" else { return false }
+        
+        guard let object = ShareDataManager.importData(from: url) else { return false }
+        
+        
+        if let cart = object as? ShoppingCart {
+            guard
+                let tabBarViewController = window?.rootViewController as? UITabBarController,
+                let navigationController  = tabBarViewController.viewControllers?.first as? UINavigationController,
+                let vc1 = navigationController.viewControllers.first as? CartCollectionViewController
+                else { return true }
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: String(describing: CartViewController.self))
+            guard let vc2 = vc as? CartViewController else { return true }
+            vc2.selectedCart = cart
+            navigationController.viewControllers = [vc1,vc2]
+            return true
+        }
+        else if let recipe = object as? Recipe {
+            guard
+                let tabBarViewController = window?.rootViewController as? UITabBarController
+                else { return true }
+            tabBarViewController.selectedIndex = 1
+            
+            guard
+                let navigationController = tabBarViewController.selectedViewController as? UINavigationController,
+                let vc1 = navigationController.viewControllers.first as? RecipeCollectionViewController
+            else { return true }
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: String(describing: RecipeViewController.self))
+            guard let vc2 = vc as? RecipeViewController else { return true }
+            vc2.selectedRecipe = recipe
+                
+            navigationController.viewControllers = [vc1,vc2]
+            return true
+        }
+        return true
+    }
 }
 

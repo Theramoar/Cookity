@@ -10,9 +10,51 @@ import Foundation
 import RealmSwift
 
 
-class Recipe: Object {
+enum CodingKeys: String, CodingKey {
+    case name
+    case products
+    case recipeSteps
+    case recipeImageData
+}
+
+class Recipe: Object, Codable {
     
     @objc dynamic var name: String = ""
     let products = List<Product>()
     var recipeSteps = List<RecipeStep>()
+    @objc dynamic var imagePath: String?
+
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(name, forKey: .name)
+        let productArray = Array(products)
+        let recipeStepsArray = Array(recipeSteps)
+        try container.encode(productArray, forKey: .products)
+        try container.encode(recipeStepsArray, forKey: .recipeSteps)
+        
+        if let imagePath = self.imagePath {
+            let imageUrl: URL = URL(fileURLWithPath: imagePath)
+            guard FileManager.default.fileExists(atPath: imagePath),
+                let imageData: Data = try? Data(contentsOf: imageUrl) else { return }
+            try container.encode(imageData, forKey: .recipeImageData)
+        }
+    }
+    
+    required convenience init(from decoder: Decoder) throws {
+        self.init()
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        name = try container.decode(String.self, forKey: .name)
+        let productArray = try container.decode([Product].self, forKey: .products)
+        let recipeStepsArray = try container.decode([RecipeStep].self, forKey: .recipeSteps)
+        products.append(objectsIn: productArray)
+        recipeSteps.append(objectsIn: recipeStepsArray)
+        
+        let imageData = try container.decode(Data.self, forKey: .recipeImageData)
+        let imagePath: String = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/\(name).png"
+        let imageUrl: URL = URL(fileURLWithPath: imagePath)
+        try? imageData.write(to: imageUrl)
+        self.imagePath = imagePath
+        
+    }
 }

@@ -10,7 +10,7 @@ import Foundation
 import RealmSwift
 
 
-class Product: Object {
+class Product: Object, Codable {
     @objc dynamic var name: String = ""
     @objc dynamic var quantity: Int = 0
     @objc dynamic var checked: Bool = false

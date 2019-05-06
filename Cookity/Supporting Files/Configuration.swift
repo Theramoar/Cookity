@@ -7,13 +7,14 @@
 //
 
 import UIKit
-
+import RealmSwift
 
 class Configuration {
     
     
     static func configNumbers(quantity: String, measure: String) -> (Int, String) {
         
+        let quantity = quantity.replacingOccurrences(of: ",", with: ".")
         var newQuantity: Int = 0
         var newMeasure = measure
         
@@ -89,5 +90,15 @@ class Configuration {
             savedMeasure = "pcs"
     }
         return savedMeasure
+    }
+    
+    
+    static func compareFridgeToRecipe(selectedProduct: Product, compareTo productList: [Product]) -> (Bool, Product?) {
+            for product in productList{
+                if selectedProduct.name.lowercased() == product.name.lowercased(){
+                    return (true, product)
+                }
+            }
+        return (false, nil)
     }
 }

@@ -9,8 +9,7 @@
 import Foundation
 import RealmSwift
 
-class RecipeStep: Object {
+class RecipeStep: Object, Codable {
     
     @objc dynamic var name: String = ""
-    var parentCategory = LinkingObjects(fromType: Recipe.self, property: "recipeSteps")
 }

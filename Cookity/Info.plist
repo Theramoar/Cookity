@@ -2,8 +2,59 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Let us to use your camera</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Let us to use your photo library</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string></string>
+			</array>
+			<key>CFBundleTypeIconFiles</key>
+			<array>
+				<string></string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>Cookity Document</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.michaelk.Cookity.btkr</string>
+			</array>
+		</dict>
+	</array>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Cookity Document</string>
+			<key>UTTypeIconFiles</key>
+			<array>
+				<string></string>
+			</array>
+			<key>UTTypeIdentifier</key>
+			<string>com.michaelk.Cookity.btkr</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<string>btkr</string>
+				<key>public.mime-type</key>
+				<string>application/cookity</string>
+			</dict>
+		</dict>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
