@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSCameraUsageDescription</key>
-	<string>Let us to use your camera</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Let us to use your photo library</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDocumentTypes</key>
@@ -17,7 +13,10 @@
 			</array>
 			<key>CFBundleTypeIconFiles</key>
 			<array>
-				<string></string>
+				<string>icon_22.png</string>
+				<string>icon_44.png</string>
+				<string>icon_64.png</string>
+				<string>icon_320.png</string>
 			</array>
 			<key>CFBundleTypeName</key>
 			<string>Cookity Document</string>
@@ -27,32 +26,8 @@
 			<string>Owner</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>com.michaelk.Cookity.btkr</string>
+				<string>com.michaelk.Cookity.ckty</string>
 			</array>
-		</dict>
-	</array>
-	<key>UTExportedTypeDeclarations</key>
-	<array>
-		<dict>
-			<key>UTTypeConformsTo</key>
-			<array>
-				<string>public.data</string>
-			</array>
-			<key>UTTypeDescription</key>
-			<string>Cookity Document</string>
-			<key>UTTypeIconFiles</key>
-			<array>
-				<string></string>
-			</array>
-			<key>UTTypeIdentifier</key>
-			<string>com.michaelk.Cookity.btkr</string>
-			<key>UTTypeTagSpecification</key>
-			<dict>
-				<key>public.filename-extension</key>
-				<string>btkr</string>
-				<key>public.mime-type</key>
-				<string>application/cookity</string>
-			</dict>
 		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
@@ -66,11 +41,17 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.02</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Let us to use your camera</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Let us to use your photo library</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -89,6 +70,33 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Cookity Document</string>
+			<key>UTTypeIconFiles</key>
+			<array>
+				<string>icon_22.png</string>
+				<string>icon_44.png</string>
+				<string>icon_64.png</string>
+				<string>icon_320.png</string>
+			</array>
+			<key>UTTypeIdentifier</key>
+			<string>com.michaelk.Cookity.ckty</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<string>ckty</string>
+				<key>public.mime-type</key>
+				<string>application/cookity</string>
+			</dict>
+		</dict>
 	</array>
 </dict>
 </plist>

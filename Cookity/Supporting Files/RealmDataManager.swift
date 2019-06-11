@@ -37,8 +37,8 @@ class RealmDataManager {
             vc.recipeList = realm.objects(Recipe.self)
         }
         else if let vc = vc as? RecipeViewController, let selectedRecipe = parentObject as? Recipe {
-            vc.productsForRecipe = selectedRecipe.products.sorted(byKeyPath: "name")
-            vc.recipeSteps = selectedRecipe.recipeSteps.sorted(byKeyPath: "name")
+            vc.productsForRecipe = selectedRecipe.products
+            vc.recipeSteps = selectedRecipe.recipeSteps
             vc.productsInFridge = realm.objects(Product.self).filter("inFridge == YES")
         }
         else if let vc = vc as? CookViewController, let recipe = parentObject as? Recipe {
@@ -71,18 +71,6 @@ class RealmDataManager {
             vc.measureText.text = presentedMeasure
         }
     }
-    //Попробовать данную функцию для загрузки данных
-//    func load<T>(data: DataLoaded) -> Results<T> {
-//
-//        switch data {
-//        case .Fridge:
-//            let objects = realm.objects(Product.self).filter("inFridge == YES")
-//            return objects as! Results<T>
-//        case .Recipes:
-//            let objects = realm.objects(Recipe.self)
-//            return objects as! Results<T>
-//        }
-//    }
     
     func deleteFromRealm(object: Object){
         do{
@@ -135,6 +123,9 @@ class RealmDataManager {
                     }
                     else if type(of: object) == Recipe.self {
                         realm.add(object as! Recipe)
+                    }
+                    else if type(of: object) == Product.self {
+                        realm.add(object as! Product)
                     }
                 }
             }catch{

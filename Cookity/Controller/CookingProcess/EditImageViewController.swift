@@ -14,6 +14,12 @@ class EditImageViewController: UIViewController {
     
     @IBOutlet weak var editedImageView: UIImageView!
     @IBOutlet weak var editedView: UIView!
+    var heightConstraintInitialValure: CGFloat!
+    
+    
+    @IBOutlet weak var viewForLayers: UIView!
+    @IBOutlet weak var heightConstraint: NSLayoutConstraint!
+    
     
     @IBOutlet weak var importImage: UIButton!
     @IBOutlet weak var deleteImage: UIButton!
@@ -23,62 +29,65 @@ class EditImageViewController: UIViewController {
     var editedImage: UIImage?
     var parentVC: CookViewController?
     
+    
+    
     override func viewDidLoad() {
+        heightConstraintInitialValure = heightConstraint.constant
         super.viewDidLoad()
+        if editedImage == nil {
+            shrinkView()
+        }
+    }
+    
+    override func viewDidLayoutSubviews() {
         if let image = editedImage {
             editedImageView.image = image
-        }
-        else {
-            shrinkView()
         }
         setCornerRadius()
     }
     
+    
+    
     func expandView() {
+        setCornerRadius()
         editedImageView.isHidden = false
-        editedView.frame.size.height += editedImageView.frame.size.height
-        editedView.frame.origin.y -= editedImageView.frame.size.height
-        importImage.frame.origin.y += editedImageView.frame.size.height
-        deleteImage.frame.origin.y += editedImageView.frame.size.height
-        doneButton.frame.origin.y += editedImageView.frame.size.height
-        cancelButton.frame.origin.y += editedImageView.frame.size.height
+        self.heightConstraint.constant = heightConstraintInitialValure
+        
         importImage.setTitle("Change Image", for: .normal)
         deleteImage.isHidden = false
         deleteImage.isEnabled = true
-        setCornerRadius()
     }
     
     func shrinkView() {
         
-        setCornerRadius()
+        heightConstraint.constant -= editedImageView.frame.size.height
+        
+        self.importImage.setTitle("Add Image", for: .normal)
+        self.deleteImage.isHidden = true
+        self.deleteImage.isEnabled = false
+        self.editedImageView.isHidden = true
+        
         UIView.animate(withDuration: 0.4) {
-            self.editedImageView.isHidden = true
-            self.editedView.frame.size.height -= self.editedImageView.frame.size.height
-            self.editedView.frame.origin.y += self.editedImageView.frame.size.height
-            self.importImage.frame.origin.y -= self.editedImageView.frame.size.height
-            self.deleteImage.frame.origin.y -= self.editedImageView.frame.size.height
-            self.doneButton.frame.origin.y -= self.editedImageView.frame.size.height
-            self.cancelButton.frame.origin.y -= self.editedImageView.frame.size.height
+            self.view.layoutIfNeeded()
         }
-        importImage.setTitle("Add Image", for: .normal)
-        deleteImage.isHidden = true
-        deleteImage.isEnabled = false
     }
+    
     
     func setCornerRadius() {
         let size = CGSize(width: 20, height: 20)
-        
+
         let shapeLayer = CAShapeLayer()
-        shapeLayer.path = UIBezierPath(roundedRect: editedView.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: size).cgPath
         
+        shapeLayer.path = UIBezierPath(roundedRect: editedView.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: size).cgPath
         let imageShapeLayer = CAShapeLayer()
         imageShapeLayer.path = UIBezierPath(roundedRect: editedImageView.bounds, byRoundingCorners: [.topLeft, .topRight, .bottomLeft, .bottomRight], cornerRadii: size).cgPath
+
+        self.editedView.layer.addSublayer(shapeLayer)
+        self.viewForLayers.layer.mask = shapeLayer
+        self.editedImageView.layer.mask = imageShapeLayer
         
-        UIView.animate(withDuration: 0.4) {
-            self.editedView.layer.mask = shapeLayer
-            self.editedImageView.layer.mask = imageShapeLayer
-        }
     }
+    
     
     
     @IBAction func deleteButtonPressed(_ sender: UIButton) {

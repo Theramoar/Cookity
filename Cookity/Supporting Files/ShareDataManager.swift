@@ -45,13 +45,12 @@ class ShareDataManager {
             for: .documentDirectory,
             in: .userDomainMask
             ).first
-        
         if let cart = object as? ShoppingCart {
-            guard let path = documents?.appendingPathComponent("/\(cart.name).btkr") else { return nil }
+            guard let path = documents?.appendingPathComponent("/\(cart.name).ckty") else { return nil }
             return encodeObject(object: cart, path: path)
         }
         else if let recipe = object as? Recipe {
-            guard let path = documents?.appendingPathComponent("/\(recipe.name).btkr") else { return nil }
+            guard let path = documents?.appendingPathComponent("/\(recipe.name).ckty") else { return nil }
             return encodeObject(object: recipe, path: path)
         }
         else {

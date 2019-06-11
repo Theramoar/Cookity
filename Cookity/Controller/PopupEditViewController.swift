@@ -17,10 +17,13 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate, MeasurePic
     var parentVC: UIViewController?
     let measures = Measures.allCases
     
-    @IBOutlet weak var editView: UIView!
+    
+    @IBOutlet weak var editView: EditTextView!
     @IBOutlet weak var nameText: UITextField!
     @IBOutlet weak var measureText: UITextField!
     @IBOutlet weak var quantityText: UITextField!
+    
+    @IBOutlet weak var editViewHeight: NSLayoutConstraint!
     
     var pickedMeasure: String? {
         didSet {
@@ -30,15 +33,14 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate, MeasurePic
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        if let parentVC = parentVC {
-            DecorationHandler.putShadowOnView(vc: parentVC)
-        }
-        
+ 
         nameText.delegate = self
         quantityText.delegate = self
         nameText.autocapitalizationType = .sentences
         measureText.autocapitalizationType = .sentences
+        
+        editView.heightConstraint = editViewHeight
+        editView.initialHeight = editViewHeight.constant
     
         let measurePicker = MeasurePicker()
         measurePicker.mpDelegate = self
@@ -52,8 +54,23 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate, MeasurePic
         self.view.addGestureRecognizer(tapGesture)
         dataManager.loadFromRealm(vc: self, parentObject: selectedProduct)
         
-        editView.layer.cornerRadius = editView.frame.size.height / 8
+        
     }
+    
+    override func viewDidLayoutSubviews() {
+        let size = CGSize(width: 20, height: 20)
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = UIBezierPath(roundedRect: editView.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: size).cgPath
+        editView.layer.mask = shapeLayer
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if let parentVC = parentVC {
+            DecorationHandler.putShadowOnView(vc: parentVC)
+        }
+    }
+    
+    
     
     
     @objc func viewTapped() {

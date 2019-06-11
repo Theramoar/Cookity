@@ -28,6 +28,10 @@ class FridgeViewController: SwipeTableViewController {
         fridgeTableView.separatorStyle = .none
         fridgeTableView.rowHeight = 45
         
+        addButton.layer.shadowOffset = CGSize(width: 0, height: 3.0)
+        addButton.layer.shadowOpacity = 0.7
+        addButton.layer.shadowRadius = 5.0
+        
         dataManager.loadFromRealm(vc: self, parentObject: nil)
         
         //add long gesture recognizer
@@ -67,6 +71,7 @@ class FridgeViewController: SwipeTableViewController {
             if let indexPath = selectedIndexPath, let product = products?[indexPath.row] {
                 destinationVC.selectedProduct = product
                 destinationVC.parentVC = self
+//                destinationVC.definesPresentationContext = true
             }
         }
         else if segue.identifier == "goToCookingAreaFromFridge" {

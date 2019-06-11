@@ -28,15 +28,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         // Realm Data manipulation Ends
         
+        let firstLaunch = FirstLaunch()
+        
+        if firstLaunch.isFirstLaunch {
+            firstLaunch.createTutorial()
+        }
+        
         return true
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         
-        guard url.pathExtension == "btkr" else { return false }
+        guard url.pathExtension == "ckty" else { return false }
         
         guard let object = ShareDataManager.importData(from: url) else { return false }
-        
         
         if let cart = object as? ShoppingCart {
             guard

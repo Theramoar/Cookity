@@ -28,17 +28,18 @@ class RecipeProductCell: UITableViewCell {
     var product: Product! {
         didSet {
             let (quantity, measure) = Configuration.presentNumbers(quantity: product.quantity, measure: product.measure)
-            
             if let productsInFridge = productsInFridge {
                 let (productsMatch, productInFridge) = Configuration.compareFridgeToRecipe(selectedProduct: product, compareTo: productsInFridge)
                 if productsMatch, let productInFridge = productInFridge {
                     let (fridgeQuantity, fridgeMeasure) = Configuration.presentNumbers(quantity: productInFridge.quantity, measure: productInFridge.measure)
                     fridgeDetails = "(You have \(fridgeQuantity) \(fridgeMeasure))"
+                    fridgeDetailsLabel.isHidden = false
                 }
                 else {
-                    fridgeDetails = "(You don't have any)"
+                    fridgeDetailsLabel.isHidden = true
                 }
             }
+            
             productName.text = product.name
             detailsLabel.text = "\(quantity) \(measure)"
             fridgeDetailsLabel.text = fridgeDetails

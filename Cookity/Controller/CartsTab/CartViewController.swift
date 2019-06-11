@@ -23,6 +23,7 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
     @IBOutlet var measureTextField: UITextField!
     @IBOutlet var tfView: TextFieldView!
     @IBOutlet var addButton: UIButton!
+    @IBOutlet weak var tfHeightConstraint: NSLayoutConstraint!
     
     // не надо
     var measurePicker: MeasurePicker!
@@ -59,10 +60,12 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none
-        tableView.keyboardDismissMode = .onDrag
+//        tableView.keyboardDismissMode = .onDrag
         tableView.rowHeight = 45
         
         tfView.delegate = self
+        tfView.heightConstraint = tfHeightConstraint
+        tfView.initialHeight = tfHeightConstraint.constant
         
         productTextField.delegate = self
         quantityTextField.delegate = self
@@ -129,7 +132,7 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
             else { return }
         
         let activity = UIActivityViewController(
-            activityItems: ["Check out this recipe! I like using Cookity.", url],
+            activityItems: ["I prepared the Shopping List for you! You can read it using Cookity app.", url],
             applicationActivities: nil
         )
         activity.popoverPresentationController?.barButtonItem = sender
@@ -249,10 +252,11 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource, UIText
                     }
                 }
                 if product.isInvalidated == false{
-                    self.dataManager.changeElementIn(object: product,
-                                                     keyValue: "inFridge",
-                                                     objectParameter: product.inFridge,
-                                                     newParameter: true)
+                    let coppiedProduct = Product(value: product)
+                    coppiedProduct.inFridge = true
+                    coppiedProduct.checked = false
+                    self.dataManager.saveToRealm(parentObject: nil, object: coppiedProduct)
+                    self.dataManager.deleteFromRealm(object: product)
                 }
                 self.tableView.reloadData()
             }

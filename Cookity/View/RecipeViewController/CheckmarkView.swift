@@ -10,11 +10,11 @@ import UIKit
 
 class CheckmarkView: UIView {
     
-    override init(frame: CGRect) {
+    init(frame: CGRect, message: String) {
         super.init(frame: frame)
         
         let frame = UIScreen.main.bounds
-        let side = frame.width / 3
+        let side = frame.width / 2
         let xPosition = (frame.width / 2) - (side / 2)
         let yPosition = (frame.height / 2) - (side / 2)
 
@@ -26,16 +26,17 @@ class CheckmarkView: UIView {
         
         let image = UIImageView()
         image.image = UIImage(named: "whiteTick.png")
-        image.frame.size = CGSize(width: 50, height: 50)
+        image.frame.size = CGSize(width: 80, height: 80)
         image.frame.origin = CGPoint(x: (side / 2) - (image.frame.size.width / 2), y: (side / 2) - (image.frame.size.height / 2))
         self.addSubview(image)
 
         let label = UILabel()
-        label.frame.size = CGSize(width: 50, height: 30)
+        label.frame.size = CGSize(width: side - 10, height: 30)
         label.frame.origin = CGPoint(x: (side / 2) - (label.frame.size.width / 2), y: side - (side / 4))
+        label.adjustsFontSizeToFitWidth = true
         label.textColor = .white
         label.alpha = 1
-        label.text = "Done!"
+        label.text = message
         label.textAlignment = .center
         self.addSubview(label)
     }
@@ -49,6 +50,9 @@ class CheckmarkView: UIView {
             UIView.animate(withDuration: 0.2) {
                 self.alpha = 0.0
             }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.removeFromSuperview()
         }
     }
     

@@ -13,6 +13,8 @@ class RecipeCollectionViewController: UIViewController {
 
     
     @IBOutlet weak var recipeCollection: UICollectionView!
+    @IBOutlet weak var addRecipeButton: UIButton!
+    
     var recipeList: Results<Recipe>?
     private let dataManager = RealmDataManager()
     
@@ -21,6 +23,10 @@ class RecipeCollectionViewController: UIViewController {
         
         recipeCollection.delegate = self
         recipeCollection.dataSource = self
+        
+        addRecipeButton.layer.shadowOffset = CGSize(width: 0, height: 3.0)
+        addRecipeButton.layer.shadowOpacity = 0.7
+        addRecipeButton.layer.shadowRadius = 5.0
         
         dataManager.loadFromRealm(vc: self, parentObject: nil)
     }

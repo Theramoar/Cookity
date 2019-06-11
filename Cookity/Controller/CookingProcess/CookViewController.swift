@@ -194,6 +194,7 @@ class CookViewController: SwipeTableViewController {
         }
     }
     
+    
     func savePicture(image: UIImage?, imageName: String) -> String? {
         guard let image = image else { return nil }
         let imagePath: String = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/\(imageName).png"
@@ -312,14 +313,16 @@ extension CookViewController: UITableViewDelegate, UITableViewDataSource, UIText
                 }
                 
                 if editedValue[cell.productMeasure] != nil {
-                    dataManager.changeElementIn(object: product, keyValue: "measure", objectParameter: product.measure, newParameter: editedValue[cell.productMeasure])
+                    let measure = Configuration.configMeasure(measure: editedValue[cell.productMeasure]!)
+                    dataManager.changeElementIn(object: product, keyValue: "measure", objectParameter: product.measure, newParameter: measure)
                     editedValue.removeAll()
                 }
 
-                
+                var (presentedQuantity, presentedMeasure) = Configuration.presentNumbers(quantity: product.quantity, measure: product.measure)
+                presentedMeasure = Configuration.configMeasure(measure: presentedMeasure)
                 cell.productName.text = product.name
-                cell.quantityForRecipe.text = String(product.quantity)
-                cell.productMeasure.text = product.measure
+                cell.quantityForRecipe.text = presentedQuantity
+                cell.productMeasure.text = presentedMeasure
                 
                 return cell
             }
@@ -343,7 +346,6 @@ extension CookViewController: UITableViewDelegate, UITableViewDataSource, UIText
                         dataManager.changeElementIn(object: recipeStep, keyValue: "name", objectParameter: recipeStep.name, newParameter: editedValue[cell.recipeStepCell])
                         editedValue.removeAll()
                     }
-                    
                     cell.recipeStepCell.text = recipeStep.name
                 }
                 return cell

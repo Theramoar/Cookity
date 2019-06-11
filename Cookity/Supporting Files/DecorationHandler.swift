@@ -23,7 +23,7 @@ class DecorationHandler {
         else {
             vc.view.addSubview(shadow)
         }
-        UIView.animate(withDuration: 0.7) {
+        UIView.animate(withDuration: 0.5) {
             shadow.alpha = 0.7
         }
     }

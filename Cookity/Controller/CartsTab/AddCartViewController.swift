@@ -22,6 +22,10 @@ class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, Meas
     @IBOutlet weak var measureTextField: UITextField!
     @IBOutlet weak var cartNameTextField: UITextField!
     @IBOutlet weak var visibleView: UIView!
+    @IBOutlet weak var tfView: TextFieldView!
+    @IBOutlet weak var tfHeight: NSLayoutConstraint!
+    
+    
     
     var products = [Product]()
     var pickedMeasure: String? {
@@ -50,6 +54,9 @@ class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, Meas
         tableView.separatorStyle = .none
         tableView.rowHeight = 45
         
+        tfView.heightConstraint = tfHeight
+        tfView.initialHeight = tfHeight.constant
+        
         productTextField.delegate = self
         quantityTextField.delegate = self
         measureTextField.delegate = self
@@ -66,7 +73,11 @@ class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, Meas
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
         tapGesture.cancelsTouchesInView = false
         self.tableView.addGestureRecognizer(tapGesture)
-        
+    }
+    
+    
+    
+    override func viewDidLayoutSubviews() {
         let size = CGSize(width: 20, height: 20)
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = UIBezierPath(roundedRect: visibleView.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: size).cgPath
@@ -166,6 +177,11 @@ class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, Meas
             cart.products.append(product)
         }
         dataManager.saveToRealm(parentObject: nil, object: cart)
+    }
+    
+    override func deleteObject(at indexPath: IndexPath) {
+        products.remove(at: indexPath.row)
+        tableView.reloadData()
     }
     
 }

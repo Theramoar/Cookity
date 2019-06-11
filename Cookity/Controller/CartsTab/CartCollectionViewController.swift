@@ -14,19 +14,24 @@ class CartCollectionViewController: SwipeTableViewController {
     
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var addCartButton: UIButton!
+    
     var shoppingCarts: Results<ShoppingCart>?
     var productsInFridge: Results<Product>?
-//    let shadow = UIView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none
-        
         tableView.register(UINib(nibName: "CartCell", bundle: nil), forCellReuseIdentifier: "CartCell")
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 120.0
+        
+        addCartButton.layer.shadowOffset = CGSize(width: 0, height: 3.0)
+        addCartButton.layer.shadowOpacity = 0.7
+        addCartButton.layer.shadowRadius = 5.0
         
         dataManager.loadFromRealm(vc: self, parentObject: nil)
     }
@@ -49,7 +54,7 @@ class CartCollectionViewController: SwipeTableViewController {
             //Checks if the similar product is already in the fridge
             for fridgeProduct in productsInFridge!{
                 // if products name and measure coincide, adds quantity and deletes product from the shopping list
-                if product.name == fridgeProduct.name && product.measure == fridgeProduct.measure{
+                if product.name.lowercased() == fridgeProduct.name.lowercased() && product.measure == fridgeProduct.measure{
                     
                     let newQuantity = fridgeProduct.quantity + product.quantity
                     dataManager.changeElementIn(object: fridgeProduct,
@@ -61,10 +66,10 @@ class CartCollectionViewController: SwipeTableViewController {
                 }
             }
             if product.isInvalidated == false{
-                dataManager.changeElementIn(object: product,
-                                            keyValue: "inFridge",
-                                            objectParameter: product.inFridge,
-                                            newParameter: true)
+                let coppiedProduct = Product(value: product)
+                coppiedProduct.inFridge = true
+                coppiedProduct.checked = false
+                dataManager.saveToRealm(parentObject: nil, object: coppiedProduct)
             }
         }
         tableView.reloadData()

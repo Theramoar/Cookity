@@ -22,14 +22,14 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="trI-d4-fEd">
                         <rect key="frame" x="16" y="15" width="227" height="62.5"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2fG-qZ-Y0L">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="2fG-qZ-Y0L">
                                 <rect key="frame" x="8" y="0.0" width="211" height="62.5"/>
-                                <fontDescription key="fontDescription" type="system" weight="black" pointSize="22"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                                 <color key="textColor" red="0.21176470589999999" green="0.38431372549999998" blue="0.16862745100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" red="0.77647058820000003" green="0.89019607840000003" blue="0.46666666670000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="2fG-qZ-Y0L" secondAttribute="trailing" constant="8" id="WEB-Mk-V3W"/>
                             <constraint firstItem="2fG-qZ-Y0L" firstAttribute="top" secondItem="trI-d4-fEd" secondAttribute="top" id="ZHM-HQ-Bfw"/>

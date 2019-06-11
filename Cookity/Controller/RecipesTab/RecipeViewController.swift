@@ -13,11 +13,13 @@ class RecipeViewController: UIViewController {
     
     private let dataManager = RealmDataManager()
     
-    var productsForRecipe: Results<Product>?
+    var productsForRecipe: List<Product>?
     var productsInFridge: Results<Product>?
-    var recipeSteps: Results<RecipeStep>?
+    var recipeSteps: List<RecipeStep>?
     var chosenProducts = [String : Product]() // The variable is used to store the products chosen from the Fridge list. The Key - name of the Recipe Product
     @IBOutlet weak var productTable: UITableView!
+    @IBOutlet weak var cookButton: UIButton!
+    
     let sections = ["Name", "Ingridients:", "Cooking steps:"]
     
     var selectedRecipe: Recipe?{
@@ -31,9 +33,12 @@ class RecipeViewController: UIViewController {
         productTable.delegate = self
         productTable.dataSource = self
         productTable.separatorStyle = .none
-        
         productTable.rowHeight = UITableView.automaticDimension
-        productTable.estimatedRowHeight = 300
+        productTable.estimatedRowHeight = 100
+        
+        cookButton.layer.shadowOffset = CGSize(width: 0, height: 3.0)
+        cookButton.layer.shadowOpacity = 0.7
+        cookButton.layer.shadowRadius = 5.0
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -63,7 +68,7 @@ class RecipeViewController: UIViewController {
         else { return }
         
         let activity = UIActivityViewController(
-            activityItems: ["Check out this recipe! I like using Cookity.", url],
+            activityItems: ["Check out this recipe! You can use Cookity app to read it.", url],
             applicationActivities: nil
         )
         activity.popoverPresentationController?.barButtonItem = sender
@@ -98,13 +103,9 @@ class RecipeViewController: UIViewController {
     
     //Creates a new shopping list the adds the products from recipe to it    
     @IBAction func createButtonPressed(_ sender: UIButton) {
-        let checkmark = CheckmarkView()
+        let checkmark = CheckmarkView(frame: self.view.frame, message: "Done!")
         self.view.addSubview(checkmark)
         checkmark.animate()
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            checkmark.removeFromSuperview()
-        }
         
         let newCart = ShoppingCart()
         newCart.name = selectedRecipe?.name ?? "Selected Recipe"
@@ -124,7 +125,11 @@ class RecipeViewController: UIViewController {
         if selectedRecipe?.recipeSteps.count != 0 {
             performSegue(withIdentifier: "goToCookProcess", sender: self)
         }
-        
+        else {
+            let checkmark = CheckmarkView(frame: self.view.frame, message: "Fridge was edited")
+            self.view.addSubview(checkmark)
+            checkmark.animate()
+        }
         // The loop compares if there is a similar product in the fridge. If Yes - edits this product in the fridge
         guard productsForRecipe != nil else { return }
         for recipeProduct in productsForRecipe! {

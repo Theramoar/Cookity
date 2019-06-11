@@ -15,7 +15,13 @@ protocol IsEditedDelegate {
 class TextFieldView: UIView {
 
     var delegate: IsEditedDelegate?
-    var tableView: UITableView?
+    var viewHeight: CGFloat!
+    var bottonConstraint: NSLayoutConstraint!
+    
+    var heightConstraint: NSLayoutConstraint!
+    var initialHeight: CGFloat!
+    
+    
     
     var isEdited: Bool = false {
         didSet {
@@ -23,28 +29,40 @@ class TextFieldView: UIView {
         }
     }
     
-    
     override func awakeFromNib() {
+        viewHeight = self.frame.height
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
 
     
     @objc func keyboardWillChangeFrame(notification: NSNotification) {
-        guard let superViewSize = self.superview?.frame.size else { return }
-        guard let userInfo = notification.userInfo else { return }
-        guard let keyboardSize = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
-        if keyboardSize.origin.y == 667.0 {
-            UIView.setAnimationsEnabled(true)
-            self.frame.origin.y = superViewSize.height - self.frame.height
+        
+        guard let superview = self.superview else { return }
+        let bottomMargin = superview.layoutMargins.bottom
+        
+        
+        guard let userInfo = notification.userInfo,
+              let keyboardSize = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+        else { return }
+        
+        if notification.name == UIResponder.keyboardWillHideNotification {
+            heightConstraint.constant = initialHeight
+            UIView.animate(withDuration: 0.5) {
+                superview.layoutIfNeeded()
+            }
             isEdited = false
         }
         else {
+            heightConstraint.constant = keyboardSize.height + initialHeight - bottomMargin
+            
             //Блок используется для того, чтобы убрать анимацию текстового поля при смене клавиатуры (чтобы текстовое поле не отрывалось от клавиатуры)
-            if isEdited == true {
-                UIView.setAnimationsEnabled(false)
+            if isEdited == false {
+                UIView.animate(withDuration: 2) {
+                    superview.layoutIfNeeded()
+                }
             }
-            self.frame.origin.y = superViewSize.height - keyboardSize.height - self.frame.height
             isEdited = true
         }
     }

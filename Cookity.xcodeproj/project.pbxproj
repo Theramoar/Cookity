@@ -37,6 +37,12 @@
 		BB0F24DF2242D04800A3D8EF /* MeasurePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0F24DE2242D04800A3D8EF /* MeasurePicker.swift */; };
 		BB0F24E12246F27800A3D8EF /* AddCartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0F24E02246F27800A3D8EF /* AddCartViewController.swift */; };
 		BB0F24E52247872D00A3D8EF /* TextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0F24E42247872D00A3D8EF /* TextFieldView.swift */; };
+		BBB6B009228730CA00E518CC /* EditTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB6B008228730CA00E518CC /* EditTextView.swift */; };
+		BBB6B07522A8F29700E518CC /* icon_320.png in Resources */ = {isa = PBXBuildFile; fileRef = BBB6B07122A8F29700E518CC /* icon_320.png */; };
+		BBB6B07622A8F29700E518CC /* icon_22.png in Resources */ = {isa = PBXBuildFile; fileRef = BBB6B07222A8F29700E518CC /* icon_22.png */; };
+		BBB6B07722A8F29700E518CC /* icon_64.png in Resources */ = {isa = PBXBuildFile; fileRef = BBB6B07322A8F29700E518CC /* icon_64.png */; };
+		BBB6B07822A8F29700E518CC /* icon_44.png in Resources */ = {isa = PBXBuildFile; fileRef = BBB6B07422A8F29700E518CC /* icon_44.png */; };
+		BBB6B07A22AD183A00E518CC /* FirstLaunch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB6B07922AD183900E518CC /* FirstLaunch.swift */; };
 		BBFA65DE225D0CD500EE3C2A /* ShareDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBFA65DD225D0CD500EE3C2A /* ShareDataManager.swift */; };
 		BBFA65E02263461900EE3C2A /* RecipeImageViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBFA65DF2263461900EE3C2A /* RecipeImageViewCell.swift */; };
 		BBFA65E2226659B700EE3C2A /* RecipeProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBFA65E1226659B700EE3C2A /* RecipeProductCell.swift */; };
@@ -82,6 +88,12 @@
 		BB0F24DE2242D04800A3D8EF /* MeasurePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurePicker.swift; sourceTree = "<group>"; };
 		BB0F24E02246F27800A3D8EF /* AddCartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCartViewController.swift; sourceTree = "<group>"; };
 		BB0F24E42247872D00A3D8EF /* TextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldView.swift; sourceTree = "<group>"; };
+		BBB6B008228730CA00E518CC /* EditTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTextView.swift; sourceTree = "<group>"; };
+		BBB6B07122A8F29700E518CC /* icon_320.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_320.png; sourceTree = "<group>"; };
+		BBB6B07222A8F29700E518CC /* icon_22.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_22.png; sourceTree = "<group>"; };
+		BBB6B07322A8F29700E518CC /* icon_64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_64.png; sourceTree = "<group>"; };
+		BBB6B07422A8F29700E518CC /* icon_44.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_44.png; sourceTree = "<group>"; };
+		BBB6B07922AD183900E518CC /* FirstLaunch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstLaunch.swift; sourceTree = "<group>"; };
 		BBFA65DD225D0CD500EE3C2A /* ShareDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareDataManager.swift; sourceTree = "<group>"; };
 		BBFA65DF2263461900EE3C2A /* RecipeImageViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeImageViewCell.swift; sourceTree = "<group>"; };
 		BBFA65E1226659B700EE3C2A /* RecipeProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeProductCell.swift; sourceTree = "<group>"; };
@@ -112,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				1CA007C72165571B0072A908 /* AppDelegate.swift */,
+				BBB6B07922AD183900E518CC /* FirstLaunch.swift */,
 				1C3D635922354CAE00FC4485 /* AlertExtension.swift */,
 				1CBEB20F21B70CD00036E996 /* Configuration.swift */,
 				1C72FBAC222D29A100735546 /* RealmDataManager.swift */,
@@ -145,6 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				1CA007D32165571E0072A908 /* Info.plist */,
+				BBB6B04622A83F6300E518CC /* UTI Icons */,
 				1C3D635B2235559A00FC4485 /* Supporting Files */,
 				1CA007DF2165628C0072A908 /* Model */,
 				1CA007E02165629D0072A908 /* Controller */,
@@ -209,6 +223,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		BBB6B04622A83F6300E518CC /* UTI Icons */ = {
+			isa = PBXGroup;
+			children = (
+				BBB6B07222A8F29700E518CC /* icon_22.png */,
+				BBB6B07422A8F29700E518CC /* icon_44.png */,
+				BBB6B07322A8F29700E518CC /* icon_64.png */,
+				BBB6B07122A8F29700E518CC /* icon_320.png */,
+			);
+			path = "UTI Icons";
+			sourceTree = "<group>";
+		};
 		BBFA65E7227A2C0F00EE3C2A /* RecipeViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -236,6 +261,7 @@
 			isa = PBXGroup;
 			children = (
 				BB0F24E42247872D00A3D8EF /* TextFieldView.swift */,
+				BBB6B008228730CA00E518CC /* EditTextView.swift */,
 				1C3D635C2235851E00FC4485 /* ProductTableViewCell.swift */,
 			);
 			path = Cart_Fridge_ViewControllers;
@@ -348,8 +374,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				BBFA65F9227D84CA00EE3C2A /* CartCell.xib in Resources */,
+				BBB6B07522A8F29700E518CC /* icon_320.png in Resources */,
+				BBB6B07722A8F29700E518CC /* icon_64.png in Resources */,
 				1CA007D22165571E0072A908 /* LaunchScreen.storyboard in Resources */,
 				1CBEB2B021CE7DBE0036E996 /* Assets.xcassets in Resources */,
+				BBB6B07622A8F29700E518CC /* icon_22.png in Resources */,
+				BBB6B07822A8F29700E518CC /* icon_44.png in Resources */,
 				1CA007CD2165571B0072A908 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -419,6 +449,7 @@
 				BB0F24DF2242D04800A3D8EF /* MeasurePicker.swift in Sources */,
 				1C3D635A22354CAE00FC4485 /* AlertExtension.swift in Sources */,
 				1C3D635D2235851E00FC4485 /* ProductTableViewCell.swift in Sources */,
+				BBB6B009228730CA00E518CC /* EditTextView.swift in Sources */,
 				BBFA65FF227F052900EE3C2A /* EditImageViewController.swift in Sources */,
 				BB0F24E12246F27800A3D8EF /* AddCartViewController.swift in Sources */,
 				1CA007DE216562000072A908 /* Product.swift in Sources */,
@@ -433,6 +464,7 @@
 				BBFA65E2226659B700EE3C2A /* RecipeProductCell.swift in Sources */,
 				1CA007DC216559360072A908 /* CartViewController.swift in Sources */,
 				1C4B1A0821887081007CB9FD /* Recipe.swift in Sources */,
+				BBB6B07A22AD183A00E518CC /* FirstLaunch.swift in Sources */,
 				1CAECA19216BDAB3002D3B6D /* TextFieldCell.swift in Sources */,
 				1C4B1A0421884EA9007CB9FD /* CookViewController.swift in Sources */,
 				BB0F24DD2240313E00A3D8EF /* RecipeStepCell.swift in Sources */,

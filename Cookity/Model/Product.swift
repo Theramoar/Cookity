@@ -16,9 +16,5 @@ class Product: Object, Codable {
     @objc dynamic var checked: Bool = false
     @objc dynamic var inFridge: Bool = false
     @objc dynamic var checkForRecipe = false
-    @objc dynamic var measure: String = ""
-    
-    // Creating inverse relationship
-//    var parentCategory = LinkingObjects(fromType: ShoppingCart.self, property: "products")
-    
+    @objc dynamic var measure: String = ""    
 }

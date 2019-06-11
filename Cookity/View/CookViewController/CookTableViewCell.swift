@@ -11,10 +11,14 @@ import SwipeCellKit
 
 class CookTableViewCell: SwipeTableViewCell, MeasurePickerDelegate {
     
+//    @IBOutlet weak var productName: UITextField!
+//    @IBOutlet weak var productMeasure: UITextField!
+//    @IBOutlet weak var quantityForRecipe: UITextField!
+    
+    
     @IBOutlet weak var productName: UITextField!
     @IBOutlet weak var productMeasure: UITextField!
     @IBOutlet weak var quantityForRecipe: UITextField!
-
     
     var pickedMeasure: String? {
         didSet {
