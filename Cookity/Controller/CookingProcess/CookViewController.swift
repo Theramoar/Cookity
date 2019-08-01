@@ -24,6 +24,8 @@ class CookViewController: SwipeTableViewController {
     @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var recipeName: UITextField!
     @IBOutlet weak var backButton: UIButton!
+    @IBOutlet weak var saveButton: UIButton!
+    
     
     var recipeVC: RecipeViewController? // VC of the Recipe that is edited
     var recipeSteps: [RecipeStep]?
@@ -48,6 +50,7 @@ class CookViewController: SwipeTableViewController {
         productsTable.delegate = self
         productsTable.dataSource = self
         productsTable.keyboardDismissMode = .onDrag
+        
         if editedRecipe != nil {
             recipeName.text = editedRecipe?.name
         }
@@ -55,6 +58,11 @@ class CookViewController: SwipeTableViewController {
             deleteButton.isEnabled = false
             deleteButton.isHidden = true
         }
+        
+        
+        saveButton.layer.shadowOffset = CGSize(width: 0, height: -3)
+        saveButton.layer.shadowOpacity = 0.1
+        saveButton.layer.shadowRadius = 2.5
         
         // tapgesture is used for the keyboard removal
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
@@ -249,6 +257,7 @@ class CookViewController: SwipeTableViewController {
     
     @IBAction func saveButtonPressed(_ sender: UIButton) {
         saveRecipe()
+        
         self.dismiss(animated: true, completion: nil)
     }
 }

@@ -10,6 +10,10 @@ import UIKit
 
 public var shadow: UIView!
 
+public let darkGreen = UIColor(red: 54 / 255, green: 98 / 255, blue: 43 / 255, alpha: 1)
+public let green = UIColor(red: 198 / 255, green: 227 / 255, blue: 119 / 255, alpha: 1)
+public let lightGreen = UIColor(red: 251 / 255, green: 250 / 255, blue: 211 / 255, alpha: 1)
+
 class DecorationHandler {
     
     static func putShadowOnView(vc: UIViewController) {

@@ -9,7 +9,15 @@
 import UIKit
 
 
-class PopupEditViewController: UIViewController, UITextFieldDelegate, MeasurePickerDelegate {
+class PopupEditViewController: UIViewController, UITextFieldDelegate, MeasurePickerDelegate, IsEditedDelegate {
+    
+    
+    var isEdited: Bool = false {
+        didSet {
+            print(isEdited)
+        }
+    }
+    
 
     private let dataManager = RealmDataManager()
     
@@ -17,7 +25,11 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate, MeasurePic
     var parentVC: UIViewController?
     let measures = Measures.allCases
     
+    var panStartPoint = CGPoint(x: 0, y: 0)
+    var panEndPoint = CGPoint(x: 0, y: 0)
     
+    
+    @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var editView: EditTextView!
     @IBOutlet weak var nameText: UITextField!
     @IBOutlet weak var measureText: UITextField!
@@ -39,6 +51,7 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate, MeasurePic
         nameText.autocapitalizationType = .sentences
         measureText.autocapitalizationType = .sentences
         
+        editView.delegate = self
         editView.heightConstraint = editViewHeight
         editView.initialHeight = editViewHeight.constant
     
@@ -51,7 +64,13 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate, MeasurePic
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
         tapGesture.cancelsTouchesInView = false
-        self.view.addGestureRecognizer(tapGesture)
+        self.editView.addGestureRecognizer(tapGesture)
+        
+
+        let dismissTapGesture = UIPanGestureRecognizer(target: self, action: #selector(backgroundViewDragged))
+        dismissTapGesture.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(dismissTapGesture)
+        
         dataManager.loadFromRealm(vc: self, parentObject: selectedProduct)
         
         
@@ -70,7 +89,30 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate, MeasurePic
         }
     }
     
-    
+    @objc func backgroundViewDragged(sender: UITapGestureRecognizer) {
+        
+        
+        switch sender.state {
+            case .began:
+                panStartPoint = sender.location(in: view)
+            case .ended:
+                panEndPoint = sender.location(in: view)
+            default:
+                break
+        }
+
+        guard (panEndPoint.y - panStartPoint.y) > 40, abs(panStartPoint.x - panEndPoint.x) < 40 else { return }
+        
+            if self.isEdited {
+                self.view.endEditing(true)
+                return
+            }
+            else {
+                shadow.removeFromSuperview()
+                self.dismiss(animated: true, completion: nil)
+            }
+        
+    }
     
     
     @objc func viewTapped() {

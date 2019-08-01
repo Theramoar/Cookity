@@ -31,8 +31,15 @@ class TextFieldView: UIView {
     
     override func awakeFromNib() {
         viewHeight = self.frame.height
+        
+        self.layer.shadowOffset = CGSize(width: 0, height: -3)
+        self.layer.shadowOpacity = 0.05
+        self.layer.shadowRadius = 2
+        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide), name: UIResponder.keyboardDidHideNotification, object: nil)
     }
     
 
@@ -52,7 +59,6 @@ class TextFieldView: UIView {
             UIView.animate(withDuration: 0.5) {
                 superview.layoutIfNeeded()
             }
-            isEdited = false
         }
         else {
             heightConstraint.constant = keyboardSize.height + initialHeight - bottomMargin
@@ -65,5 +71,9 @@ class TextFieldView: UIView {
             }
             isEdited = true
         }
+    }
+    
+    @objc func keyboardDidHide(notification: NSNotification) {
+        isEdited = false
     }
 }

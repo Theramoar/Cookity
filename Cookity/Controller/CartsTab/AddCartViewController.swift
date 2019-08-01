@@ -9,12 +9,15 @@
 import UIKit
 import SwipeCellKit
 
+
+
 class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, MeasurePickerDelegate, IsEditedDelegate {
     
-    
-
     let textFieldView = TextFieldView()
     var parentVC: UIViewController?
+    
+    var panStartPoint = CGPoint(x: 0, y: 0)
+    var panEndPoint = CGPoint(x: 0, y: 0)
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var productTextField: UITextField!
@@ -22,6 +25,7 @@ class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, Meas
     @IBOutlet weak var measureTextField: UITextField!
     @IBOutlet weak var cartNameTextField: UITextField!
     @IBOutlet weak var visibleView: UIView!
+    @IBOutlet var backgroundView: UIView!
     @IBOutlet weak var tfView: TextFieldView!
     @IBOutlet weak var tfHeight: NSLayoutConstraint!
     
@@ -73,6 +77,10 @@ class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, Meas
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
         tapGesture.cancelsTouchesInView = false
         self.tableView.addGestureRecognizer(tapGesture)
+        
+        let dismissTapGesture = UIPanGestureRecognizer(target: self, action: #selector(backgroundViewDragged))
+        dismissTapGesture.cancelsTouchesInView = false
+        self.backgroundView.addGestureRecognizer(dismissTapGesture)
     }
     
     
@@ -85,9 +93,24 @@ class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, Meas
     }
     
     
+    @objc func backgroundViewDragged(sender: UITapGestureRecognizer) {
+        switch sender.state {
+        case .began:
+            panStartPoint = sender.location(in: view)
+        case .ended:
+            panEndPoint = sender.location(in: view)
+        default:
+            break
+        }
+        
+        guard (panEndPoint.y - panStartPoint.y) > 40, abs(panStartPoint.x - panEndPoint.x) < 40 else { return }
+        
+        dismissView()
+    }
+    
     @objc func viewTapped(sender: UITapGestureRecognizer) {
         //wait for isEdited to change its value
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
             if self.isEdited == false {
                 self.tableView.allowsSelection = true
             }
@@ -103,25 +126,24 @@ class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, Meas
         return true
     }
     
-    
-    //MARK:- Methods for Buttons
-    @IBAction func doneButtonPresed(_ sender: UIButton) {
-        guard let cartName = cartNameTextField.text, cartName != "" else { return }
-        saveCart(name: cartName)
-        if let parentVC = parentVC as? CartCollectionViewController {
-            parentVC.tableView.reloadData()
-            shadow.removeFromSuperview()
-        }
-        self.dismiss(animated: true)
-    }
-    
-    
-    @IBAction func cancelButtonPressed(_ sender: UIButton) {
+    func dismissView() {
         if let parentVC = parentVC as? CartCollectionViewController {
             parentVC.tableView.reloadData()
             shadow.removeFromSuperview()
         }
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    //MARK:- Methods for Buttons
+    @IBAction func doneButtonPresed(_ sender: UIButton) {
+        guard let cartName = cartNameTextField.text, cartName != "" else { return }
+        saveCart(name: cartName)
+        dismissView()
+    }
+    
+    
+    @IBAction func cancelButtonPressed(_ sender: UIButton) {
+        dismissView()
     }
     
     @IBAction func addButtonPressed(_ sender: UIButton) {

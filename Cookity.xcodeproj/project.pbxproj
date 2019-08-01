@@ -37,6 +37,9 @@
 		BB0F24DF2242D04800A3D8EF /* MeasurePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0F24DE2242D04800A3D8EF /* MeasurePicker.swift */; };
 		BB0F24E12246F27800A3D8EF /* AddCartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0F24E02246F27800A3D8EF /* AddCartViewController.swift */; };
 		BB0F24E52247872D00A3D8EF /* TextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0F24E42247872D00A3D8EF /* TextFieldView.swift */; };
+		BB18B21722CB0B17004F2F65 /* CreditsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB18B21622CB0B17004F2F65 /* CreditsViewController.swift */; };
+		BB18B21922CD3E6D004F2F65 /* CreditsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB18B21822CD3E6D004F2F65 /* CreditsViewCell.swift */; };
+		BB3C781322B66C6000F556BC /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3C781222B66C6000F556BC /* SettingsViewController.swift */; };
 		BBB6B009228730CA00E518CC /* EditTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB6B008228730CA00E518CC /* EditTextView.swift */; };
 		BBB6B07522A8F29700E518CC /* icon_320.png in Resources */ = {isa = PBXBuildFile; fileRef = BBB6B07122A8F29700E518CC /* icon_320.png */; };
 		BBB6B07622A8F29700E518CC /* icon_22.png in Resources */ = {isa = PBXBuildFile; fileRef = BBB6B07222A8F29700E518CC /* icon_22.png */; };
@@ -88,6 +91,9 @@
 		BB0F24DE2242D04800A3D8EF /* MeasurePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurePicker.swift; sourceTree = "<group>"; };
 		BB0F24E02246F27800A3D8EF /* AddCartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCartViewController.swift; sourceTree = "<group>"; };
 		BB0F24E42247872D00A3D8EF /* TextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldView.swift; sourceTree = "<group>"; };
+		BB18B21622CB0B17004F2F65 /* CreditsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditsViewController.swift; sourceTree = "<group>"; };
+		BB18B21822CD3E6D004F2F65 /* CreditsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditsViewCell.swift; sourceTree = "<group>"; };
+		BB3C781222B66C6000F556BC /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		BBB6B008228730CA00E518CC /* EditTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTextView.swift; sourceTree = "<group>"; };
 		BBB6B07122A8F29700E518CC /* icon_320.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_320.png; sourceTree = "<group>"; };
 		BBB6B07222A8F29700E518CC /* icon_22.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_22.png; sourceTree = "<group>"; };
@@ -196,6 +202,7 @@
 			children = (
 				BBFA65EE227A2DC600EE3C2A /* CartCell.swift */,
 				BBFA65F7227D84CA00EE3C2A /* CartCell.xib */,
+				BB18B21822CD3E6D004F2F65 /* CreditsViewCell.swift */,
 				BBFA65E9227A2C9100EE3C2A /* Cart_Fridge_ViewControllers */,
 				BBFA65EA227A2C9F00EE3C2A /* RecipeCollectionViewController */,
 				BBFA65E7227A2C0F00EE3C2A /* RecipeViewController */,
@@ -289,6 +296,8 @@
 			isa = PBXGroup;
 			children = (
 				1C4B1A012180EC32007CB9FD /* FridgeViewController.swift */,
+				BB3C781222B66C6000F556BC /* SettingsViewController.swift */,
+				BB18B21622CB0B17004F2F65 /* CreditsViewController.swift */,
 			);
 			path = FridgeTab;
 			sourceTree = "<group>";
@@ -347,6 +356,14 @@
 					1CA007C32165571B0072A908 = {
 						CreatedOnToolsVersion = 10.0;
 						LastSwiftMigration = 1020;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 0;
+							};
+							com.apple.iCloud = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
@@ -439,6 +456,7 @@
 				BBFA65DE225D0CD500EE3C2A /* ShareDataManager.swift in Sources */,
 				BB0F24DB223EC4F700A3D8EF /* CreateListCell.swift in Sources */,
 				BBFA65E4226CEF7D00EE3C2A /* RVRecipeStepCell.swift in Sources */,
+				BB3C781322B66C6000F556BC /* SettingsViewController.swift in Sources */,
 				BBFA65F1227B520800EE3C2A /* CookProcessViewController.swift in Sources */,
 				1CAC8313217C72070081F24E /* ShoppingCart.swift in Sources */,
 				BBFA6601227F0B2700EE3C2A /* DecorationHandler.swift in Sources */,
@@ -446,6 +464,7 @@
 				1CBEB20A21AAC9300036E996 /* RecipeCollectionViewController.swift in Sources */,
 				BBFA65EF227A2DC600EE3C2A /* CartCell.swift in Sources */,
 				1CA007C82165571B0072A908 /* AppDelegate.swift in Sources */,
+				BB18B21722CB0B17004F2F65 /* CreditsViewController.swift in Sources */,
 				BB0F24DF2242D04800A3D8EF /* MeasurePicker.swift in Sources */,
 				1C3D635A22354CAE00FC4485 /* AlertExtension.swift in Sources */,
 				1C3D635D2235851E00FC4485 /* ProductTableViewCell.swift in Sources */,
@@ -465,6 +484,7 @@
 				1CA007DC216559360072A908 /* CartViewController.swift in Sources */,
 				1C4B1A0821887081007CB9FD /* Recipe.swift in Sources */,
 				BBB6B07A22AD183A00E518CC /* FirstLaunch.swift in Sources */,
+				BB18B21922CD3E6D004F2F65 /* CreditsViewCell.swift in Sources */,
 				1CAECA19216BDAB3002D3B6D /* TextFieldCell.swift in Sources */,
 				1C4B1A0421884EA9007CB9FD /* CookViewController.swift in Sources */,
 				BB0F24DD2240313E00A3D8EF /* RecipeStepCell.swift in Sources */,

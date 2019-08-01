@@ -20,6 +20,11 @@ class FridgeViewController: SwipeTableViewController {
     @IBOutlet weak var addButton: UIButton!
     
     
+    @IBOutlet weak var emptyFridgeImageView: UIImageView!
+    @IBOutlet weak var emptyFridgeLabel: UILabel!
+    @IBOutlet weak var emptyFridgeDescriptionLabel: UILabel!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -71,7 +76,6 @@ class FridgeViewController: SwipeTableViewController {
             if let indexPath = selectedIndexPath, let product = products?[indexPath.row] {
                 destinationVC.selectedProduct = product
                 destinationVC.parentVC = self
-//                destinationVC.definesPresentationContext = true
             }
         }
         else if segue.identifier == "goToCookingAreaFromFridge" {
@@ -130,7 +134,17 @@ class FridgeViewController: SwipeTableViewController {
 extension FridgeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return products?.count ?? 1
+        if products?.count == 0 {
+            emptyFridgeImageView.isHidden = false
+            emptyFridgeLabel.isHidden = false
+            emptyFridgeDescriptionLabel.isHidden = false
+        } else {
+            emptyFridgeImageView.isHidden = true
+            emptyFridgeLabel.isHidden = true
+            emptyFridgeDescriptionLabel.isHidden = true
+        }
+        
+        return products?.count ?? 0
     }
     
     

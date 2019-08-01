@@ -18,6 +18,7 @@ class CartCell: SwipeTableViewCell {
     override func awakeFromNib() {
         cellContentView.layer.cornerRadius = self.frame.size.height / 14
         self.selectionStyle = .none
+        self.backgroundColor = .clear
         cellContentView.layer.shadowOffset = CGSize(width: 0, height: 0)
         cellContentView.layer.shadowOpacity = 0.4
         cellContentView.layer.shadowRadius = 3.0

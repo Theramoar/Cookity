@@ -60,7 +60,6 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none
-//        tableView.keyboardDismissMode = .onDrag
         tableView.rowHeight = 45
         
         tfView.delegate = self
@@ -96,7 +95,7 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
     
     @objc func viewTapped(sender: UITapGestureRecognizer) {
         //wait for isEdited to change its value
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
             if self.isEdited == false {
                 self.tableView.allowsSelection = true
             }
@@ -162,8 +161,7 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
     }
     
     
-    func saveProduct(productName: String, productQuantity: String, productMeasure: String) -> Bool
-    {
+    func saveProduct(productName: String, productQuantity: String, productMeasure: String) -> Bool {
         let newProduct = Product()
        
         let alert = UIAlertController(title: "title", message: "message", preferredStyle: .alert)
@@ -190,6 +188,43 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
         return true
     }
     
+    func moveProductsToFridge() {
+        guard let products = products,
+            let productsInFridge = productsInFridge,
+            let selectedCart = selectedCart
+        else { return }
+        
+        for product in products {
+            //Checks if the similar product is already in the fridge
+            for fridgeProduct in productsInFridge{
+                // if products name and measure coincide, adds quantity and deletes product from the shopping list
+                if product.name.lowercased() == fridgeProduct.name.lowercased() && product.measure == fridgeProduct.measure{
+                    let newQuantity = fridgeProduct.quantity + product.quantity
+                    dataManager.changeElementIn(object: fridgeProduct,
+                                                     keyValue: "quantity",
+                                                     objectParameter: fridgeProduct.quantity,
+                                                     newParameter: newQuantity)
+                    dataManager.deleteFromRealm(object: product)
+                    break
+                }
+            }
+            if product.isInvalidated == false{
+                let coppiedProduct = Product(value: product)
+                coppiedProduct.inFridge = true
+                coppiedProduct.checked = false
+                dataManager.saveToRealm(parentObject: nil, object: coppiedProduct)
+                dataManager.deleteFromRealm(object: product)
+            }
+            tableView.reloadData()
+        }
+        dataManager.deleteFromRealm(object: selectedCart)
+        
+        if let nav = self.navigationController {
+            nav.popToRootViewController(animated: true)
+        }
+        dismiss(animated: true, completion: nil)
+    }
+    
     override func deleteObject(at indexPath: IndexPath) {
         if let product = products?[indexPath.row] {
             dataManager.deleteFromRealm(object: product)
@@ -199,12 +234,11 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
     
 }
 
-//MARK: - Extension for TableView Methods
+//MARK: - Extension for TableView DataSource and Delegate Methods
 extension CartViewController: UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
-    //MARK: - TableView DataSource Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return products?.count ?? 1
+        return products?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -219,51 +253,32 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource, UIText
             return cell
     }
     
-    //MARK: - TableView Delegate Methods
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let products = products else { return }
         impact.impactOccurred()
-        if let product = products?[indexPath.row]{
-            dataManager.changeElementIn(object: product,
-                                        keyValue: "checked",
-                                        objectParameter: product.checked,
-                                        newParameter: !product.checked)
-        }
+        
+        let product = products[indexPath.row]
+        dataManager.changeElementIn(object: product,
+                                    keyValue: "checked",
+                                    objectParameter: product.checked,
+                                    newParameter: !product.checked)
+        
         tableView.reloadData()
         
         //If all products are checked, App offers to add them to the Fridge
-        for product in products! {
+        for product in products {
             guard product.checked == true else { return }
         }
         
         let alert = UIAlertController(title: "Add products to the fridge?", message: "", preferredStyle: .actionSheet)
+        
         let yesAction = UIAlertAction(title: "Yes", style: .default) { (_) in
-            for product in self.products! {
-                //Checks if the similar product is already in the fridge
-                for fridgeProduct in self.productsInFridge!{
-                    // if products name and measure coincide, adds quantity and deletes product from the shopping list
-                    if product.name.lowercased() == fridgeProduct.name.lowercased() && product.measure == fridgeProduct.measure{
-                        let newQuantity = fridgeProduct.quantity + product.quantity
-                        self.dataManager.changeElementIn(object: fridgeProduct,
-                                                         keyValue: "quantity",
-                                                         objectParameter: fridgeProduct.quantity,
-                                                         newParameter: newQuantity)
-                        self.dataManager.deleteFromRealm(object: product)
-                        break
-                    }
-                }
-                if product.isInvalidated == false{
-                    let coppiedProduct = Product(value: product)
-                    coppiedProduct.inFridge = true
-                    coppiedProduct.checked = false
-                    self.dataManager.saveToRealm(parentObject: nil, object: coppiedProduct)
-                    self.dataManager.deleteFromRealm(object: product)
-                }
-                self.tableView.reloadData()
-            }
+            self.moveProductsToFridge()
         }
         let noAction = UIAlertAction(title: "No", style: .default) { (_) in
             return
         }
+        
         alert.addAction(yesAction)
         alert.addAction(noAction)
         present(alert, animated: true, completion: nil)

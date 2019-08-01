@@ -20,6 +20,8 @@ class EditImageViewController: UIViewController {
     @IBOutlet weak var viewForLayers: UIView!
     @IBOutlet weak var heightConstraint: NSLayoutConstraint!
     
+    var panStartPoint = CGPoint(x: 0, y: 0)
+    var panEndPoint = CGPoint(x: 0, y: 0)
     
     @IBOutlet weak var importImage: UIButton!
     @IBOutlet weak var deleteImage: UIButton!
@@ -37,6 +39,10 @@ class EditImageViewController: UIViewController {
         if editedImage == nil {
             shrinkView()
         }
+        
+        let dismissTapGesture = UIPanGestureRecognizer(target: self, action: #selector(backgroundViewDragged))
+        dismissTapGesture.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(dismissTapGesture)
     }
     
     override func viewDidLayoutSubviews() {
@@ -46,7 +52,22 @@ class EditImageViewController: UIViewController {
         setCornerRadius()
     }
     
-    
+    @objc func backgroundViewDragged(sender: UITapGestureRecognizer) {
+        switch sender.state {
+        case .began:
+            panStartPoint = sender.location(in: view)
+        case .ended:
+            panEndPoint = sender.location(in: view)
+        default:
+            break
+        }
+        
+        guard (panEndPoint.y - panStartPoint.y) > 40, abs(panStartPoint.x - panEndPoint.x) < 40 else { return }
+        
+        shadow.removeFromSuperview()
+        self.dismiss(animated: true, completion: nil)
+    }
+
     
     func expandView() {
         setCornerRadius()

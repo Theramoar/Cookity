@@ -23,6 +23,7 @@ class Recipe: Object, Codable {
     let products = List<Product>()
     var recipeSteps = List<RecipeStep>()
     @objc dynamic var imagePath: String?
+    @objc dynamic var cloudRecordName: String?
 
     
     func encode(to encoder: Encoder) throws {
