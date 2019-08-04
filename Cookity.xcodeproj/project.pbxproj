@@ -46,6 +46,8 @@
 		BBB6B07722A8F29700E518CC /* icon_64.png in Resources */ = {isa = PBXBuildFile; fileRef = BBB6B07322A8F29700E518CC /* icon_64.png */; };
 		BBB6B07822A8F29700E518CC /* icon_44.png in Resources */ = {isa = PBXBuildFile; fileRef = BBB6B07422A8F29700E518CC /* icon_44.png */; };
 		BBB6B07A22AD183A00E518CC /* FirstLaunch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB6B07922AD183900E518CC /* FirstLaunch.swift */; };
+		BBC6C5B022F5D40500AF8423 /* SettingsVariables.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC6C5AF22F5D40500AF8423 /* SettingsVariables.swift */; };
+		BBC6C5B322F5D57500AF8423 /* EnableIngridientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC6C5B222F5D57500AF8423 /* EnableIngridientCell.swift */; };
 		BBFA65DE225D0CD500EE3C2A /* ShareDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBFA65DD225D0CD500EE3C2A /* ShareDataManager.swift */; };
 		BBFA65E02263461900EE3C2A /* RecipeImageViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBFA65DF2263461900EE3C2A /* RecipeImageViewCell.swift */; };
 		BBFA65E2226659B700EE3C2A /* RecipeProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBFA65E1226659B700EE3C2A /* RecipeProductCell.swift */; };
@@ -100,6 +102,8 @@
 		BBB6B07322A8F29700E518CC /* icon_64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_64.png; sourceTree = "<group>"; };
 		BBB6B07422A8F29700E518CC /* icon_44.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_44.png; sourceTree = "<group>"; };
 		BBB6B07922AD183900E518CC /* FirstLaunch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstLaunch.swift; sourceTree = "<group>"; };
+		BBC6C5AF22F5D40500AF8423 /* SettingsVariables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVariables.swift; sourceTree = "<group>"; };
+		BBC6C5B222F5D57500AF8423 /* EnableIngridientCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnableIngridientCell.swift; sourceTree = "<group>"; };
 		BBFA65DD225D0CD500EE3C2A /* ShareDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareDataManager.swift; sourceTree = "<group>"; };
 		BBFA65DF2263461900EE3C2A /* RecipeImageViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeImageViewCell.swift; sourceTree = "<group>"; };
 		BBFA65E1226659B700EE3C2A /* RecipeProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeProductCell.swift; sourceTree = "<group>"; };
@@ -135,6 +139,7 @@
 				1CBEB20F21B70CD00036E996 /* Configuration.swift */,
 				1C72FBAC222D29A100735546 /* RealmDataManager.swift */,
 				BBFA65DD225D0CD500EE3C2A /* ShareDataManager.swift */,
+				BBC6C5AF22F5D40500AF8423 /* SettingsVariables.swift */,
 				BB0F24DE2242D04800A3D8EF /* MeasurePicker.swift */,
 				BBFA6600227F0B2700EE3C2A /* DecorationHandler.swift */,
 			);
@@ -200,9 +205,7 @@
 		1CA007E1216562D20072A908 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				BBFA65EE227A2DC600EE3C2A /* CartCell.swift */,
-				BBFA65F7227D84CA00EE3C2A /* CartCell.xib */,
-				BB18B21822CD3E6D004F2F65 /* CreditsViewCell.swift */,
+				BBC6C5B522F7568800AF8423 /* SettingsViewController */,
 				BBFA65E9227A2C9100EE3C2A /* Cart_Fridge_ViewControllers */,
 				BBFA65EA227A2C9F00EE3C2A /* RecipeCollectionViewController */,
 				BBFA65E7227A2C0F00EE3C2A /* RecipeViewController */,
@@ -241,6 +244,15 @@
 			path = "UTI Icons";
 			sourceTree = "<group>";
 		};
+		BBC6C5B522F7568800AF8423 /* SettingsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				BB18B21822CD3E6D004F2F65 /* CreditsViewCell.swift */,
+				BBC6C5B222F5D57500AF8423 /* EnableIngridientCell.swift */,
+			);
+			path = SettingsViewController;
+			sourceTree = "<group>";
+		};
 		BBFA65E7227A2C0F00EE3C2A /* RecipeViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -267,6 +279,8 @@
 		BBFA65E9227A2C9100EE3C2A /* Cart_Fridge_ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				BBFA65EE227A2DC600EE3C2A /* CartCell.swift */,
+				BBFA65F7227D84CA00EE3C2A /* CartCell.xib */,
 				BB0F24E42247872D00A3D8EF /* TextFieldView.swift */,
 				BBB6B008228730CA00E518CC /* EditTextView.swift */,
 				1C3D635C2235851E00FC4485 /* ProductTableViewCell.swift */,
@@ -452,6 +466,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				1CAC8311217C70FA0081F24E /* CartCollectionViewController.swift in Sources */,
+				BBC6C5B322F5D57500AF8423 /* EnableIngridientCell.swift in Sources */,
+				BBC6C5B022F5D40500AF8423 /* SettingsVariables.swift in Sources */,
 				BBFA65F3227C989300EE3C2A /* CheckmarkView.swift in Sources */,
 				BBFA65DE225D0CD500EE3C2A /* ShareDataManager.swift in Sources */,
 				BB0F24DB223EC4F700A3D8EF /* CreateListCell.swift in Sources */,

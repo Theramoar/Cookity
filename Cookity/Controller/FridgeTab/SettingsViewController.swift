@@ -105,7 +105,10 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
-            return 210
+            if indexPath.row == 0 {
+                return 210
+            }
+            return 44
         }
         else {
             return 44
@@ -115,7 +118,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return 1
+            return 2
         default:
             return 2
         }
@@ -126,7 +129,14 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         var cell: UITableViewCell
         
         if indexPath.section == 0 {
-            cell = tableView.dequeueReusableCell(withIdentifier: "workInProgressCell", for: indexPath)
+            switch indexPath.row {
+            case 0:
+                cell = tableView.dequeueReusableCell(withIdentifier: "workInProgressCell", for: indexPath)
+            case 1:
+                cell = tableView.dequeueReusableCell(withIdentifier: "enableIngridientCell", for: indexPath) as! EnableIngridientCell
+            default:
+                cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+            }
         }
         else {
             switch indexPath.row {

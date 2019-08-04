@@ -43,9 +43,7 @@ class Recipe: Object, Codable {
     }
     
     required convenience init(from decoder: Decoder) throws {
-        
         self.init()
-        
         let container = try decoder.container(keyedBy: RecipeCodingKeys.self)
         name = try container.decode(String.self, forKey: .name)
         let productArray = try container.decode([Product].self, forKey: .products)

@@ -29,13 +29,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Realm Data manipulation Ends
         
         let firstLaunch = FirstLaunch()
-        
         if firstLaunch.isFirstLaunch {
             firstLaunch.createTutorial()
         }
-        
         return true
     }
+    
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         

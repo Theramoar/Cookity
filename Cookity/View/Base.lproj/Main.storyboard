@@ -471,8 +471,42 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="emailCell" id="rGE-HO-cPo">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="enableIngridientCell" id="FXT-fH-JBS" customClass="EnableIngridientCell" customModule="Cookity" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="238" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="FXT-fH-JBS" id="hOo-0l-HvG">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enable ingridients search" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aqA-8r-een">
+                                                    <rect key="frame" x="15" y="11" width="192" height="22"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.21176470589999999" green="0.38431372549999998" blue="0.16862745100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ff4-mS-bg0">
+                                                    <rect key="frame" x="256" y="6" width="51" height="31.5"/>
+                                                    <connections>
+                                                        <action selector="switchChanged:" destination="FXT-fH-JBS" eventType="valueChanged" id="fpR-fs-sKz"/>
+                                                    </connections>
+                                                </switch>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="Ff4-mS-bg0" secondAttribute="trailing" constant="15" id="Hvo-u7-9Th"/>
+                                                <constraint firstItem="Ff4-mS-bg0" firstAttribute="leading" secondItem="aqA-8r-een" secondAttribute="trailing" constant="49" id="MYS-4u-wd8"/>
+                                                <constraint firstItem="aqA-8r-een" firstAttribute="leading" secondItem="hOo-0l-HvG" secondAttribute="leadingMargin" id="OsL-nK-32X"/>
+                                                <constraint firstItem="aqA-8r-een" firstAttribute="top" secondItem="hOo-0l-HvG" secondAttribute="topMargin" id="ctw-Wt-kxQ"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="aqA-8r-een" secondAttribute="bottom" id="fI2-hu-bZF"/>
+                                                <constraint firstAttribute="bottom" secondItem="Ff4-mS-bg0" secondAttribute="bottom" constant="6" id="ltv-nD-dQd"/>
+                                                <constraint firstItem="Ff4-mS-bg0" firstAttribute="top" secondItem="hOo-0l-HvG" secondAttribute="top" constant="6" id="m9b-Z8-HSR"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="ingridientSwitch" destination="Ff4-mS-bg0" id="g8r-x2-2BJ"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="emailCell" id="rGE-HO-cPo">
+                                        <rect key="frame" x="0.0" y="282" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rGE-HO-cPo" id="Nfn-Rf-0Qy">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -500,7 +534,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="creditsCell" id="oPB-6L-6Xx">
-                                        <rect key="frame" x="0.0" y="282" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="326" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="oPB-6L-6Xx" id="tyY-my-GQw">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -1684,7 +1718,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="hfe-HQ-An4"/>
-        <segue reference="mwP-1j-8FP"/>
+        <segue reference="yF2-D2-Ud7"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.21176470589999999" green="0.38431372549999998" blue="0.16862745100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>
