@@ -71,7 +71,7 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate, MeasurePic
         dismissTapGesture.cancelsTouchesInView = false
         self.view.addGestureRecognizer(dismissTapGesture)
         
-        dataManager.loadFromRealm(vc: self, parentObject: selectedProduct)
+        RealmDataManager.loadFromRealm(vc: self, parentObject: selectedProduct)
         
         
     }
@@ -147,15 +147,15 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate, MeasurePic
         let (savedQuantity, savedMeasure) = Configuration.configNumbers(quantity: productQuantity, measure: measure)
         
         guard let selectedProduct = selectedProduct else { return }
-        dataManager.changeElementIn(object: selectedProduct,
+        RealmDataManager.changeElementIn(object: selectedProduct,
                                     keyValue: "name",
                                     objectParameter: selectedProduct.name,
                                     newParameter: productName)
-        dataManager.changeElementIn(object: selectedProduct,
+        RealmDataManager.changeElementIn(object: selectedProduct,
                                     keyValue: "quantity",
                                     objectParameter: selectedProduct.quantity,
                                     newParameter: savedQuantity)
-        dataManager.changeElementIn(object: selectedProduct,
+        RealmDataManager.changeElementIn(object: selectedProduct,
                                     keyValue: "measure",
                                     objectParameter: selectedProduct.measure,
                                     newParameter: savedMeasure)

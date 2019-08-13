@@ -198,7 +198,7 @@ class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, Meas
         for product in products {
             cart.products.append(product)
         }
-        dataManager.saveToRealm(parentObject: nil, object: cart)
+        RealmDataManager.saveToRealm(parentObject: nil, object: cart)
     }
     
     override func deleteObject(at indexPath: IndexPath) {

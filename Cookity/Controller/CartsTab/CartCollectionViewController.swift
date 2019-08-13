@@ -33,7 +33,7 @@ class CartCollectionViewController: SwipeTableViewController {
         addCartButton.layer.shadowOpacity = 0.7
         addCartButton.layer.shadowRadius = 5.0
         
-        dataManager.loadFromRealm(vc: self, parentObject: nil)
+        RealmDataManager.loadFromRealm(vc: self, parentObject: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,11 +57,11 @@ class CartCollectionViewController: SwipeTableViewController {
                 if product.name.lowercased() == fridgeProduct.name.lowercased() && product.measure == fridgeProduct.measure{
                     
                     let newQuantity = fridgeProduct.quantity + product.quantity
-                    dataManager.changeElementIn(object: fridgeProduct,
+                    RealmDataManager.changeElementIn(object: fridgeProduct,
                                                 keyValue: "quantity",
                                                 objectParameter: fridgeProduct.quantity,
                                                 newParameter: newQuantity)
-                    dataManager.deleteFromRealm(object: product)
+                    RealmDataManager.deleteFromRealm(object: product)
                     break
                 }
             }
@@ -69,7 +69,7 @@ class CartCollectionViewController: SwipeTableViewController {
                 let coppiedProduct = Product(value: product)
                 coppiedProduct.inFridge = true
                 coppiedProduct.checked = false
-                dataManager.saveToRealm(parentObject: nil, object: coppiedProduct)
+                RealmDataManager.saveToRealm(parentObject: nil, object: coppiedProduct)
             }
         }
         tableView.reloadData()
@@ -78,9 +78,9 @@ class CartCollectionViewController: SwipeTableViewController {
     override func deleteObject(at indexPath: IndexPath) {
         if let cart = self.shoppingCarts?[indexPath.row] {
             for product in cart.products {
-                dataManager.deleteFromRealm(object: product)
+                RealmDataManager.deleteFromRealm(object: product)
             }
-            dataManager.deleteFromRealm(object: cart)
+            RealmDataManager.deleteFromRealm(object: cart)
             tableView.reloadData()
         }
     }

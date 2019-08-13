@@ -48,8 +48,19 @@ class RecipeCollectionViewController: UIViewController {
         addRecipeButton.layer.shadowOpacity = 0.7
         addRecipeButton.layer.shadowRadius = 5.0
         
-        dataManager.loadFromRealm(vc: self, parentObject: nil)
+        RealmDataManager.loadFromRealm(vc: self, parentObject: nil)
+        loadDataFromCloud()
+
     }
+    
+    private func loadDataFromCloud() {
+        CloudManager.loadDataFromCloud(data: .Recipes, recipes: recipeList!, closure: { (recipe) in
+            RealmDataManager.saveToRealm(parentObject: nil, object: recipe)
+            self.recipeCollection.reloadData()
+        })
+    }
+    
+    
     
     override func viewWillAppear(_ animated: Bool) {
         recipeCollection.reloadData()

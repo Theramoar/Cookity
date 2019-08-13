@@ -43,7 +43,7 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
 
     var selectedCart: ShoppingCart?{
         didSet{
-            dataManager.loadFromRealm(vc: self, parentObject: selectedCart)
+            RealmDataManager.loadFromRealm(vc: self, parentObject: selectedCart)
         }
     }
     
@@ -182,7 +182,7 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
             newProduct.name = productName
             newProduct.quantity = savedQuantity
             newProduct.measure = savedMeasure
-            dataManager.saveToRealm(parentObject: currentCart, object: newProduct)
+            RealmDataManager.saveToRealm(parentObject: currentCart, object: newProduct)
         }
         tableView.reloadData()
         return true
@@ -200,11 +200,11 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
                 // if products name and measure coincide, adds quantity and deletes product from the shopping list
                 if product.name.lowercased() == fridgeProduct.name.lowercased() && product.measure == fridgeProduct.measure{
                     let newQuantity = fridgeProduct.quantity + product.quantity
-                    dataManager.changeElementIn(object: fridgeProduct,
+                    RealmDataManager.changeElementIn(object: fridgeProduct,
                                                      keyValue: "quantity",
                                                      objectParameter: fridgeProduct.quantity,
                                                      newParameter: newQuantity)
-                    dataManager.deleteFromRealm(object: product)
+                    RealmDataManager.deleteFromRealm(object: product)
                     break
                 }
             }
@@ -212,12 +212,12 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
                 let coppiedProduct = Product(value: product)
                 coppiedProduct.inFridge = true
                 coppiedProduct.checked = false
-                dataManager.saveToRealm(parentObject: nil, object: coppiedProduct)
-                dataManager.deleteFromRealm(object: product)
+                RealmDataManager.saveToRealm(parentObject: nil, object: coppiedProduct)
+                RealmDataManager.deleteFromRealm(object: product)
             }
             tableView.reloadData()
         }
-        dataManager.deleteFromRealm(object: selectedCart)
+        RealmDataManager.deleteFromRealm(object: selectedCart)
         
         if let nav = self.navigationController {
             nav.popToRootViewController(animated: true)
@@ -227,7 +227,7 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
     
     override func deleteObject(at indexPath: IndexPath) {
         if let product = products?[indexPath.row] {
-            dataManager.deleteFromRealm(object: product)
+            RealmDataManager.deleteFromRealm(object: product)
             tableView.reloadData()
         }
     }
@@ -258,7 +258,7 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource, UIText
         impact.impactOccurred()
         
         let product = products[indexPath.row]
-        dataManager.changeElementIn(object: product,
+        RealmDataManager.changeElementIn(object: product,
                                     keyValue: "checked",
                                     objectParameter: product.checked,
                                     newParameter: !product.checked)

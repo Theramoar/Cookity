@@ -9,17 +9,14 @@
 import Foundation
 import RealmSwift
 
-enum DataLoaded {
-    case Fridge
-    case Recipes
-}
+
 
 class RealmDataManager {
     
-    private let realm = try! Realm()
+    private static let realm = try! Realm()
     
     
-    func loadFromRealm(vc: UIViewController?, parentObject: Object?) {
+    static func loadFromRealm(vc: UIViewController?, parentObject: Object?) {
         
         if let vc = vc as? CartViewController, let selectedCart = parentObject as? ShoppingCart {
             vc.products = selectedCart.products.filter("inFridge == NO")
@@ -72,7 +69,7 @@ class RealmDataManager {
         }
     }
     
-    func deleteFromRealm(object: Object){
+    static func deleteFromRealm(object: Object){
         do{
             try self.realm.write {
                 self.realm.delete(object)
@@ -84,7 +81,7 @@ class RealmDataManager {
     }
     
     
-    func saveToRealm<T>(parentObject: Object?, object: T) {
+    static func saveToRealm<T>(parentObject: Object?, object: T) {
         
         if let parentObject = parentObject as? ShoppingCart{
             do{
@@ -135,7 +132,7 @@ class RealmDataManager {
     }
 
     
-    func changeElementIn<T>(object: Object, keyValue: String, objectParameter: T, newParameter: T) {
+    static func changeElementIn<T>(object: Object, keyValue: String, objectParameter: T, newParameter: T) {
             do{
                 try self.realm.write {
                     object.setValue(newParameter, forKey: keyValue)

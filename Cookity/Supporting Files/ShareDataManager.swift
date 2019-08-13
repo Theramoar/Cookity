@@ -20,15 +20,13 @@ class ShareDataManager {
             return nil
         }
         
-        let dataManager = RealmDataManager()
-        
         if let recipe = try? JSONDecoder().decode(Recipe.self, from: data) {
-            dataManager.saveToRealm(parentObject: nil, object: recipe)
+            RealmDataManager.saveToRealm(parentObject: nil, object: recipe)
             try? FileManager.default.removeItem(at: url)
             return recipe
         }
         else if let cart = try? JSONDecoder().decode(ShoppingCart.self, from: data) {
-            dataManager.saveToRealm(parentObject: nil, object: cart)
+            RealmDataManager.saveToRealm(parentObject: nil, object: cart)
             try? FileManager.default.removeItem(at: url)
             return cart
         }

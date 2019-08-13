@@ -34,7 +34,7 @@ class CookViewController: SwipeTableViewController {
     var pickedImage: UIImage?
     var editedRecipe: Recipe? {
         didSet{
-            dataManager.loadFromRealm(vc: self, parentObject: editedRecipe)
+            RealmDataManager.loadFromRealm(vc: self, parentObject: editedRecipe)
         }
     }
     
@@ -118,12 +118,14 @@ class CookViewController: SwipeTableViewController {
     func textFieldDidEndEditing(_ textField: UITextField) {
         backButton.isEnabled = true
         deleteButton.isEnabled = true
-        guard let text = textField.text else { return }
+        guard var text = textField.text else { return }
         if text.isEmpty {
             textField.text = editedText
             return
         }
-        if textField.frame.maxX == 289, Float(text) == nil {
+        print(text)
+        text = text.replacingOccurrences(of: ",", with: ".")
+        if textField.accessibilityIdentifier == "quantityTextField", Float(text) == nil {
             textField.text = editedText
             return
         }
@@ -142,7 +144,7 @@ class CookViewController: SwipeTableViewController {
     
     
     //MARK:- Data Management Methods
-    func saveStep(step: String) {
+    internal func saveStep(step: String) {
         let newStep = RecipeStep()
         newStep.name = step
         if recipeSteps?.append(newStep) == nil {
@@ -164,46 +166,72 @@ class CookViewController: SwipeTableViewController {
         productsTable.reloadData()
     }
     
-    func saveRecipe() {
+    private func configureNumbers() {
+        for product in products {
+            let quantityString = String(product.quantity)
+            (product.quantity, product.measure) = Configuration.configNumbers(quantity: quantityString,
+                                                                              measure: product.measure)
+        }
+    }
+    
+    private func saveRecipe() {
         var recipe: Recipe
         
         if editedRecipe != nil {
             recipe = editedRecipe!
             let newName = (recipeName?.text)!
-            dataManager.changeElementIn(object: recipe, keyValue: "name", objectParameter: recipe.name, newParameter: newName)
+            RealmDataManager.changeElementIn(object: recipe, keyValue: "name", objectParameter: recipe.name, newParameter: newName)
             for product in recipe.products {
-                dataManager.deleteFromRealm(object: product)
+                RealmDataManager.deleteFromRealm(object: product)
             }
             for recipeStep in recipe.recipeSteps {
-                dataManager.deleteFromRealm(object: recipeStep)
+                RealmDataManager.deleteFromRealm(object: recipeStep)
             }
         }
         else {
             recipe = Recipe()
             recipe.name = (recipeName?.text)!
-            dataManager.saveToRealm(parentObject: nil, object: recipe)
+            RealmDataManager.saveToRealm(parentObject: nil, object: recipe)
         }
 
         for product in products {
-            dataManager.saveToRealm(parentObject: recipe, object: product)
+            RealmDataManager.saveToRealm(parentObject: recipe, object: product)
         }
         
         if let recipeSteps = recipeSteps {
             for recipeStep in recipeSteps {
-                dataManager.saveToRealm(parentObject: recipe, object: recipeStep)
+                RealmDataManager.saveToRealm(parentObject: recipe, object: recipeStep)
             }
         }
         
         if let imagePath = savePicture(image: pickedImage, imageName: recipe.name) {
-            dataManager.saveToRealm(parentObject: recipe, object: imagePath)
+            RealmDataManager.saveToRealm(parentObject: recipe, object: imagePath)
         }
         else if let imagePath = recipe.imagePath {
             deletePicture(imagePath: imagePath)
         }
+        
+        saveRecipeToCloud(recipe: recipe)
+    }
+    
+    private func saveRecipeToCloud(recipe: Recipe) {
+        if editedRecipe != nil {
+            CloudManager.updateRecipeInCloud(recipe: recipe)
+        }
+        else {
+            CloudManager.saveRecipeToCloud(recipe: recipe) { (recordID) in
+                DispatchQueue.main.async {
+                    RealmDataManager.changeElementIn(object: recipe,
+                                                     keyValue: "cloudID",
+                                                     objectParameter: recipe.cloudID,
+                                                     newParameter: recordID)
+                }
+            }
+        }
     }
     
     
-    func savePicture(image: UIImage?, imageName: String) -> String? {
+    private func savePicture(image: UIImage?, imageName: String) -> String? {
         guard let image = image else { return nil }
         let imagePath: String = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/\(imageName).png"
         let imageUrl: URL = URL(fileURLWithPath: imagePath)
@@ -211,7 +239,7 @@ class CookViewController: SwipeTableViewController {
         return imagePath
     }
     
-    func deletePicture(imagePath: String) {
+    private func deletePicture(imagePath: String) {
         let imageUrl: URL = URL(fileURLWithPath: imagePath)
         let fileManager = FileManager.default
         try? fileManager.removeItem(at: imageUrl)
@@ -221,16 +249,19 @@ class CookViewController: SwipeTableViewController {
     //MARK: - Methods for Buttons
     @IBAction func deleteButtonPressed(_ sender: UIButton) {
         if let recipe = editedRecipe {
+//            if let cloudID = recipe.cloudID {
+//                CloudManager.deleteRecordFromCloud(recordID: cloudID)
+//            }
             for product in recipe.products {
-                dataManager.deleteFromRealm(object: product)
+                RealmDataManager.deleteFromRealm(object: product)
             }
             for step in recipe.recipeSteps {
-                dataManager.deleteFromRealm(object: step)
+                RealmDataManager.deleteFromRealm(object: step)
             }
             if let imagePath = recipe.imagePath {
                deletePicture(imagePath: imagePath)
             }
-            dataManager.deleteFromRealm(object: recipe)
+            RealmDataManager.deleteFromRealm(object: recipe)
             
         }
         products.removeAll()
@@ -256,8 +287,8 @@ class CookViewController: SwipeTableViewController {
     
     
     @IBAction func saveButtonPressed(_ sender: UIButton) {
+        configureNumbers()
         saveRecipe()
-        
         self.dismiss(animated: true, completion: nil)
     }
 }
@@ -302,7 +333,6 @@ extension CookViewController: UITableViewDelegate, UITableViewDataSource, UIText
                 let cell = tableView.dequeueReusableCell(withIdentifier: "CookCell", for: indexPath) as! CookTableViewCell
                 cell.delegate = self as SwipeTableViewCellDelegate
                 cell.quantityForRecipe.delegate = self
-                cell.quantityForRecipe.keyboardType = .decimalPad
                 cell.productName.delegate = self
                 cell.productName.autocapitalizationType = .sentences
                 cell.productMeasure.delegate = self
@@ -311,26 +341,30 @@ extension CookViewController: UITableViewDelegate, UITableViewDataSource, UIText
     
                 
                 if editedValue[cell.productName] != nil {
-                    dataManager.changeElementIn(object: product, keyValue: "name", objectParameter: product.name, newParameter: editedValue[cell.productName])
+                    RealmDataManager.changeElementIn(object: product, keyValue: "name", objectParameter: product.name, newParameter: editedValue[cell.productName])
                     editedValue.removeAll()
                 }
                 
-                if editedValue[cell.quantityForRecipe] != nil {
-                    let newQuantity = Int(editedValue[cell.quantityForRecipe]!)
-                    dataManager.changeElementIn(object: product, keyValue: "quantity", objectParameter: product.quantity, newParameter: newQuantity)
+                if let quantity = editedValue[cell.quantityForRecipe] {
+                    print(quantity)
+                    let (newQuantity, newMeasure) = Configuration.configNumbers(quantity: quantity, measure: product.measure)
+                    
+                    print(newQuantity)
+                    print(newMeasure)
+                    product.quantity = newQuantity
+                    product.measure = newMeasure
                     editedValue.removeAll()
                 }
                 
                 if editedValue[cell.productMeasure] != nil {
                     let measure = Configuration.configMeasure(measure: editedValue[cell.productMeasure]!)
-                    dataManager.changeElementIn(object: product, keyValue: "measure", objectParameter: product.measure, newParameter: measure)
+                    RealmDataManager.changeElementIn(object: product, keyValue: "measure", objectParameter: product.measure, newParameter: measure)
                     editedValue.removeAll()
                 }
 
-                var (presentedQuantity, presentedMeasure) = Configuration.presentNumbers(quantity: product.quantity, measure: product.measure)
-                presentedMeasure = Configuration.configMeasure(measure: presentedMeasure)
+                let presentedMeasure = Configuration.configMeasure(measure: product.measure)
                 cell.productName.text = product.name
-                cell.quantityForRecipe.text = presentedQuantity
+                cell.quantityForRecipe.text = String(product.quantity)
                 cell.productMeasure.text = presentedMeasure
                 
                 return cell
@@ -352,7 +386,7 @@ extension CookViewController: UITableViewDelegate, UITableViewDataSource, UIText
                 if let recipeStep = recipeSteps?[indexPath.row - 1] {
                     
                     if editedValue[cell.recipeStepCell] != nil {
-                        dataManager.changeElementIn(object: recipeStep, keyValue: "name", objectParameter: recipeStep.name, newParameter: editedValue[cell.recipeStepCell])
+                        RealmDataManager.changeElementIn(object: recipeStep, keyValue: "name", objectParameter: recipeStep.name, newParameter: editedValue[cell.recipeStepCell])
                         editedValue.removeAll()
                     }
                     cell.recipeStepCell.text = recipeStep.name

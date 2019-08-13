@@ -37,7 +37,7 @@ class FridgeViewController: SwipeTableViewController {
         addButton.layer.shadowOpacity = 0.7
         addButton.layer.shadowRadius = 5.0
         
-        dataManager.loadFromRealm(vc: self, parentObject: nil)
+        RealmDataManager.loadFromRealm(vc: self, parentObject: nil)
         
         //add long gesture recognizer
         let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.longPressed))
@@ -98,7 +98,7 @@ class FridgeViewController: SwipeTableViewController {
     
     override func deleteObject(at indexPath: IndexPath) {
         if let product = self.products?[indexPath.row] {
-            dataManager.deleteFromRealm(object: product)
+            RealmDataManager.deleteFromRealm(object: product)
             fridgeTableView.reloadData()
         }
     }
@@ -106,7 +106,7 @@ class FridgeViewController: SwipeTableViewController {
     func uncheck(_ products: Results<Product>?) {
         guard let products = products else { return }
         for product in products {
-            dataManager.changeElementIn(object: product,
+            RealmDataManager.changeElementIn(object: product,
                                         keyValue: "checkForRecipe",
                                         objectParameter: product.checkForRecipe,
                                         newParameter: false)
@@ -164,7 +164,7 @@ extension FridgeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if let product = products?[indexPath.row]{
-            dataManager.changeElementIn(object: product,
+            RealmDataManager.changeElementIn(object: product,
                                         keyValue: "checkForRecipe",
                                         objectParameter: product.checkForRecipe,
                                         newParameter: !product.checkForRecipe)

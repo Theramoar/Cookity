@@ -8,6 +8,7 @@
 
 import Foundation
 import RealmSwift
+import CloudKit
 
 
 enum RecipeCodingKeys: String, CodingKey {
@@ -20,11 +21,23 @@ enum RecipeCodingKeys: String, CodingKey {
 class Recipe: Object, Codable {
     
     @objc dynamic var name: String = ""
-    let products = List<Product>()
+    var products = List<Product>()
     var recipeSteps = List<RecipeStep>()
     @objc dynamic var imagePath: String?
-    @objc dynamic var cloudRecordName: String?
+    @objc dynamic var cloudID: String?
 
+    
+    
+    convenience init(record: CKRecord, products: List<Product>?, steps: List<RecipeStep>?) {
+        self.init()
+        
+        self.name = record.value(forKey: "name") as! String
+        self.cloudID = record.recordID.recordName
+        self.products = products ?? List<Product>()
+        self.recipeSteps = steps ?? List<RecipeStep>()
+    }
+    
+    
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: RecipeCodingKeys.self)

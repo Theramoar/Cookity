@@ -8,8 +8,14 @@
 
 import Foundation
 import RealmSwift
+import CloudKit
 
 class RecipeStep: Object, Codable {
     
     @objc dynamic var name: String = ""
+    
+    convenience init(record: CKRecord) {
+        self.init()
+        name = record.value(forKey: "name") as! String
+    }
 }

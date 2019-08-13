@@ -24,7 +24,7 @@ class RecipeViewController: UIViewController {
     
     var selectedRecipe: Recipe?{
         didSet{
-            dataManager.loadFromRealm(vc: self, parentObject: selectedRecipe)
+            RealmDataManager.loadFromRealm(vc: self, parentObject: selectedRecipe)
         }
     }
     
@@ -116,7 +116,7 @@ class RecipeViewController: UIViewController {
                 newCart.products.append(coppiedProduct)
             }
         }
-        dataManager.saveToRealm(parentObject: nil, object: newCart)
+        RealmDataManager.saveToRealm(parentObject: nil, object: newCart)
     }
     
     
@@ -137,11 +137,11 @@ class RecipeViewController: UIViewController {
                 if let selectedProduct = chosenProducts[recipeProduct.name] {
                     //If the quantity of the product in Recipe is less than in the Fridge substracts it, else deletes it from the fridge
                     if recipeProduct.quantity >= selectedProduct.quantity {
-                        dataManager.deleteFromRealm(object: selectedProduct)
+                        RealmDataManager.deleteFromRealm(object: selectedProduct)
                     }
                     else{
                         let newQuantity = selectedProduct.quantity - recipeProduct.quantity
-                        dataManager.changeElementIn(object: selectedProduct, keyValue: "quantity", objectParameter: selectedProduct.quantity, newParameter: newQuantity)
+                        RealmDataManager.changeElementIn(object: selectedProduct, keyValue: "quantity", objectParameter: selectedProduct.quantity, newParameter: newQuantity)
                     }
                 }
             }

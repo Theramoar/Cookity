@@ -28,7 +28,6 @@ final class FirstLaunch {
     }
     
     func createTutorial() {
-        let dataManager = RealmDataManager()
         let cart = ShoppingCart()
         cart.name = "Tutorial"
         
@@ -46,7 +45,7 @@ final class FirstLaunch {
             cart.products.append(product)
         }
         
-        dataManager.saveToRealm(parentObject: nil, object: cart)
+        RealmDataManager.saveToRealm(parentObject: nil, object: cart)
     }
     
 }
