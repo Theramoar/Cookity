@@ -14,7 +14,7 @@ class RecipeViewController: UIViewController {
     private let dataManager = RealmDataManager()
     
     var productsForRecipe: List<Product>?
-    var productsInFridge: Results<Product>?
+    var productsInFridge: List<Product>?
     var recipeSteps: List<RecipeStep>?
     var chosenProducts = [String : Product]() // The variable is used to store the products chosen from the Fridge list. The Key - name of the Recipe Product
     @IBOutlet weak var productTable: UITableView!
@@ -24,7 +24,10 @@ class RecipeViewController: UIViewController {
     
     var selectedRecipe: Recipe?{
         didSet{
-            RealmDataManager.loadFromRealm(vc: self, parentObject: selectedRecipe)
+//            RealmDataManager.loadFromRealm(vc: self, parentObject: selectedRecipe)
+            productsForRecipe = selectedRecipe?.products
+            recipeSteps = selectedRecipe?.recipeSteps
+            productsInFridge = Fridge.shared.products
         }
     }
     
@@ -117,6 +120,14 @@ class RecipeViewController: UIViewController {
             }
         }
         RealmDataManager.saveToRealm(parentObject: nil, object: newCart)
+        CloudManager.saveDataToCloud(ofType: .Cart, object: newCart) { (recordID) in
+            DispatchQueue.main.async {
+                RealmDataManager.changeElementIn(object: newCart,
+                                                 keyValue: "cloudID",
+                                                 objectParameter: newCart.cloudID,
+                                                 newParameter: recordID)
+            }
+        }
     }
     
     

@@ -17,7 +17,7 @@ class CartCollectionViewController: SwipeTableViewController {
     @IBOutlet weak var addCartButton: UIButton!
     
     var shoppingCarts: Results<ShoppingCart>?
-    var productsInFridge: Results<Product>?
+    var productsInFridge: List<Product>?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,8 +32,10 @@ class CartCollectionViewController: SwipeTableViewController {
         addCartButton.layer.shadowOffset = CGSize(width: 0, height: 3.0)
         addCartButton.layer.shadowOpacity = 0.7
         addCartButton.layer.shadowRadius = 5.0
+        shoppingCarts = RealmDataManager.dataLoadedFromRealm(ofType: .Cart)
+        productsInFridge = Fridge.shared.products
+        loadDataFromCloud()
         
-        RealmDataManager.loadFromRealm(vc: self, parentObject: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -47,9 +49,18 @@ class CartCollectionViewController: SwipeTableViewController {
     }
     
     //MARK: - Data Manipulation Methods
+    private func loadDataFromCloud() {
+        let objects = Array(shoppingCarts!)
+        CloudManager.loadDataFromCloud(ofType: .Cart, recipes: objects) { (parentObject) in
+            RealmDataManager.saveToRealm(parentObject: nil, object: parentObject)
+            self.tableView.reloadData()
+        }
+    }
+    
     func addProductsToFridge(at indexPath: IndexPath){
         guard let products = self.shoppingCarts?[indexPath.row].products.filter("inFridge == NO") else { return }
         
+        var copiedProducts = [Product]()
         for product in products {
             //Checks if the similar product is already in the fridge
             for fridgeProduct in productsInFridge!{
@@ -67,12 +78,12 @@ class CartCollectionViewController: SwipeTableViewController {
             }
             if product.isInvalidated == false{
                 let coppiedProduct = Product(value: product)
-                coppiedProduct.inFridge = true
                 coppiedProduct.checked = false
-                RealmDataManager.saveToRealm(parentObject: nil, object: coppiedProduct)
+                RealmDataManager.saveToRealm(parentObject: Fridge.shared, object: coppiedProduct)
+                copiedProducts.append(coppiedProduct)
             }
         }
-        tableView.reloadData()
+        CloudManager.saveChildrenToCloud(ofType: .Product, objects: copiedProducts, parentRecord: nil)
     }
     
     override func deleteObject(at indexPath: IndexPath) {

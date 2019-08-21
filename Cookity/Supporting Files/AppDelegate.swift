@@ -54,6 +54,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if firstLaunch.isFirstLaunch {
             firstLaunch.createTutorial()
         }
+        
+        let _: Results<Fridge>? = RealmDataManager.dataLoadedFromRealm(ofType: .Fridge)
+        
+        if Fridge.shared.cloudID == nil {
+            CloudManager.loadFridgeFromCloud { (recordID) in
+                DispatchQueue.main.async {
+                    RealmDataManager.saveToRealm(parentObject: Fridge.shared, object: recordID)
+                }
+                
+            }
+        }
         return true
     }
     
@@ -65,6 +76,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         guard let object = ShareDataManager.importData(from: url) else { return false }
         
         if let cart = object as? ShoppingCart {
+            CloudManager.saveDataToCloud(ofType: .Cart, object: cart) { (recordID) in
+                DispatchQueue.main.async {
+                    RealmDataManager.changeElementIn(object: cart,
+                                                     keyValue: "cloudID",
+                                                     objectParameter: cart.cloudID,
+                                                     newParameter: recordID)
+                }
+            }
             guard
                 let tabBarViewController = window?.rootViewController as? UITabBarController,
                 let navigationController  = tabBarViewController.viewControllers?.first as? UINavigationController,
@@ -79,6 +98,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return true
         }
         else if let recipe = object as? Recipe {
+            CloudManager.saveDataToCloud(ofType: .Recipe, object: recipe) { (recordID) in
+                DispatchQueue.main.async {
+                    RealmDataManager.changeElementIn(object: recipe,
+                                                     keyValue: "cloudID",
+                                                     objectParameter: recipe.cloudID,
+                                                     newParameter: recordID)
+                }
+            }
             guard
                 let tabBarViewController = window?.rootViewController as? UITabBarController
                 else { return true }
@@ -93,7 +120,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let vc = storyboard.instantiateViewController(withIdentifier: String(describing: RecipeViewController.self))
             guard let vc2 = vc as? RecipeViewController else { return true }
             vc2.selectedRecipe = recipe
-                
             navigationController.viewControllers = [vc1,vc2]
             return true
         }

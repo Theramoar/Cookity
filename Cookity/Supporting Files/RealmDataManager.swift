@@ -9,65 +9,30 @@
 import Foundation
 import RealmSwift
 
-
-
 class RealmDataManager {
     
     private static let realm = try! Realm()
     
-    
-    static func loadFromRealm(vc: UIViewController?, parentObject: Object?) {
-        
-        if let vc = vc as? CartViewController, let selectedCart = parentObject as? ShoppingCart {
-            vc.products = selectedCart.products.filter("inFridge == NO")
-            vc.productsInFridge = realm.objects(Product.self).filter("inFridge == YES")
-            
-        }
-        else if let vc = vc as? CartCollectionViewController {
-            vc.shoppingCarts = realm.objects(ShoppingCart.self)
-            vc.productsInFridge = realm.objects(Product.self).filter("inFridge == YES")
-        }
-        else if let vc = vc as? FridgeViewController {
-            vc.products = realm.objects(Product.self).filter("inFridge == YES")
-        }
-        else if let vc = vc as? RecipeCollectionViewController {
-            vc.recipeList = realm.objects(Recipe.self)
-        }
-        else if let vc = vc as? RecipeViewController, let selectedRecipe = parentObject as? Recipe {
-            vc.productsForRecipe = selectedRecipe.products
-            vc.recipeSteps = selectedRecipe.recipeSteps
-            vc.productsInFridge = realm.objects(Product.self).filter("inFridge == YES")
-        }
-        else if let vc = vc as? CookViewController, let recipe = parentObject as? Recipe {
-            for product in recipe.products {
-                let product = Product(value: product)
-                vc.products.append(product)
-            }
-            for recipeStep in recipe.recipeSteps {
-                let recipeStep = RecipeStep(value: recipeStep)
-                if vc.recipeSteps?.append(recipeStep) == nil {
-                    vc.recipeSteps = [recipeStep]
+    static func dataLoadedFromRealm<T>(ofType type: ParentData) -> Results<T>? {
+        switch type {
+            case .Cart:
+                let shoppingCarts = realm.objects(ShoppingCart.self) as? Results<T>
+                return shoppingCarts
+            case .Recipe:
+                let loadedRecipes = realm.objects(Recipe.self) as? Results<T>
+                return loadedRecipes
+            case .Fridge:
+                let loadedFridge = realm.objects(Fridge.self)
+                guard let fridge = loadedFridge.first else {
+                    saveToRealm(parentObject: nil, object: Fridge.shared)
+                    return loadedFridge as? Results<T>
                 }
-            }
-            if let imagePath = recipe.imagePath {
-                let imageUrl: URL = URL(fileURLWithPath: imagePath)
-                if FileManager.default.fileExists(atPath: imagePath),
-                    let imageData: Data = try? Data(contentsOf: imageUrl),
-                    let image: UIImage = UIImage(data: imageData) {
-                    vc.pickedImage = image
-                }
-            }
-        }
-        else if let vc = vc as? PopupEditViewController, let product = parentObject as? Product {
-            
-            var (presentedQuantity, presentedMeasure) = Configuration.presentNumbers(quantity: product.quantity, measure: product.measure)
-            presentedMeasure = Configuration.configMeasure(measure: presentedMeasure)
-            
-            vc.nameText.text = product.name
-            vc.quantityText.text = presentedQuantity
-            vc.measureText.text = presentedMeasure
+                Fridge.shared = fridge
+                return loadedFridge as? Results<T>
         }
     }
+    
+
     
     static func deleteFromRealm(object: Object){
         do{
@@ -83,7 +48,22 @@ class RealmDataManager {
     
     static func saveToRealm<T>(parentObject: Object?, object: T) {
         
-        if let parentObject = parentObject as? ShoppingCart{
+        if let parentObject = parentObject as? Fridge {
+            do{
+                try realm.write {
+                    if let cloudID = object as? String {
+                        parentObject.cloudID = cloudID
+                    }
+                    else if let product = object as? Product {
+                        parentObject.products.append(product)
+                    }
+                    
+                }
+            }catch{
+                print("Error saving context in Product \(error)")
+            }
+        }
+        else if let parentObject = parentObject as? ShoppingCart{
             do{
                 try realm.write {
                     parentObject.products.append(object as! Product)
@@ -103,7 +83,6 @@ class RealmDataManager {
                         parentObject.recipeSteps.append(object as! RecipeStep)
                     }
                     else if let path = object as? String {
-                        print("PATH - \(path)")
                         parentObject.imagePath = path
                     }
                 }
@@ -111,18 +90,20 @@ class RealmDataManager {
                 print("Error saving context in Product \(error)")
             }
         }
-
         else {
             do{
                 try realm.write {
-                    if type(of: object) == ShoppingCart.self {
-                        realm.add(object as! ShoppingCart)
+                    if let cart = object as? ShoppingCart {
+                        realm.add(cart)
                     }
-                    else if type(of: object) == Recipe.self {
-                        realm.add(object as! Recipe)
+                    else if let recipe = object as? Recipe {
+                        realm.add(recipe)
                     }
-                    else if type(of: object) == Product.self {
-                        realm.add(object as! Product)
+                    else if let product = object as? Product {
+                        realm.add(product)
+                    }
+                    else if let fridge = object as? Fridge {
+                        realm.add(fridge)
                     }
                 }
             }catch{
@@ -141,6 +122,22 @@ class RealmDataManager {
             {
                 print("Error while changing items \(error)")
             }
+    }
+    
+    //MARK:- Filepath data saving
+    
+    static func savePicture(image: UIImage?, imageName: String) -> String? {
+        guard let image = image else { return nil }
+        let imagePath: String = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/\(imageName).png"
+        let imageUrl: URL = URL(fileURLWithPath: imagePath)
+        try? image.pngData()?.write(to: imageUrl)
+        return imagePath
+    }
+    
+    static func deletePicture(imagePath: String) {
+        let imageUrl: URL = URL(fileURLWithPath: imagePath)
+        let fileManager = FileManager.default
+        try? fileManager.removeItem(at: imageUrl)
     }
     
 }

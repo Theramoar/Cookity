@@ -8,17 +8,34 @@
 
 import Foundation
 import RealmSwift
+import CloudKit
 
+
+protocol ParentObject: Object {
+    var name: String { get set }
+    var products: List<Product> { get set }
+    var cloudID: String? { get set }
+}
 
 enum ShoppingCartCodingKeys: String, CodingKey {
     case cartName
     case cartProducts
 }
 
-class ShoppingCart: Object, Codable {
+class ShoppingCart: Object, ParentObject, Codable {
     
     @objc dynamic var name: String = ""
-    let products = List<Product>()
+    @objc dynamic var cloudID: String?
+    var products = List<Product>()
+    
+    
+    convenience init(record: CKRecord, products: List<Product>?) {
+        self.init()
+        self.name = record.value(forKey: "name") as! String
+        self.cloudID = record.recordID.recordName
+        self.products = products ?? List<Product>()
+    }
+    
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: ShoppingCartCodingKeys.self)

@@ -48,15 +48,23 @@ class RecipeCollectionViewController: UIViewController {
         addRecipeButton.layer.shadowOpacity = 0.7
         addRecipeButton.layer.shadowRadius = 5.0
         
-        RealmDataManager.loadFromRealm(vc: self, parentObject: nil)
+        recipeList = RealmDataManager.dataLoadedFromRealm(ofType: .Recipe)
         loadDataFromCloud()
 
     }
     
     private func loadDataFromCloud() {
-        CloudManager.loadDataFromCloud(data: .Recipes, recipes: recipeList!, closure: { (recipe) in
+        let recipes = Array(recipeList!)
+        CloudManager.loadDataFromCloud(ofType: .Recipe, recipes: recipes, closure: { (parentObject) in
+            guard let recipe = parentObject as? Recipe else { return }
             RealmDataManager.saveToRealm(parentObject: nil, object: recipe)
             self.recipeCollection.reloadData()
+            CloudManager.loadImageFromCloud(recipe: recipe, closure: { (imageData) in
+                guard let data = imageData, let image = UIImage(data: data) else { return }
+                let imagePath = RealmDataManager.savePicture(image: image, imageName: recipe.name)
+                RealmDataManager.saveToRealm(parentObject: recipe, object: imagePath)
+                self.recipeCollection.reloadData()
+            })
         })
     }
     
@@ -114,6 +122,7 @@ extension RecipeCollectionViewController: UISearchResultsUpdating {
         guard let searchText = searchController.searchBar.text else { return }
         filteredRecipeList.removeAll()
         var filteredRecipeNames: [String] = [] // заменить потом на уникальный recipe ID
+        
         if let filteredRecipes = recipeList?.filter("name CONTAINS[cd] %@", searchText), filteredRecipes.count > 0 {
             filteredRecipeList.append(contentsOf: filteredRecipes)
             filteredRecipes.forEach { (recipe) in

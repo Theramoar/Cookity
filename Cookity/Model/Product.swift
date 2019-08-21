@@ -15,10 +15,11 @@ class Product: Object, Codable {
     @objc dynamic var name: String = ""
     @objc dynamic var quantity: Int = 0
     @objc dynamic var measure: String = ""
+    @objc dynamic var cloudID: String?
     
     @objc dynamic var checked: Bool = false
-    @objc dynamic var inFridge: Bool = false
-    @objc dynamic var checkForRecipe = false
+    @objc dynamic var checkForRecipe: Bool = false
+    
     
     convenience init(record: CKRecord) {
         self.init()
@@ -26,9 +27,10 @@ class Product: Object, Codable {
         name = record.value(forKey: "name") as! String
         quantity = record.value(forKey: "quantity") as! Int
         measure = record.value(forKey: "measure") as! String
+        self.cloudID = record.recordID.recordName
         
         checked = false
-        inFridge = false
+//        inFridge = false
         checkForRecipe = false
     }
     

@@ -34,7 +34,7 @@ class CookViewController: SwipeTableViewController {
     var pickedImage: UIImage?
     var editedRecipe: Recipe? {
         didSet{
-            RealmDataManager.loadFromRealm(vc: self, parentObject: editedRecipe)
+            Configuration.configureViewController(ofType: self, parentObject: editedRecipe)
         }
     }
     
@@ -204,11 +204,11 @@ class CookViewController: SwipeTableViewController {
             }
         }
         
-        if let imagePath = savePicture(image: pickedImage, imageName: recipe.name) {
+        if let imagePath = RealmDataManager.savePicture(image: pickedImage, imageName: recipe.name) {
             RealmDataManager.saveToRealm(parentObject: recipe, object: imagePath)
         }
         else if let imagePath = recipe.imagePath {
-            deletePicture(imagePath: imagePath)
+            RealmDataManager.deletePicture(imagePath: imagePath)
         }
         
         saveRecipeToCloud(recipe: recipe)
@@ -219,7 +219,7 @@ class CookViewController: SwipeTableViewController {
             CloudManager.updateRecipeInCloud(recipe: recipe)
         }
         else {
-            CloudManager.saveRecipeToCloud(recipe: recipe) { (recordID) in
+            CloudManager.saveDataToCloud(ofType: .Recipe, object: recipe) { (recordID) in
                 DispatchQueue.main.async {
                     RealmDataManager.changeElementIn(object: recipe,
                                                      keyValue: "cloudID",
@@ -230,20 +230,7 @@ class CookViewController: SwipeTableViewController {
         }
     }
     
-    
-    private func savePicture(image: UIImage?, imageName: String) -> String? {
-        guard let image = image else { return nil }
-        let imagePath: String = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/\(imageName).png"
-        let imageUrl: URL = URL(fileURLWithPath: imagePath)
-        try? image.pngData()?.write(to: imageUrl)
-        return imagePath
-    }
-    
-    private func deletePicture(imagePath: String) {
-        let imageUrl: URL = URL(fileURLWithPath: imagePath)
-        let fileManager = FileManager.default
-        try? fileManager.removeItem(at: imageUrl)
-    }
+
     
 
     //MARK: - Methods for Buttons
@@ -259,7 +246,7 @@ class CookViewController: SwipeTableViewController {
                 RealmDataManager.deleteFromRealm(object: step)
             }
             if let imagePath = recipe.imagePath {
-               deletePicture(imagePath: imagePath)
+               RealmDataManager.deletePicture(imagePath: imagePath)
             }
             RealmDataManager.deleteFromRealm(object: recipe)
             

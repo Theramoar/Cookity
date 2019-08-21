@@ -199,6 +199,14 @@ class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, Meas
             cart.products.append(product)
         }
         RealmDataManager.saveToRealm(parentObject: nil, object: cart)
+        CloudManager.saveDataToCloud(ofType: .Cart, object: cart) { (recordID) in
+            DispatchQueue.main.async {
+                RealmDataManager.changeElementIn(object: cart,
+                                                 keyValue: "cloudID",
+                                                 objectParameter: cart.cloudID,
+                                                 newParameter: recordID)
+            }
+        }
     }
     
     override func deleteObject(at indexPath: IndexPath) {

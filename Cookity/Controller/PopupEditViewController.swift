@@ -71,7 +71,7 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate, MeasurePic
         dismissTapGesture.cancelsTouchesInView = false
         self.view.addGestureRecognizer(dismissTapGesture)
         
-        RealmDataManager.loadFromRealm(vc: self, parentObject: selectedProduct)
+        Configuration.configureViewController(ofType: self, parentObject: selectedProduct)
         
         
     }
@@ -159,6 +159,7 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate, MeasurePic
                                     keyValue: "measure",
                                     objectParameter: selectedProduct.measure,
                                     newParameter: savedMeasure)
+        CloudManager.updateProductInCloud(product: selectedProduct)
         
         if let parentVC = parentVC as? CartViewController {
             parentVC.tableView.reloadData()

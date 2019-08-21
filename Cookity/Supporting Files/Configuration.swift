@@ -101,4 +101,36 @@ class Configuration {
             }
         return (false, nil)
     }
+    
+    
+    static func configureViewController(ofType vc: UIViewController?, parentObject: Object?) {
+        
+        if let vc = vc as? CookViewController, let recipe = parentObject as? Recipe {
+            for product in recipe.products {
+                let product = Product(value: product)
+                vc.products.append(product)
+            }
+            for recipeStep in recipe.recipeSteps {
+                let recipeStep = RecipeStep(value: recipeStep)
+                if vc.recipeSteps?.append(recipeStep) == nil {
+                    vc.recipeSteps = [recipeStep]
+                }
+            }
+            if let imagePath = recipe.imagePath {
+                let imageUrl: URL = URL(fileURLWithPath: imagePath)
+                if FileManager.default.fileExists(atPath: imagePath),
+                    let imageData: Data = try? Data(contentsOf: imageUrl),
+                    let image: UIImage = UIImage(data: imageData) {
+                    vc.pickedImage = image
+                }
+            }
+        }
+        else if let vc = vc as? PopupEditViewController, let product = parentObject as? Product {
+            var (presentedQuantity, presentedMeasure) = Configuration.presentNumbers(quantity: product.quantity, measure: product.measure)
+            presentedMeasure = Configuration.configMeasure(measure: presentedMeasure)
+            vc.nameText.text = product.name
+            vc.quantityText.text = presentedQuantity
+            vc.measureText.text = presentedMeasure
+        }
+    }
 }

@@ -12,7 +12,7 @@ import SwipeCellKit
 
 class FridgeViewController: SwipeTableViewController {
 
-    var products: Results<Product>?
+    var products: List<Product>?
     var selectedIndexPath: IndexPath? //variable is used to store the IndexPath selected by LongTap Gesture
     var checkedProducts = 0
 
@@ -37,7 +37,9 @@ class FridgeViewController: SwipeTableViewController {
         addButton.layer.shadowOpacity = 0.7
         addButton.layer.shadowRadius = 5.0
         
-        RealmDataManager.loadFromRealm(vc: self, parentObject: nil)
+        products = Fridge.shared.products
+//        RealmDataManager.loadFromRealm(vc: self, parentObject: nil)
+        
         
         //add long gesture recognizer
         let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.longPressed))
@@ -103,7 +105,7 @@ class FridgeViewController: SwipeTableViewController {
         }
     }
     
-    func uncheck(_ products: Results<Product>?) {
+    func uncheck(_ products: List<Product>?) {
         guard let products = products else { return }
         for product in products {
             RealmDataManager.changeElementIn(object: product,

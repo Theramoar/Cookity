@@ -14,7 +14,7 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
     
     let impact = UIImpactFeedbackGenerator()
     
-    var productsInFridge: Results<Product>?
+    var productsInFridge: List<Product>?
     var products: Results<Product>?
     
     @IBOutlet var tableView: UITableView!
@@ -43,7 +43,10 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
 
     var selectedCart: ShoppingCart?{
         didSet{
-            RealmDataManager.loadFromRealm(vc: self, parentObject: selectedCart)
+            Configuration.configureViewController(ofType: self, parentObject: selectedCart)
+            products = selectedCart?.products.filter(NSPredicate(value: true))
+            productsInFridge = Fridge.shared.products
+            
         }
     }
     
@@ -183,10 +186,12 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
             newProduct.quantity = savedQuantity
             newProduct.measure = savedMeasure
             RealmDataManager.saveToRealm(parentObject: currentCart, object: newProduct)
+            CloudManager.updateCartInCloud(with: newProduct, cart: currentCart)
         }
         tableView.reloadData()
         return true
     }
+    
     
     func moveProductsToFridge() {
         guard let products = products,
@@ -194,29 +199,32 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
             let selectedCart = selectedCart
         else { return }
         
+        var copiedProducts = [Product]()
         for product in products {
             //Checks if the similar product is already in the fridge
             for fridgeProduct in productsInFridge{
                 // if products name and measure coincide, adds quantity and deletes product from the shopping list
-                if product.name.lowercased() == fridgeProduct.name.lowercased() && product.measure == fridgeProduct.measure{
+                if product.name.lowercased() == fridgeProduct.name.lowercased() && product.measure == fridgeProduct.measure {
                     let newQuantity = fridgeProduct.quantity + product.quantity
                     RealmDataManager.changeElementIn(object: fridgeProduct,
                                                      keyValue: "quantity",
                                                      objectParameter: fridgeProduct.quantity,
                                                      newParameter: newQuantity)
                     RealmDataManager.deleteFromRealm(object: product)
+                    CloudManager.updateProductInCloud(product: fridgeProduct)
                     break
                 }
             }
             if product.isInvalidated == false{
                 let coppiedProduct = Product(value: product)
-                coppiedProduct.inFridge = true
                 coppiedProduct.checked = false
-                RealmDataManager.saveToRealm(parentObject: nil, object: coppiedProduct)
+                RealmDataManager.saveToRealm(parentObject: Fridge.shared, object: coppiedProduct)
                 RealmDataManager.deleteFromRealm(object: product)
+                copiedProducts.append(coppiedProduct)
             }
-            tableView.reloadData()
         }
+        CloudManager.saveChildrenToCloud(ofType: .Product, objects: copiedProducts, parentRecord: nil)
+        //Delete Cart from Cloud
         RealmDataManager.deleteFromRealm(object: selectedCart)
         
         if let nav = self.navigationController {

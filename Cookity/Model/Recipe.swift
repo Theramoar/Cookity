@@ -18,7 +18,7 @@ enum RecipeCodingKeys: String, CodingKey {
     case recipeImageData
 }
 
-class Recipe: Object, Codable {
+class Recipe: Object, ParentObject, Codable {
     
     @objc dynamic var name: String = ""
     var products = List<Product>()

@@ -32,6 +32,7 @@
 		1CBF527721D2CFB700972CB5 /* RecipeStepTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CBF527621D2CFB700972CB5 /* RecipeStepTableViewCell.swift */; };
 		1CCC6376219383B40066919E /* PopupEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CCC6375219383B40066919E /* PopupEditViewController.swift */; };
 		3A52DC7F3D045742F39E9C43 /* Pods_Cookity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B8C92B62FE3AF11FE18BB20 /* Pods_Cookity.framework */; };
+		BB07766E230933B900A9E5D3 /* Fridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB07766D230933B900A9E5D3 /* Fridge.swift */; };
 		BB0F24DB223EC4F700A3D8EF /* CreateListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0F24DA223EC4F700A3D8EF /* CreateListCell.swift */; };
 		BB0F24DD2240313E00A3D8EF /* RecipeStepCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0F24DC2240313E00A3D8EF /* RecipeStepCell.swift */; };
 		BB0F24DF2242D04800A3D8EF /* MeasurePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0F24DE2242D04800A3D8EF /* MeasurePicker.swift */; };
@@ -90,6 +91,7 @@
 		1CBEB2AF21CE7DBD0036E996 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1CBF527621D2CFB700972CB5 /* RecipeStepTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeStepTableViewCell.swift; sourceTree = "<group>"; };
 		1CCC6375219383B40066919E /* PopupEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupEditViewController.swift; sourceTree = "<group>"; };
+		BB07766D230933B900A9E5D3 /* Fridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fridge.swift; sourceTree = "<group>"; };
 		BB0F24DA223EC4F700A3D8EF /* CreateListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateListCell.swift; sourceTree = "<group>"; };
 		BB0F24DC2240313E00A3D8EF /* RecipeStepCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeStepCell.swift; sourceTree = "<group>"; };
 		BB0F24DE2242D04800A3D8EF /* MeasurePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurePicker.swift; sourceTree = "<group>"; };
@@ -141,10 +143,10 @@
 			children = (
 				1CA007C72165571B0072A908 /* AppDelegate.swift */,
 				BBB6B07922AD183900E518CC /* FirstLaunch.swift */,
-				BB26F7F3230345FC00FDD2BB /* CloudManager.swift */,
 				1C3D635922354CAE00FC4485 /* AlertExtension.swift */,
 				1CBEB20F21B70CD00036E996 /* Configuration.swift */,
 				1C72FBAC222D29A100735546 /* RealmDataManager.swift */,
+				BB26F7F3230345FC00FDD2BB /* CloudManager.swift */,
 				BBFA65DD225D0CD500EE3C2A /* ShareDataManager.swift */,
 				BBC6C5AF22F5D40500AF8423 /* SettingsVariables.swift */,
 				BB0F24DE2242D04800A3D8EF /* MeasurePicker.swift */,
@@ -189,10 +191,11 @@
 		1CA007DF2165628C0072A908 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				1CA007DD216562000072A908 /* Product.swift */,
 				1CAC8312217C72070081F24E /* ShoppingCart.swift */,
-				1C3D63572231A66800FC4485 /* RecipeStep.swift */,
 				1C4B1A0721887081007CB9FD /* Recipe.swift */,
+				BB07766D230933B900A9E5D3 /* Fridge.swift */,
+				1CA007DD216562000072A908 /* Product.swift */,
+				1C3D63572231A66800FC4485 /* RecipeStep.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -498,6 +501,7 @@
 				BB0F24E12246F27800A3D8EF /* AddCartViewController.swift in Sources */,
 				1CA007DE216562000072A908 /* Product.swift in Sources */,
 				1CBEB21021B70CD00036E996 /* Configuration.swift in Sources */,
+				BB07766E230933B900A9E5D3 /* Fridge.swift in Sources */,
 				1C3D63582231A66800FC4485 /* RecipeStep.swift in Sources */,
 				BBFA65E02263461900EE3C2A /* RecipeImageViewCell.swift in Sources */,
 				1C3D635F2238339800FC4485 /* SwipeTableViewController.swift in Sources */,
