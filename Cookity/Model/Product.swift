@@ -28,9 +28,7 @@ class Product: Object, Codable {
         quantity = record.value(forKey: "quantity") as! Int
         measure = record.value(forKey: "measure") as! String
         self.cloudID = record.recordID.recordName
-        
-        checked = false
-//        inFridge = false
+        checked = record.value(forKey: "checked") as! Bool
         checkForRecipe = false
     }
     

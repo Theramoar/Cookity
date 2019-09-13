@@ -52,11 +52,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let firstLaunch = FirstLaunch()
         if firstLaunch.isFirstLaunch {
+            SettingsVariables.isCloudEnabled = true
+            SettingsVariables.isIngridientSearchEnabled = true
             firstLaunch.createTutorial()
         }
         
         let _: Results<Fridge>? = RealmDataManager.dataLoadedFromRealm(ofType: .Fridge)
-        
         if Fridge.shared.cloudID == nil {
             CloudManager.loadFridgeFromCloud { (recordID) in
                 DispatchQueue.main.async {

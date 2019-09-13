@@ -15,4 +15,9 @@ struct SettingsVariables {
             UserDefaults.standard.set(isIngridientSearchEnabled, forKey: "isIngridientSearchEnabled")
         }
     }
+    static var isCloudEnabled: Bool = UserDefaults.standard.bool(forKey: "isCloudEnabled") {
+        didSet {
+            UserDefaults.standard.set(isCloudEnabled, forKey: "isCloudEnabled")
+        }
+    }
 }

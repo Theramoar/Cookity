@@ -12,7 +12,12 @@ import SwipeCellKit
 
 class FridgeViewController: SwipeTableViewController {
 
-    var products: List<Product>?
+    var products: List<Product>? {
+        didSet {
+            guard SettingsVariables.isCloudEnabled else { return }
+            CloudManager.syncData(ofType: .Fridge, parentObjects: [Fridge.shared])
+        }
+    }
     var selectedIndexPath: IndexPath? //variable is used to store the IndexPath selected by LongTap Gesture
     var checkedProducts = 0
 
@@ -38,9 +43,7 @@ class FridgeViewController: SwipeTableViewController {
         addButton.layer.shadowRadius = 5.0
         
         products = Fridge.shared.products
-//        RealmDataManager.loadFromRealm(vc: self, parentObject: nil)
-        
-        
+
         //add long gesture recognizer
         let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.longPressed))
         self.view.addGestureRecognizer(longPressRecognizer)
@@ -100,6 +103,9 @@ class FridgeViewController: SwipeTableViewController {
     
     override func deleteObject(at indexPath: IndexPath) {
         if let product = self.products?[indexPath.row] {
+            if let productID = product.cloudID, let fridgeID = Fridge.shared.cloudID {
+                CloudManager.deleteProductFromCloud(parentRecordID: fridgeID, productRecordID: productID)
+            }
             RealmDataManager.deleteFromRealm(object: product)
             fridgeTableView.reloadData()
         }

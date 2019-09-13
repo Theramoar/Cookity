@@ -186,7 +186,9 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
             newProduct.quantity = savedQuantity
             newProduct.measure = savedMeasure
             RealmDataManager.saveToRealm(parentObject: currentCart, object: newProduct)
-            CloudManager.updateCartInCloud(with: newProduct, cart: currentCart)
+            if let cloudID = currentCart.cloudID {
+                CloudManager.saveProductsToCloud(to: .Cart, products: [newProduct], parentRecordID: cloudID)
+            }
         }
         tableView.reloadData()
         return true
@@ -217,14 +219,20 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
             }
             if product.isInvalidated == false{
                 let coppiedProduct = Product(value: product)
+                coppiedProduct.cloudID = nil
                 coppiedProduct.checked = false
                 RealmDataManager.saveToRealm(parentObject: Fridge.shared, object: coppiedProduct)
                 RealmDataManager.deleteFromRealm(object: product)
                 copiedProducts.append(coppiedProduct)
             }
         }
-        CloudManager.saveChildrenToCloud(ofType: .Product, objects: copiedProducts, parentRecord: nil)
+        if let fridgeRecordID = Fridge.shared.cloudID {
+            CloudManager.saveProductsToCloud(to: .Fridge, products: copiedProducts, parentRecordID: fridgeRecordID)
+        }
         //Delete Cart from Cloud
+        if let recordID = selectedCart.cloudID {
+            CloudManager.deleteRecordFromCloud(ofType: .Cart, recordID: recordID)
+        }
         RealmDataManager.deleteFromRealm(object: selectedCart)
         
         if let nav = self.navigationController {
@@ -235,6 +243,9 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
     
     override func deleteObject(at indexPath: IndexPath) {
         if let product = products?[indexPath.row] {
+            if let productID = product.cloudID, let cartID = selectedCart?.cloudID {
+                CloudManager.deleteProductFromCloud(parentRecordID: cartID, productRecordID: productID)
+            }
             RealmDataManager.deleteFromRealm(object: product)
             tableView.reloadData()
         }

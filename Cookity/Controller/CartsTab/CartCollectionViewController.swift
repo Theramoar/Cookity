@@ -16,7 +16,16 @@ class CartCollectionViewController: SwipeTableViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var addCartButton: UIButton!
     
-    var shoppingCarts: Results<ShoppingCart>?
+    var shoppingCarts: Results<ShoppingCart>? {
+        didSet {
+            guard SettingsVariables.isCloudEnabled else { return }
+            var carts = [ShoppingCart]()
+            for cart in shoppingCarts! {
+                carts.append(cart)
+            }
+            CloudManager.syncData(ofType: .Cart, parentObjects: carts)
+        }
+    }
     var productsInFridge: List<Product>?
     
     override func viewDidLoad() {
@@ -35,6 +44,7 @@ class CartCollectionViewController: SwipeTableViewController {
         shoppingCarts = RealmDataManager.dataLoadedFromRealm(ofType: .Cart)
         productsInFridge = Fridge.shared.products
         loadDataFromCloud()
+        
         
     }
     
@@ -58,12 +68,14 @@ class CartCollectionViewController: SwipeTableViewController {
     }
     
     func addProductsToFridge(at indexPath: IndexPath){
-        guard let products = self.shoppingCarts?[indexPath.row].products.filter("inFridge == NO") else { return }
+        guard let cart = shoppingCarts?[indexPath.row],
+            let productsInFridge = productsInFridge
+        else { return }
         
         var copiedProducts = [Product]()
-        for product in products {
+        for product in cart.products {
             //Checks if the similar product is already in the fridge
-            for fridgeProduct in productsInFridge!{
+            for fridgeProduct in productsInFridge {
                 // if products name and measure coincide, adds quantity and deletes product from the shopping list
                 if product.name.lowercased() == fridgeProduct.name.lowercased() && product.measure == fridgeProduct.measure{
                     
@@ -76,14 +88,18 @@ class CartCollectionViewController: SwipeTableViewController {
                     break
                 }
             }
+            // вылетает приложение
             if product.isInvalidated == false{
                 let coppiedProduct = Product(value: product)
+                coppiedProduct.cloudID = nil
                 coppiedProduct.checked = false
                 RealmDataManager.saveToRealm(parentObject: Fridge.shared, object: coppiedProduct)
                 copiedProducts.append(coppiedProduct)
             }
         }
-        CloudManager.saveChildrenToCloud(ofType: .Product, objects: copiedProducts, parentRecord: nil)
+        if let fridgeRecordID = Fridge.shared.cloudID {
+            CloudManager.saveProductsToCloud(to: .Fridge, products: copiedProducts, parentRecordID: fridgeRecordID)
+        }
     }
     
     override func deleteObject(at indexPath: IndexPath) {
@@ -91,6 +107,10 @@ class CartCollectionViewController: SwipeTableViewController {
             for product in cart.products {
                 RealmDataManager.deleteFromRealm(object: product)
             }
+            if let recordID = cart.cloudID {
+                CloudManager.deleteRecordFromCloud(ofType: .Cart, recordID: recordID)
+            }
+
             RealmDataManager.deleteFromRealm(object: cart)
             tableView.reloadData()
         }

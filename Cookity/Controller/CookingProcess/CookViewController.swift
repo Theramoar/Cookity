@@ -236,9 +236,9 @@ class CookViewController: SwipeTableViewController {
     //MARK: - Methods for Buttons
     @IBAction func deleteButtonPressed(_ sender: UIButton) {
         if let recipe = editedRecipe {
-//            if let cloudID = recipe.cloudID {
-//                CloudManager.deleteRecordFromCloud(recordID: cloudID)
-//            }
+            if let cloudID = recipe.cloudID {
+                CloudManager.deleteRecordFromCloud(ofType: .Recipe, recordID: cloudID)
+            }
             for product in recipe.products {
                 RealmDataManager.deleteFromRealm(object: product)
             }

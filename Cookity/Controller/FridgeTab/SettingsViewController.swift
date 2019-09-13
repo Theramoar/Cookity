@@ -118,7 +118,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return 2
+            return 3
         default:
             return 2
         }
@@ -133,7 +133,13 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
             case 0:
                 cell = tableView.dequeueReusableCell(withIdentifier: "workInProgressCell", for: indexPath)
             case 1:
-                cell = tableView.dequeueReusableCell(withIdentifier: "enableIngridientCell", for: indexPath) as! EnableIngridientCell
+                let enableCell = tableView.dequeueReusableCell(withIdentifier: "enableIngridientCell", for: indexPath) as! EnableOptionCell
+                enableCell.enableCellType = .enableIngridient
+                return enableCell
+            case 2:
+                let enableCell = tableView.dequeueReusableCell(withIdentifier: "enableIngridientCell", for: indexPath) as! EnableOptionCell
+                enableCell.enableCellType = .enableCloud
+                return enableCell
             default:
                 cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
             }

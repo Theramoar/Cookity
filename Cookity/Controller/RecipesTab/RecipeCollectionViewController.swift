@@ -17,7 +17,16 @@ class RecipeCollectionViewController: UIViewController {
     
     private let dataManager = RealmDataManager()
     
-    var recipeList: Results<Recipe>?
+    var recipeList: Results<Recipe>? {
+        didSet {
+            guard SettingsVariables.isCloudEnabled else { return }
+            var recipes = [Recipe]()
+            for recipe in recipeList! {
+                recipes.append(recipe)
+            }
+            CloudManager.syncData(ofType: .Recipe, parentObjects: recipes)
+        }
+    }
     
     //MARK:- SearchBar variables
     private let searchController = UISearchController(searchResultsController: nil)
@@ -37,9 +46,7 @@ class RecipeCollectionViewController: UIViewController {
         recipeCollection.delegate = self
         recipeCollection.dataSource = self
         
-        //Setup the search controller
-        searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = false
+        setupSearchBarController()
     
         navigationItem.searchController = searchController
         definesPresentationContext = true
@@ -51,6 +58,22 @@ class RecipeCollectionViewController: UIViewController {
         recipeList = RealmDataManager.dataLoadedFromRealm(ofType: .Recipe)
         loadDataFromCloud()
 
+    }
+    
+    private func setupSearchBarController() {
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.tintColor = darkGreen
+        searchController.obscuresBackgroundDuringPresentation = false
+        
+        if let textfield = searchController.searchBar.value(forKey: "searchField") as? UITextField {
+            if let backgroundview = textfield.subviews.first {
+                // Background color
+                backgroundview.backgroundColor = .white
+                // Rounded corner
+                backgroundview.layer.cornerRadius = 10;
+                backgroundview.clipsToBounds = true;
+            }
+        }
     }
     
     private func loadDataFromCloud() {
