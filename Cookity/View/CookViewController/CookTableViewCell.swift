@@ -31,5 +31,6 @@ class CookTableViewCell: SwipeTableViewCell, MeasurePickerDelegate {
         measurePicker.mpDelegate = self
         productMeasure?.inputView = measurePicker
         self.selectionStyle = .none
+        quantityForRecipe.keyboardType = .decimalPad
     }
 }

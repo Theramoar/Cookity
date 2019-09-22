@@ -18,6 +18,9 @@ class RecipeCollectionViewCell: UICollectionViewCell {
     var recipe: Recipe! {
         didSet {
             recipeName.text = recipe.name
+            recipeName.layer.shadowOffset = CGSize(width: 0, height: 0)
+            recipeName.layer.shadowOpacity = 0.6
+            recipeName.layer.shadowRadius = 1
             
             if let imagePath = recipe.imagePath {
                 let imageUrl: URL = URL(fileURLWithPath: imagePath)

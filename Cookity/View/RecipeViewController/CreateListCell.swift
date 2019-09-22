@@ -14,7 +14,7 @@ import UIKit
     @IBOutlet weak var createListButton: UIButton! {
         didSet {
             createListButton.layer.cornerRadius = createListButton.frame.size.height / 2.5
-            createListButton.layer.borderColor = darkGreen.cgColor
+            createListButton.layer.borderColor = Colors.textColor?.cgColor
             createListButton.layer.borderWidth = 2
         }
     }

@@ -31,8 +31,8 @@ class ProductTableViewCell: SwipeTableViewCell {
     
     var isChecked: Bool! {
         didSet {
-            nameLabel.textColor = isChecked ? green : darkGreen
-            measureLabel.textColor = isChecked ? green : darkGreen
+            nameLabel.textColor = isChecked ? Colors.highlightColor : Colors.textColor
+            measureLabel.textColor = isChecked ? Colors.highlightColor : Colors.textColor
             if isChecked {
                 attributedName.addAttribute(strikethroughAttribute, value: 2, range: NSMakeRange(0, attributedName.length))
                 attributedNumber.addAttribute(strikethroughAttribute, value: 2, range: NSMakeRange(0, attributedNumber.length))

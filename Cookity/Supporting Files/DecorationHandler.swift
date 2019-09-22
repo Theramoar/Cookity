@@ -14,6 +14,14 @@ public let darkGreen = UIColor(red: 54 / 255, green: 98 / 255, blue: 43 / 255, a
 public let green = UIColor(red: 198 / 255, green: 227 / 255, blue: 119 / 255, alpha: 1)
 public let lightGreen = UIColor(red: 251 / 255, green: 250 / 255, blue: 211 / 255, alpha: 1)
 
+
+struct Colors {
+    static let appColor = UIColor(named: "AppColor")
+    static let textColor =  UIColor(named: "TextColor")
+    static let viewColor = UIColor(named: "ViewColor")
+    static let highlightColor = UIColor(named: "HighlightColor")
+}
+
 class DecorationHandler {
     
     static func putShadowOnView(vc: UIViewController) {

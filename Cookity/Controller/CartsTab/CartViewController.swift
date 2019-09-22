@@ -10,6 +10,7 @@ import UIKit
 import RealmSwift
 import SwipeCellKit
 
+
 class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEditedDelegate {
     
     let impact = UIImpactFeedbackGenerator()
@@ -17,7 +18,7 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
     var productsInFridge: List<Product>?
     var products: Results<Product>?
     
-    @IBOutlet var tableView: UITableView!
+    @IBOutlet var productsTable: UITableView!
     @IBOutlet var productTextField: UITextField!
     @IBOutlet var quantityTextField: UITextField!
     @IBOutlet var measureTextField: UITextField!
@@ -33,10 +34,10 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
     var isEdited: Bool = false {
         didSet {
             if isEdited == true {
-                tableView.allowsSelection = false
+                productsTable.allowsSelection = false
             }
             else {
-                tableView.allowsSelection = true
+                productsTable.allowsSelection = true
             }
         }
     }
@@ -59,11 +60,10 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
     override func viewDidLoad() {
         super.viewDidLoad()
         title = selectedCart?.name
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.separatorStyle = .none
-        tableView.rowHeight = 45
+        productsTable.delegate = self
+        productsTable.dataSource = self
+        productsTable.separatorStyle = .none
+        productsTable.rowHeight = 45
         
         tfView.delegate = self
         tfView.heightConstraint = tfHeightConstraint
@@ -100,7 +100,7 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
         //wait for isEdited to change its value
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
             if self.isEdited == false {
-                self.tableView.allowsSelection = true
+                self.productsTable.allowsSelection = true
             }
             UIView.setAnimationsEnabled(true)
             self.view.endEditing(true)
@@ -110,8 +110,8 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
     
     @objc func longPressed(longPressRecognizer: UILongPressGestureRecognizer) {
         // find the IndexPath of the cell which was "longtouched"
-        let touchPoint = longPressRecognizer.location(in: self.tableView)
-        selectedIndexPath = tableView.indexPathForRow(at: touchPoint)
+        let touchPoint = longPressRecognizer.location(in: self.productsTable)
+        selectedIndexPath = productsTable.indexPathForRow(at: touchPoint)
         if selectedIndexPath != nil {
             performSegue(withIdentifier: "popupEdit", sender: self)
         }
@@ -190,7 +190,7 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
                 CloudManager.saveProductsToCloud(to: .Cart, products: [newProduct], parentRecordID: cloudID)
             }
         }
-        tableView.reloadData()
+        productsTable.reloadData()
         return true
     }
     
@@ -247,7 +247,7 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
                 CloudManager.deleteProductFromCloud(parentRecordID: cartID, productRecordID: productID)
             }
             RealmDataManager.deleteFromRealm(object: product)
-            tableView.reloadData()
+            productsTable.reloadData()
         }
     }
     

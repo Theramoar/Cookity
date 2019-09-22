@@ -9,7 +9,12 @@
 import UIKit
 import RealmSwift
 
-class RecipeViewController: UIViewController {
+enum ParentViewForLabel {
+    case image
+    case view
+}
+
+class RecipeViewController: UIViewController, UpdateVCDelegate {
     
     private let dataManager = RealmDataManager()
     
@@ -20,11 +25,20 @@ class RecipeViewController: UIViewController {
     @IBOutlet weak var productTable: UITableView!
     @IBOutlet weak var cookButton: UIButton!
     
+    let imageView = UIImageView()
+    let labelRightView = UIView()
+    let recipeNameLabel = UILabel()
+    
+    var navBarHeight: CGFloat {
+        guard let navBarHeight = self.navigationController?.navigationBar.frame.height else { return 0 }
+        let statBarHeight = UIApplication.shared.statusBarFrame.height
+        return statBarHeight + navBarHeight
+    }
+
     let sections = ["Name", "Ingridients:", "Cooking steps:"]
     
     var selectedRecipe: Recipe?{
         didSet{
-//            RealmDataManager.loadFromRealm(vc: self, parentObject: selectedRecipe)
             productsForRecipe = selectedRecipe?.products
             recipeSteps = selectedRecipe?.recipeSteps
             productsInFridge = Fridge.shared.products
@@ -43,11 +57,69 @@ class RecipeViewController: UIViewController {
         cookButton.layer.shadowOpacity = 0.7
         cookButton.layer.shadowRadius = 5.0
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        productTable.reloadData()
-    }
 
+    override func viewWillAppear(_ animated: Bool) {
+        updateVC()
+    }
+    
+    func updateVC() {
+        if selectedRecipe?.isInvalidated ?? true {
+            navigationController?.popViewController(animated: true)
+        }
+        else {
+            if let imagePath = selectedRecipe?.imagePath {
+                let imageUrl: URL = URL(fileURLWithPath: imagePath)
+                guard FileManager.default.fileExists(atPath: imagePath),
+                    let imageData: Data = try? Data(contentsOf: imageUrl),
+                    let image: UIImage = UIImage(data: imageData) else {
+                        setStandardNavBar()
+//                        addRecipeNameLabel(to: .view, parentView: view)
+                        return
+                }
+                addImageView(image: image)
+//                addRecipeNameLabel(to: .image, parentView: imageView)
+                productTable.reloadData()
+            }
+        }
+    }
+    
+    private func addImageView(image: UIImage) {
+
+        productTable.contentInset = UIEdgeInsets(top: 300, left: 0, bottom: 0, right: 0)
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.view.backgroundColor = .clear
+        self.navigationController?.navigationBar.backgroundColor = .clear
+        self.navigationController?.navigationBar.tintColor = .white
+        
+        imageView.image = image
+        let imageHeight = 300 + navBarHeight
+        imageView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: imageHeight)
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        view.addSubview(imageView)
+    }
+    
+    private func setStandardNavBar() {
+        imageView.removeFromSuperview()
+//        self.preferredStatusBarStyle = UIStatusBarStyle.default
+        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        self.navigationController?.navigationBar.shadowImage = nil
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.view.backgroundColor = Colors.appColor
+        self.navigationController?.navigationBar.tintColor = Colors.textColor
+        productTable.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let labelY = max(navBarHeight, imageView.frame.height - 38)
+        recipeNameLabel.frame.origin.y = labelY
+        labelRightView.frame.origin.y = labelY
+        let y = 300 - (scrollView.contentOffset.y + 300)
+        let height = min(max(y, navBarHeight + recipeNameLabel.frame.height), 600)
+        imageView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: height)
+    }
     
     func compareFridgeToRecipe(selectedProduct: Product) -> Bool{
         if productsInFridge != nil{
@@ -90,7 +162,8 @@ class RecipeViewController: UIViewController {
             let destinationVC = segue.destination as! CookViewController
             if selectedRecipe != nil {
                 destinationVC.editedRecipe = selectedRecipe
-                destinationVC.recipeVC = self
+                destinationVC.updateVCDelegate = self
+//                destinationVC.recipeVC = self
             }
         }
         else if segue.identifier == "goToCookProcess" {
@@ -102,9 +175,7 @@ class RecipeViewController: UIViewController {
     }
         
     
-    
-    
-    //Creates a new shopping list the adds the products from recipe to it    
+    //Creates a new shopping list the adds the products from recipe to it
     @IBAction func createButtonPressed(_ sender: UIButton) {
         let checkmark = CheckmarkView(frame: self.view.frame, message: "Done!")
         self.view.addSubview(checkmark)
@@ -170,44 +241,61 @@ extension RecipeViewController: UITableViewDelegate, UITableViewDataSource{
         return sections.count
     }
     
-    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard section != 0 else { return nil }
+        guard section == 0 else { return nil }
         
-        let view = UIView()
-        view.backgroundColor = .white
-        
-        let label = UILabel()
-        label.frame = CGRect(x: 5, y: 0, width: 200, height: 35)
-        label.textColor = darkGreen
-        label.font = UIFont.boldSystemFont(ofSize: 20)
-        label.text = sections[section]
-        view.addSubview(label)
-        
-        return view
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = Colors.viewColor
+        let nameLabel = UILabel()
+        nameLabel.font = UIFont.systemFont(ofSize: 30, weight: .black)
+        nameLabel.text = selectedRecipe?.name
+        nameLabel.numberOfLines = 2
+        nameLabel.adjustsFontSizeToFitWidth = true
+        nameLabel.minimumScaleFactor = 1/3
+        nameLabel.textColor = Colors.textColor
+        nameLabel.backgroundColor = Colors.viewColor
+        let labelWidth = (UIScreen.main.bounds.size.width / 4) * 3
+        nameLabel.frame = CGRect(x: 8, y: 0, width: Int(labelWidth), height: 38)
+        backgroundView.addSubview(nameLabel)
+        return backgroundView
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard section != 2 else { return nil }
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = Colors.viewColor
+        let nameLabel = UILabel()
+        nameLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        nameLabel.text = sections[section + 1]
+        nameLabel.textColor = Colors.textColor
+        nameLabel.frame = CGRect(x: 8, y: 0, width: UIScreen.main.bounds.size.width, height: 30)
+        backgroundView.addSubview(nameLabel)
+        return backgroundView
+    }
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        guard section != 2 else { return 0 }
+        return 30
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        guard section != 0 else { return 0 }
-        return 35
+        guard section == 0 else { return 0 }
+        return 38
     }
     
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return 1
-        }
-        else if section == 1 {
+        if section == 1 {
             return productsForRecipe?.count.advanced(by: 1) ?? 0
         }
-        else {
+        else if section == 2 {
             return recipeSteps?.count ?? 0
+        }
+        else {
+            return 0
         }
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         if indexPath.section == 1 {
             if indexPath.row < (productsForRecipe?.count)! {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeProductCell", for: indexPath) as! RecipeProductCell
@@ -227,19 +315,13 @@ extension RecipeViewController: UITableViewDelegate, UITableViewDataSource{
                 return cell
             }
         }
-        else if indexPath.section == 2 {
+        else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "RVRecipeStepCell", for: indexPath) as! RVRecipeStepCell
             if let recipeStep = recipeSteps?[indexPath.row] {
                 cell.position = indexPath.row + 1
                 cell.recipeStep = recipeStep
             }
             cell.selectionStyle = .none
-            return cell
-        }
-        
-        else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "recipeImageViewCell", for: indexPath) as! RecipeImageViewCell
-            cell.recipe = selectedRecipe
             return cell
         }
     }

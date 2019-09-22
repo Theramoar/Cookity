@@ -41,6 +41,7 @@ class CartCollectionViewController: SwipeTableViewController {
         addCartButton.layer.shadowOffset = CGSize(width: 0, height: 3.0)
         addCartButton.layer.shadowOpacity = 0.7
         addCartButton.layer.shadowRadius = 5.0
+        
         shoppingCarts = RealmDataManager.dataLoadedFromRealm(ofType: .Cart)
         productsInFridge = Fridge.shared.products
         loadDataFromCloud()

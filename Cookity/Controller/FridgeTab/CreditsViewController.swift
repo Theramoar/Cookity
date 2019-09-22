@@ -67,11 +67,11 @@ extension CreditsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = Colors.viewColor
         
         let label = UILabel()
         label.frame = CGRect(x: 5, y: 0, width: 300, height: 35)
-        label.textColor = darkGreen
+        label.textColor = Colors.textColor
         label.font = UIFont.boldSystemFont(ofSize: 15)
         label.text = sections[section]
         view.addSubview(label)

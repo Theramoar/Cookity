@@ -30,4 +30,9 @@ class SwipeTableViewController: UIViewController, SwipeTableViewCellDelegate {
     func deleteObject(at indexPath: IndexPath) {
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.navigationController?.navigationBar.isTranslucent = false
+    }
+    
 }

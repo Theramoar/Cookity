@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Realm Data manipulation Ends
         
         //confing Database schema
-        let schemaVersion: UInt64 = 1
+        let schemaVersion: UInt64 = 2
         
         let config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used

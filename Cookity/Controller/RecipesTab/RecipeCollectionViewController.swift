@@ -9,8 +9,8 @@
 import UIKit
 import RealmSwift
 
-class RecipeCollectionViewController: UIViewController {
-
+class RecipeCollectionViewController: UIViewController, UpdateVCDelegate {
+    
     
     @IBOutlet weak var recipeCollection: UICollectionView!
     @IBOutlet weak var addRecipeButton: UIButton!
@@ -29,7 +29,7 @@ class RecipeCollectionViewController: UIViewController {
     }
     
     //MARK:- SearchBar variables
-    private let searchController = UISearchController(searchResultsController: nil)
+    private var searchController: UISearchController!
     private var filteredRecipeList: [Recipe] = []
     private var isFiltering: Bool {
         return searchController.isActive && !searchBarIsEmpty
@@ -48,8 +48,7 @@ class RecipeCollectionViewController: UIViewController {
         
         setupSearchBarController()
     
-        navigationItem.searchController = searchController
-        definesPresentationContext = true
+        //        self.navigationController?.navigationBar.backgroundColor = Colors.appColor
         
         addRecipeButton.layer.shadowOffset = CGSize(width: 0, height: 3.0)
         addRecipeButton.layer.shadowOpacity = 0.7
@@ -60,20 +59,26 @@ class RecipeCollectionViewController: UIViewController {
 
     }
     
+    private func setStandardNavBar() {
+        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        self.navigationController?.navigationBar.shadowImage = nil
+        self.navigationController?.view.backgroundColor = Colors.appColor
+        self.navigationController?.navigationBar.tintColor = Colors.textColor
+        self.navigationController?.navigationBar.backgroundColor = Colors.appColor
+        self.navigationController?.navigationBar.isTranslucent = false
+        setupSearchBarController()
+    }
+    
     private func setupSearchBarController() {
+        searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
-        searchController.searchBar.tintColor = darkGreen
+//        searchController.searchBar.setBackgroundImage(nil, for: .any, barMetrics: .default)
+        searchController.searchBar.tintColor = Colors.textColor
+        searchController.searchBar.backgroundColor = Colors.appColor
         searchController.obscuresBackgroundDuringPresentation = false
-        
-        if let textfield = searchController.searchBar.value(forKey: "searchField") as? UITextField {
-            if let backgroundview = textfield.subviews.first {
-                // Background color
-                backgroundview.backgroundColor = .white
-                // Rounded corner
-                backgroundview.layer.cornerRadius = 10;
-                backgroundview.clipsToBounds = true;
-            }
-        }
+        searchController.searchBar.searchTextField.backgroundColor = .white
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
     }
     
     private func loadDataFromCloud() {
@@ -91,9 +96,12 @@ class RecipeCollectionViewController: UIViewController {
         })
     }
     
-    
+    func updateVC() {
+        recipeCollection.reloadData()
+    }
     
     override func viewWillAppear(_ animated: Bool) {
+        setStandardNavBar()
         recipeCollection.reloadData()
         searchController.searchBar.placeholder = SettingsVariables.isIngridientSearchEnabled ? "Search for recipe or ingridient" : "Search for recipe"
     }
@@ -110,6 +118,10 @@ class RecipeCollectionViewController: UIViewController {
                 let recipe = isFiltering ? filteredRecipeList[indexPath.row] : recipeList?[indexPath.row]
                 destinationVC.selectedRecipe = recipe
             }
+        }
+        else if segue.identifier == "goToCookingArea" {
+            let destinationVC = segue.destination as! CookViewController
+            destinationVC.updateVCDelegate = self
         }
     }
     

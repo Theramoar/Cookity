@@ -162,7 +162,7 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate, MeasurePic
         CloudManager.updateProductInCloud(product: selectedProduct)
         
         if let parentVC = parentVC as? CartViewController {
-            parentVC.tableView.reloadData()
+            parentVC.productsTable.reloadData()
         }
         else if let parentVC = parentVC as? FridgeViewController {
             parentVC.fridgeTableView.reloadData()

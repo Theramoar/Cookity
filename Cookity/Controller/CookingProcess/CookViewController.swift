@@ -16,6 +16,10 @@ enum CookSections: String, CaseIterable {
     case stepSection = "Describe cooking process:"
 }
 
+protocol UpdateVCDelegate {
+    func updateVC()
+}
+
 class CookViewController: SwipeTableViewController {
 
     var isEdited: Bool = false // used for to disable touches while textfield are edited.
@@ -26,8 +30,8 @@ class CookViewController: SwipeTableViewController {
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var saveButton: UIButton!
     
+    var updateVCDelegate: UpdateVCDelegate?
     
-    var recipeVC: RecipeViewController? // VC of the Recipe that is edited
     var recipeSteps: [RecipeStep]?
     var products = [Product]()
     let sections = CookSections.allCases
@@ -252,10 +256,7 @@ class CookViewController: SwipeTableViewController {
             
         }
         products.removeAll()
-        
-        if let nav = recipeVC?.navigationController {
-            nav.popToRootViewController(animated: true)
-        }
+        updateVCDelegate?.updateVC()
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -276,6 +277,7 @@ class CookViewController: SwipeTableViewController {
     @IBAction func saveButtonPressed(_ sender: UIButton) {
         configureNumbers()
         saveRecipe()
+        updateVCDelegate?.updateVC()
         self.dismiss(animated: true, completion: nil)
     }
 }
