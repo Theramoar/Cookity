@@ -10,7 +10,10 @@ import UIKit
 import RealmSwift
 import SwipeCellKit
 
-class CartCollectionViewController: SwipeTableViewController {
+class CartCollectionViewController: SwipeTableViewController, UpdateVCDelegate {
+    
+    
+    
     
 
     @IBOutlet weak var tableView: UITableView!
@@ -47,6 +50,10 @@ class CartCollectionViewController: SwipeTableViewController {
         loadDataFromCloud()
         
         
+    }
+    
+    func updateVC() {
+        tableView.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -125,7 +132,7 @@ class CartCollectionViewController: SwipeTableViewController {
             self.deleteObject(at: indexPath)
         }
         appendAction.image = UIImage(named: "AddToFridge")
-        appendAction.backgroundColor = darkGreen
+        appendAction.backgroundColor = Colors.darkGreen
         
         guard let actionArray = super.tableView(tableView, editActionsForRowAt: indexPath, for: orientation), let deleteAction = actionArray.first else { return [appendAction] }
         
@@ -172,7 +179,8 @@ extension CartCollectionViewController: UITableViewDelegate, UITableViewDataSour
         }
         else if segue.identifier == "addShoppingCart" {
             let destinationVC = segue.destination as! AddCartViewController
-            destinationVC.parentVC = self
+//            destinationVC.parentVC = self
+            destinationVC.updateVCDelegate = self
         }
     }
 }

@@ -54,7 +54,6 @@ class CookViewController: SwipeTableViewController {
         productsTable.delegate = self
         productsTable.dataSource = self
         productsTable.keyboardDismissMode = .onDrag
-        
         if editedRecipe != nil {
             recipeName.text = editedRecipe?.name
         }
@@ -62,8 +61,6 @@ class CookViewController: SwipeTableViewController {
             deleteButton.isEnabled = false
             deleteButton.isHidden = true
         }
-        
-        
         saveButton.layer.shadowOffset = CGSize(width: 0, height: -3)
         saveButton.layer.shadowOpacity = 0.1
         saveButton.layer.shadowRadius = 2.5

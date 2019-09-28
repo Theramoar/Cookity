@@ -26,11 +26,22 @@ class EnableOptionCell: UITableViewCell {
             case .enableIngridient:
                 ingridientSwitch.isOn = SettingsVariables.isIngridientSearchEnabled == true ? true : false
                 cellLabel.text = "Enable ingridients search"
-                cellImageView.image = #imageLiteral(resourceName: "search_40")
+                
+                if #available(iOS 13.0, *) {
+                    cellImageView.image = #imageLiteral(resourceName: "search_40").withTintColor(Colors.textColor!)
+                } else {
+                    cellImageView.image = #imageLiteral(resourceName: "search_40")
+                }
             case .enableCloud:
                 ingridientSwitch.isOn = SettingsVariables.isCloudEnabled == true ? true : false
                 cellLabel.text = "Enable iCloud synchronization"
-                cellImageView.image = #imageLiteral(resourceName: "cloud_40")
+                if #available(iOS 13.0, *) {
+                    cellImageView.image = #imageLiteral(resourceName: "cloud_40").withTintColor(Colors.textColor!)
+                }
+                else {
+                    cellImageView.image = #imageLiteral(resourceName: "cloud_40")
+                }
+                
             case .noType:
                 return
             }

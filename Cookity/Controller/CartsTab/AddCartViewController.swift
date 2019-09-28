@@ -14,7 +14,8 @@ import SwipeCellKit
 class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, MeasurePickerDelegate, IsEditedDelegate {
     
     let textFieldView = TextFieldView()
-    var parentVC: UIViewController?
+//    var parentVC: UIViewController?
+    var updateVCDelegate: UpdateVCDelegate?
     
     var panStartPoint = CGPoint(x: 0, y: 0)
     var panEndPoint = CGPoint(x: 0, y: 0)
@@ -127,10 +128,11 @@ class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, Meas
     }
     
     func dismissView() {
-        if let parentVC = parentVC as? CartCollectionViewController {
-            parentVC.tableView.reloadData()
+//        if let parentVC = parentVC as? CartCollectionViewController {
+            updateVCDelegate?.updateVC()
+//            parentVC.tableView.reloadData()
             shadow.removeFromSuperview()
-        }
+//        }
         self.dismiss(animated: true, completion: nil)
     }
     

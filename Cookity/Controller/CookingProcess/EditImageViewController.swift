@@ -10,8 +10,6 @@ import UIKit
 
 class EditImageViewController: UIViewController {
 
-    
-    
     @IBOutlet weak var editedImageView: UIImageView!
     @IBOutlet weak var editedView: UIView!
     var heightConstraintInitialValure: CGFloat!
@@ -30,7 +28,6 @@ class EditImageViewController: UIViewController {
     
     var editedImage: UIImage?
     var parentVC: CookViewController?
-    
     
     
     override func viewDidLoad() {

@@ -147,14 +147,18 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         else {
             switch indexPath.row {
             case 0:
-                cell = tableView.dequeueReusableCell(withIdentifier: "emailCell", for: indexPath)
+                let contactsCell = tableView.dequeueReusableCell(withIdentifier: "contactsCell", for: indexPath) as! ContactsCell
+                contactsCell.contactsCellType = .contactUs
+                cell = contactsCell
             case 1:
-                cell = tableView.dequeueReusableCell(withIdentifier: "creditsCell", for: indexPath)
+                let contactsCell = tableView.dequeueReusableCell(withIdentifier: "contactsCell", for: indexPath) as! ContactsCell
+                contactsCell.contactsCellType = .credits
+                cell = contactsCell
             default:
                 cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+                cell.selectionStyle = .none
+            }
         }
-        }
-        cell.selectionStyle = .none
         return cell
     }
     

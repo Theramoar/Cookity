@@ -174,7 +174,7 @@ class CloudManager {
                 
                 parentObject.products = loadedProducts
                 DispatchQueue.main.async {
-                    if newCloudRecordIsAvailable(objects: recipes, recordID: record.recordID.recordName) { closure(parentObject)}
+                    if newCloudRecordIsAvailable(objects: recipes, recordID: record.recordID.recordName) { closure(parentObject) }
                 }
             })
             
