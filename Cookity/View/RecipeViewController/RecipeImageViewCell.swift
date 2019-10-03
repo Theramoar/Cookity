@@ -19,7 +19,8 @@ class RecipeImageViewCell: UITableViewCell {
         didSet {
             
             recipeName.text = recipe.name
-            if let imagePath = recipe.imagePath {
+            if let imageFileName = recipe.imageFileName {
+                let imagePath: String = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/\(imageFileName)"
                 let imageUrl: URL = URL(fileURLWithPath: imagePath)
                 guard FileManager.default.fileExists(atPath: imagePath),
                     let imageData: Data = try? Data(contentsOf: imageUrl),

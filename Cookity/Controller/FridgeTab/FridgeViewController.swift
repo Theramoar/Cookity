@@ -10,8 +10,11 @@ import UIKit
 import RealmSwift
 import SwipeCellKit
 
-class FridgeViewController: SwipeTableViewController {
+class FridgeViewController: SwipeTableViewController, UpdateVCDelegate {
+    
+    
 
+    
     var products: List<Product>? {
         didSet {
             guard SettingsVariables.isCloudEnabled else { return }
@@ -51,10 +54,13 @@ class FridgeViewController: SwipeTableViewController {
     
     
     override func viewWillAppear(_ animated: Bool) {
+        updateVC()
+    }
+    
+    func updateVC() {
         fridgeTableView.reloadData()
         uncheck(products)
     }
-    
     
     //MARK:- Methods for Buttons
     @objc func longPressed(longPressRecognizer: UILongPressGestureRecognizer) {
@@ -85,7 +91,7 @@ class FridgeViewController: SwipeTableViewController {
         }
         else if segue.identifier == "goToCookingAreaFromFridge" {
             let destinationVC = segue.destination as! CookViewController
-            
+            destinationVC.updateVCDelegate = self
             guard let products = products else { return }
             for product in products {
                 if product.checkForRecipe {
@@ -120,6 +126,7 @@ class FridgeViewController: SwipeTableViewController {
                                         newParameter: false)
         }
         checkedProducts = 0
+//        fridgeTableView.reloadData()
         configButton()
     }
     

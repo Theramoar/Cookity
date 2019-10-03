@@ -51,7 +51,9 @@ class CloudManager {
             let recipeSteps = Array(recipe.recipeSteps)
             saveChildrenToCloud(ofType: .RecipeStep, objects: recipeSteps, parentRecord: record)
             //Save Image
-            if let imagePath = recipe.imagePath, FileManager.default.fileExists(atPath: imagePath) {
+            if let imageFileName = recipe.imageFileName {
+                let imagePath: String = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/\(imageFileName)"
+                guard FileManager.default.fileExists(atPath: imagePath) else { return }
                 let imageAsset = prepareImageToSaveToCloud(imagePath: imagePath)
                 record.setValue(imageAsset, forKey: "imageAsset")
             }

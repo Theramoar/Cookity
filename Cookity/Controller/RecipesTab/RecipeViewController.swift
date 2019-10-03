@@ -30,8 +30,9 @@ class RecipeViewController: UIViewController, UpdateVCDelegate {
     let recipeNameLabel = UILabel()
     
     var navBarHeight: CGFloat {
-        guard let navBarHeight = self.navigationController?.navigationBar.frame.height else { return 0 }
-        let statBarHeight = UIApplication.shared.statusBarFrame.height
+        guard let navBarHeight = self.navigationController?.navigationBar.frame.height,
+            let statBarHeight = view.window?.windowScene?.statusBarManager?.statusBarFrame.height
+        else { return 0 }
         return statBarHeight + navBarHeight
     }
 
@@ -67,18 +68,13 @@ class RecipeViewController: UIViewController, UpdateVCDelegate {
             navigationController?.popViewController(animated: true)
         }
         else {
-            if let imagePath = selectedRecipe?.imagePath {
-                let imageUrl: URL = URL(fileURLWithPath: imagePath)
-                guard FileManager.default.fileExists(atPath: imagePath),
-                    let imageData: Data = try? Data(contentsOf: imageUrl),
-                    let image: UIImage = UIImage(data: imageData) else {
-                        setStandardNavBar()
-//                        addRecipeNameLabel(to: .view, parentView: view)
-                        return
-                }
+            if let imageFileName = selectedRecipe?.imageFileName,
+            let image = Configuration.getImageFromFileManager(with: imageFileName) {
                 addImageView(image: image)
-//                addRecipeNameLabel(to: .image, parentView: imageView)
                 productTable.reloadData()
+            }
+            else {
+                setStandardNavBar()
             }
         }
     }
@@ -233,6 +229,7 @@ class RecipeViewController: UIViewController, UpdateVCDelegate {
 }
 
 
+//MARK:- UITableView Methods
 extension RecipeViewController: UITableViewDelegate, UITableViewDataSource{
     
     
@@ -262,6 +259,7 @@ extension RecipeViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         guard section != 2 else { return nil }
+        if section == 1, recipeSteps?.count == 0 { return nil }
         let backgroundView = UIView()
         backgroundView.backgroundColor = Colors.viewColor
         let nameLabel = UILabel()
@@ -272,8 +270,10 @@ extension RecipeViewController: UITableViewDelegate, UITableViewDataSource{
         backgroundView.addSubview(nameLabel)
         return backgroundView
     }
+    
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         guard section != 2 else { return 0 }
+        if section == 1, recipeSteps?.count == 0 { return 0 }
         return 30
     }
     

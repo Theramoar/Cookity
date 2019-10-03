@@ -82,8 +82,8 @@ class RealmDataManager {
                     else if type(of: object) == RecipeStep.self {
                         parentObject.recipeSteps.append(object as! RecipeStep)
                     }
-                    else if let path = object as? String {
-                        parentObject.imagePath = path
+                    else if let fileName = object as? String {
+                        parentObject.imageFileName = fileName
                     }
                 }
             }catch{
@@ -128,16 +128,17 @@ class RealmDataManager {
     
     static func savePicture(image: UIImage?, imageName: String) -> String? {
         guard let image = image else { return nil }
-        let imagePath: String = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/\(imageName).png"
+        let imageFileName = "\(imageName).png"
+        let imagePath: String = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/\(imageFileName)"
         let imageUrl: URL = URL(fileURLWithPath: imagePath)
         try? image.pngData()?.write(to: imageUrl)
-        return imagePath
+        return imageFileName
     }
     
-    static func deletePicture(imagePath: String) {
+    static func deletePicture(withName imageFileName: String) {
+        let imagePath: String = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/\(imageFileName)"
         let imageUrl: URL = URL(fileURLWithPath: imagePath)
-        let fileManager = FileManager.default
-        try? fileManager.removeItem(at: imageUrl)
+        try? FileManager.default.removeItem(at: imageUrl)
     }
     
 }

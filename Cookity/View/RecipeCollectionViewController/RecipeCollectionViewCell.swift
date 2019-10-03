@@ -22,15 +22,8 @@ class RecipeCollectionViewCell: UICollectionViewCell {
             recipeName.layer.shadowOpacity = 0.6
             recipeName.layer.shadowRadius = 1
             
-            if let imagePath = recipe.imagePath {
-                let imageUrl: URL = URL(fileURLWithPath: imagePath)
-                guard FileManager.default.fileExists(atPath: imagePath),
-                    let imageData: Data = try? Data(contentsOf: imageUrl),
-                    let image: UIImage = UIImage(data: imageData)
-                else {
-                        recipeImage.image = UIImage(named: "RecipeDefaultImage.jpg")
-                        return
-                }
+            if let imageFileName = recipe.imageFileName,
+                let image = Configuration.getImageFromFileManager(with: imageFileName) {
                 recipeImage.image = image
             }
             else {

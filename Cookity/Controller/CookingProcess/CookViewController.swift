@@ -124,7 +124,6 @@ class CookViewController: SwipeTableViewController {
             textField.text = editedText
             return
         }
-        print(text)
         text = text.replacingOccurrences(of: ",", with: ".")
         if textField.accessibilityIdentifier == "quantityTextField", Float(text) == nil {
             textField.text = editedText
@@ -205,11 +204,11 @@ class CookViewController: SwipeTableViewController {
             }
         }
         
-        if let imagePath = RealmDataManager.savePicture(image: pickedImage, imageName: recipe.name) {
-            RealmDataManager.saveToRealm(parentObject: recipe, object: imagePath)
+        if let imageFileName = RealmDataManager.savePicture(image: pickedImage, imageName: recipe.name) {
+            RealmDataManager.saveToRealm(parentObject: recipe, object: imageFileName)
         }
-        else if let imagePath = recipe.imagePath {
-            RealmDataManager.deletePicture(imagePath: imagePath)
+        else if let imageFileName = recipe.imageFileName {
+            RealmDataManager.deletePicture(withName: imageFileName)
         }
         
         saveRecipeToCloud(recipe: recipe)
@@ -246,8 +245,8 @@ class CookViewController: SwipeTableViewController {
             for step in recipe.recipeSteps {
                 RealmDataManager.deleteFromRealm(object: step)
             }
-            if let imagePath = recipe.imagePath {
-               RealmDataManager.deletePicture(imagePath: imagePath)
+            if let imageFileName = recipe.imageFileName {
+               RealmDataManager.deletePicture(withName: imageFileName)
             }
             RealmDataManager.deleteFromRealm(object: recipe)
             
@@ -262,6 +261,9 @@ class CookViewController: SwipeTableViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        updateVCDelegate?.updateVC()
+    }
     
     
     @IBAction func addImageButtonPressed(_ sender: UIButton) {

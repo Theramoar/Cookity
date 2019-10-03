@@ -116,13 +116,9 @@ class Configuration {
                     vc.recipeSteps = [recipeStep]
                 }
             }
-            if let imagePath = recipe.imagePath {
-                let imageUrl: URL = URL(fileURLWithPath: imagePath)
-                if FileManager.default.fileExists(atPath: imagePath),
-                    let imageData: Data = try? Data(contentsOf: imageUrl),
-                    let image: UIImage = UIImage(data: imageData) {
-                    vc.pickedImage = image
-                }
+            if let imageFileName = recipe.imageFileName,
+                let image = getImageFromFileManager(with: imageFileName) {
+                vc.pickedImage = image
             }
         }
         else if let vc = vc as? PopupEditViewController, let product = parentObject as? Product {
@@ -131,6 +127,19 @@ class Configuration {
             vc.nameText.text = product.name
             vc.quantityText.text = presentedQuantity
             vc.measureText.text = presentedMeasure
+        }
+    }
+    
+    static func getImageFromFileManager(with imageFileName: String) -> UIImage? {
+        let imagePath: String = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/\(imageFileName)"
+        let imageUrl: URL = URL(fileURLWithPath: imagePath)
+        if FileManager.default.fileExists(atPath: imagePath),
+            let imageData: Data = try? Data(contentsOf: imageUrl),
+            let image: UIImage = UIImage(data: imageData) {
+            return image
+        }
+        else {
+            return nil
         }
     }
 }

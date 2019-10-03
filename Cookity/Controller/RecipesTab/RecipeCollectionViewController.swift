@@ -72,7 +72,6 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate {
     private func setupSearchBarController() {
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
-//        searchController.searchBar.setBackgroundImage(nil, for: .any, barMetrics: .default)
         searchController.searchBar.tintColor = Colors.textColor
         searchController.searchBar.backgroundColor = Colors.appColor
         searchController.obscuresBackgroundDuringPresentation = false

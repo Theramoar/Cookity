@@ -23,7 +23,7 @@ class Recipe: Object, ParentObject, Codable {
     @objc dynamic var name: String = ""
     var products = List<Product>()
     var recipeSteps = List<RecipeStep>()
-    @objc dynamic var imagePath: String?
+    @objc dynamic var imageFileName: String?
     @objc dynamic var cloudID: String?
 
     
@@ -47,7 +47,8 @@ class Recipe: Object, ParentObject, Codable {
         try container.encode(productArray, forKey: .products)
         try container.encode(recipeStepsArray, forKey: .recipeSteps)
         
-        if let imagePath = self.imagePath {
+        if let imageFileName = self.imageFileName {
+            let imagePath: String = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/\(imageFileName)"
             let imageUrl: URL = URL(fileURLWithPath: imagePath)
             guard FileManager.default.fileExists(atPath: imagePath),
                 let imageData: Data = try? Data(contentsOf: imageUrl) else { return }
@@ -66,15 +67,16 @@ class Recipe: Object, ParentObject, Codable {
         
         let imageData = try? container.decode(Data.self, forKey: .recipeImageData)
         
-        let imagePath: String = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/\(name).png"
+        let imageFileName = "\(name).png"
+        let imagePath: String = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/\(imageFileName)"
         let imageUrl: URL = URL(fileURLWithPath: imagePath)
     
         if let imageData = imageData {
             try? imageData.write(to: imageUrl)
-            self.imagePath = imagePath
+            self.imageFileName = imageFileName
         }
         else {
-            self.imagePath = nil
+            self.imageFileName = nil
         }
     }
 }

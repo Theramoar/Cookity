@@ -44,6 +44,7 @@
 		BB26F7F72303476000FDD2BB /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB26F7F62303476000FDD2BB /* CloudKit.framework */; };
 		BB3C781322B66C6000F556BC /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3C781222B66C6000F556BC /* SettingsViewController.swift */; };
 		BB592033233939C300692E6C /* ContactsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB592032233939C300692E6C /* ContactsCell.swift */; };
+		BB592039234141A300692E6C /* launchIcon_500.png in Resources */ = {isa = PBXBuildFile; fileRef = BB592038234141A300692E6C /* launchIcon_500.png */; };
 		BBB6B009228730CA00E518CC /* EditTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB6B008228730CA00E518CC /* EditTextView.swift */; };
 		BBB6B07522A8F29700E518CC /* icon_320.png in Resources */ = {isa = PBXBuildFile; fileRef = BBB6B07122A8F29700E518CC /* icon_320.png */; };
 		BBB6B07622A8F29700E518CC /* icon_22.png in Resources */ = {isa = PBXBuildFile; fileRef = BBB6B07222A8F29700E518CC /* icon_22.png */; };
@@ -105,6 +106,7 @@
 		BB26F7F62303476000FDD2BB /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		BB3C781222B66C6000F556BC /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		BB592032233939C300692E6C /* ContactsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsCell.swift; sourceTree = "<group>"; };
+		BB592038234141A300692E6C /* launchIcon_500.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launchIcon_500.png; sourceTree = "<group>"; };
 		BBB6B008228730CA00E518CC /* EditTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTextView.swift; sourceTree = "<group>"; };
 		BBB6B07122A8F29700E518CC /* icon_320.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_320.png; sourceTree = "<group>"; };
 		BBB6B07222A8F29700E518CC /* icon_22.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_22.png; sourceTree = "<group>"; };
@@ -252,6 +254,7 @@
 			children = (
 				BBB6B07222A8F29700E518CC /* icon_22.png */,
 				BBB6B07422A8F29700E518CC /* icon_44.png */,
+				BB592038234141A300692E6C /* launchIcon_500.png */,
 				BBB6B07322A8F29700E518CC /* icon_64.png */,
 				BBB6B07122A8F29700E518CC /* icon_320.png */,
 			);
@@ -423,6 +426,7 @@
 				BBB6B07522A8F29700E518CC /* icon_320.png in Resources */,
 				BBB6B07722A8F29700E518CC /* icon_64.png in Resources */,
 				1CA007D22165571E0072A908 /* LaunchScreen.storyboard in Resources */,
+				BB592039234141A300692E6C /* launchIcon_500.png in Resources */,
 				1CBEB2B021CE7DBE0036E996 /* Assets.xcassets in Resources */,
 				BBB6B07622A8F29700E518CC /* icon_22.png in Resources */,
 				BBB6B07822A8F29700E518CC /* icon_44.png in Resources */,
@@ -673,7 +677,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Cookity/Cookity.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7367KKMU64;
 				INFOPLIST_FILE = "$(SRCROOT)/Cookity/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -681,6 +685,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.52;
 				PRODUCT_BUNDLE_IDENTIFIER = com.michaelk.Cookity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -695,7 +700,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Cookity/Cookity.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7367KKMU64;
 				INFOPLIST_FILE = "$(SRCROOT)/Cookity/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -703,6 +708,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.52;
 				PRODUCT_BUNDLE_IDENTIFIER = com.michaelk.Cookity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
