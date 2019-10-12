@@ -102,33 +102,32 @@ class Configuration {
         return (false, nil)
     }
     
-    
-    static func configureViewController(ofType vc: UIViewController?, parentObject: Object?) {
-        
-        if let vc = vc as? CookViewController, let recipe = parentObject as? Recipe {
-            for product in recipe.products {
-                let product = Product(value: product)
-                vc.products.append(product)
-            }
-            for recipeStep in recipe.recipeSteps {
-                let recipeStep = RecipeStep(value: recipeStep)
-                if vc.recipeSteps?.append(recipeStep) == nil {
-                    vc.recipeSteps = [recipeStep]
-                }
-            }
-            if let imageFileName = recipe.imageFileName,
-                let image = getImageFromFileManager(with: imageFileName) {
-                vc.pickedImage = image
-            }
-        }
-        else if let vc = vc as? PopupEditViewController, let product = parentObject as? Product {
-            var (presentedQuantity, presentedMeasure) = Configuration.presentNumbers(quantity: product.quantity, measure: product.measure)
-            presentedMeasure = Configuration.configMeasure(measure: presentedMeasure)
-            vc.nameText.text = product.name
-            vc.quantityText.text = presentedQuantity
-            vc.measureText.text = presentedMeasure
-        }
-    }
+//    static func configureViewController(ofType vc: UIViewController?, parentObject: Object?) {
+//        
+//        if let vc = vc as? CookViewController, let recipe = parentObject as? Recipe {
+//            for product in recipe.products {
+//                let product = Product(value: product)
+//                vc.products.append(product)
+//            }
+//            for recipeStep in recipe.recipeSteps {
+//                let recipeStep = RecipeStep(value: recipeStep)
+//                if vc.recipeSteps?.append(recipeStep) == nil {
+//                    vc.recipeSteps = [recipeStep]
+//                }
+//            }
+//            if let imageFileName = recipe.imageFileName,
+//                let image = getImageFromFileManager(with: imageFileName) {
+//                vc.pickedImage = image
+//            }
+//        }
+//        else if let vc = vc as? PopupEditViewController, let product = parentObject as? Product {
+//            var (presentedQuantity, presentedMeasure) = Configuration.presentNumbers(quantity: product.quantity, measure: product.measure)
+//            presentedMeasure = Configuration.configMeasure(measure: presentedMeasure)
+//            vc.nameText.text = product.name
+//            vc.quantityText.text = presentedQuantity
+//            vc.measureText.text = presentedMeasure
+//        }
+//    }
     
     static func getImageFromFileManager(with imageFileName: String) -> UIImage? {
         let imagePath: String = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/\(imageFileName)"

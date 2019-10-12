@@ -11,8 +11,6 @@ import SwipeCellKit
 
 class SwipeTableViewController: UIViewController, SwipeTableViewCellDelegate {
     
-    let dataManager = RealmDataManager()
-    
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         
         guard orientation == .right else { return nil }

@@ -11,7 +11,7 @@ import RealmSwift
 import CloudKit
 
 
-class Product: Object, Codable {
+class Product: Object, CloudObject, Codable {
     @objc dynamic var name: String = ""
     @objc dynamic var quantity: Int = 0
     @objc dynamic var measure: String = ""

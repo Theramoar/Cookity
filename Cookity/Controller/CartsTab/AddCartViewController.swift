@@ -10,16 +10,15 @@ import UIKit
 import SwipeCellKit
 
 
-
 class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, MeasurePickerDelegate, IsEditedDelegate {
     
     let textFieldView = TextFieldView()
-//    var parentVC: UIViewController?
     var updateVCDelegate: UpdateVCDelegate?
     
     var panStartPoint = CGPoint(x: 0, y: 0)
     var panEndPoint = CGPoint(x: 0, y: 0)
     
+    @IBOutlet var cartDataManager: CartDataManager!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var productTextField: UITextField!
     @IBOutlet weak var quantityTextField: UITextField!
@@ -31,14 +30,11 @@ class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, Meas
     @IBOutlet weak var tfHeight: NSLayoutConstraint!
     
     
-    
-    var products = [Product]()
     var pickedMeasure: String? {
         didSet {
             measureTextField.text = pickedMeasure
         }
     }
-    
     // used for to disable touches while textfield are edited.
     var isEdited: Bool = false {
         didSet {
@@ -128,18 +124,16 @@ class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, Meas
     }
     
     func dismissView() {
-//        if let parentVC = parentVC as? CartCollectionViewController {
-            updateVCDelegate?.updateVC()
-//            parentVC.tableView.reloadData()
-            shadow.removeFromSuperview()
-//        }
+        updateVCDelegate?.updateVC()
+        shadow.removeFromSuperview()
         self.dismiss(animated: true, completion: nil)
     }
     
     //MARK:- Methods for Buttons
     @IBAction func doneButtonPresed(_ sender: UIButton) {
         guard let cartName = cartNameTextField.text, cartName != "" else { return }
-        saveCart(name: cartName)
+        let products = cartDataManager.products
+        cartDataManager.saveCart(name: cartName, products: products)
         dismissView()
     }
     
@@ -161,61 +155,22 @@ class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, Meas
             let quantityText = quantityTextField?.text,
             let measureText = measureTextField.text
             else { return false }
-        
-        if saveProduct(productName: nameText, productQuantity: quantityText, productMeasure: measureText) {
-            return true
+        let alert = cartDataManager.checkDataFromTextFields(productName: nameText, productQuantity: quantityText, productMeasure: measureText)
+        if let alert = alert {
+            present(alert, animated: true, completion: nil)
+            return false
         }
-        return false
-    }
-    
-    //MARK:- Data Manipulation Products
-    func saveProduct(productName: String, productQuantity: String, productMeasure: String) -> Bool {
-        let newProduct = Product()
-        
-        let alert = UIAlertController(title: "title", message: "message", preferredStyle: .alert)
-        let action = UIAlertAction(title: "OK", style: .default) { (_) in return }
-        alert.addAction(action)
-        
-        guard alert.check(data: productName, dataName: AlertMessage.name),
-            alert.check(data: productQuantity, dataName: AlertMessage.quantity)
-            else {
-                present(alert, animated: true, completion: nil)
-                return false
-        }
-        
-        let measure = Configuration.configMeasure(measure: productMeasure)
-        let (savedQuantity, savedMeasure) = Configuration.configNumbers(quantity: productQuantity, measure: measure)
-        
-        newProduct.name = productName
-        newProduct.quantity = savedQuantity
-        newProduct.measure = savedMeasure
-        products.append(newProduct)
+        let newProduct = cartDataManager.createNewProduct(productName: nameText, productQuantity: quantityText, productMeasure: measureText)
+        cartDataManager.products.append(newProduct)
         tableView.reloadData()
         return true
     }
     
-    func saveCart(name: String) {
-        let cart = ShoppingCart()
-        cart.name = name
-        for product in products {
-            cart.products.append(product)
-        }
-        RealmDataManager.saveToRealm(parentObject: nil, object: cart)
-        CloudManager.saveDataToCloud(ofType: .Cart, object: cart) { (recordID) in
-            DispatchQueue.main.async {
-                RealmDataManager.changeElementIn(object: cart,
-                                                 keyValue: "cloudID",
-                                                 objectParameter: cart.cloudID,
-                                                 newParameter: recordID)
-            }
-        }
-    }
-    
+    //MARK:- Data Manipulation Products
     override func deleteObject(at indexPath: IndexPath) {
-        products.remove(at: indexPath.row)
+        cartDataManager.deleteProductFromCart(at: indexPath.row)
         tableView.reloadData()
     }
-    
 }
 
 
@@ -224,13 +179,13 @@ extension AddCartViewController: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return products.count
+        return cartDataManager.products.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProductCell", for: indexPath) as! ProductTableViewCell
         cell.delegate = self as SwipeTableViewCellDelegate
-        cell.product = products[indexPath.row]
+        cell.product = cartDataManager.products[indexPath.row]
         return cell
     }
     

@@ -122,12 +122,14 @@
                         <outlet property="emptyFridgeDescriptionLabel" destination="rdz-EY-thW" id="p2r-2h-xHW"/>
                         <outlet property="emptyFridgeImageView" destination="yi8-ow-LXe" id="uw8-cU-9Md"/>
                         <outlet property="emptyFridgeLabel" destination="pkf-a6-4qW" id="Rhn-yv-2jC"/>
+                        <outlet property="fridgeDataManager" destination="TSz-3o-CTA" id="aMZ-m7-6uV"/>
                         <outlet property="fridgeTableView" destination="Y8X-sP-dAG" id="Ev5-Hr-6nO"/>
                         <segue destination="EmE-Vh-XSL" kind="presentation" identifier="popupEditFridge" id="hfe-HQ-An4"/>
                         <segue destination="nNz-qA-oX0" kind="presentation" identifier="goToCookingAreaFromFridge" modalTransitionStyle="coverVertical" id="mwP-1j-8FP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cau-2d-0g8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="TSz-3o-CTA" customClass="FridgeDataManager" customModule="Cookity" customModuleProvider="target"/>
             </objects>
             <point key="canvasLocation" x="2684" y="133.00492610837438"/>
         </scene>
@@ -415,6 +417,7 @@
                     </view>
                     <connections>
                         <outlet property="backButton" destination="rPz-tZ-Jy0" id="21e-NV-ss5"/>
+                        <outlet property="cookDataManager" destination="3td-9P-Sq4" id="TeX-RT-cvE"/>
                         <outlet property="deleteButton" destination="fhW-rN-KfN" id="xrU-5s-Tbf"/>
                         <outlet property="productsTable" destination="Ric-OK-ksR" id="Z9E-7w-K3H"/>
                         <outlet property="recipeName" destination="5jz-ga-MSk" id="NmK-eo-f0e"/>
@@ -423,6 +426,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1Oa-Wj-XtW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="3td-9P-Sq4" customClass="CookDataManager" customModule="Cookity" customModuleProvider="target"/>
             </objects>
             <point key="canvasLocation" x="4756" y="134"/>
         </scene>
@@ -865,10 +869,12 @@
                         <outlet property="editViewHeight" destination="qOd-WI-7Ed" id="6A1-78-IwV"/>
                         <outlet property="measureText" destination="4Bb-MA-8KH" id="hQG-vK-yvh"/>
                         <outlet property="nameText" destination="JMz-1w-Tzd" id="V0o-vK-EYT"/>
+                        <outlet property="popupDataManager" destination="R3Q-x1-DeL" id="3PX-5E-Mu9"/>
                         <outlet property="quantityText" destination="T0w-BL-dbz" id="J4x-kc-HMz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UO3-GR-Wgq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="R3Q-x1-DeL" customClass="PopupDataManager" customModule="Cookity" customModuleProvider="target"/>
             </objects>
             <point key="canvasLocation" x="3924" y="1110"/>
         </scene>
@@ -937,12 +943,14 @@
                     <navigationItem key="navigationItem" title="Carts" id="Wmb-Xm-998"/>
                     <connections>
                         <outlet property="addCartButton" destination="s0L-cN-QzS" id="U3z-fb-TUL"/>
+                        <outlet property="cartDataManager" destination="g84-HZ-yNo" id="VKQ-W8-PPl"/>
                         <outlet property="tableView" destination="crf-Qd-BSy" id="aaZ-Vh-chq"/>
                         <segue destination="8yl-t6-nQI" kind="show" identifier="goToCart" id="DtY-OJ-h5c"/>
                         <segue destination="bA4-na-29q" kind="presentation" identifier="addShoppingCart" id="NXv-u8-ZB4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CGl-m0-IPb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="g84-HZ-yNo" customClass="CartDataManager" customModule="Cookity" customModuleProvider="target"/>
             </objects>
             <point key="canvasLocation" x="1593" y="1111"/>
         </scene>
@@ -1119,6 +1127,7 @@
                     <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <connections>
                         <outlet property="backgroundView" destination="6G8-ZB-tR0" id="Y0p-Ga-vrL"/>
+                        <outlet property="cartDataManager" destination="105-wJ-sXQ" id="3pA-Jm-pDU"/>
                         <outlet property="cartNameTextField" destination="PgR-o1-AmX" id="M0P-3m-jPp"/>
                         <outlet property="measureTextField" destination="Oi6-Tr-qvD" id="GgK-p8-Sgn"/>
                         <outlet property="productTextField" destination="jwH-Uo-Ahf" id="IZb-cX-Vcg"/>
@@ -1130,6 +1139,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1jg-9c-qbd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="105-wJ-sXQ" customClass="CartDataManager" customModule="Cookity" customModuleProvider="target"/>
             </objects>
             <point key="canvasLocation" x="1591.875" y="1979.5774647887324"/>
         </scene>
@@ -1265,6 +1275,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="addButton" destination="XaR-MY-r3l" id="q8W-wS-8re"/>
+                        <outlet property="cartDataManager" destination="1rI-Or-DNw" id="37i-z0-OfC"/>
                         <outlet property="measureTextField" destination="Ei4-wP-KjT" id="OsS-A0-0Wf"/>
                         <outlet property="productTextField" destination="A6N-zj-3CA" id="o6F-fu-38W"/>
                         <outlet property="productsTable" destination="9jQ-ji-dqi" id="W8l-3a-tle"/>
@@ -1275,6 +1286,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="54s-Ox-F0H" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="1rI-Or-DNw" customClass="CartDataManager" customModule="Cookity" customModuleProvider="target"/>
             </objects>
             <point key="canvasLocation" x="2544.8000000000002" y="1110.5911330049262"/>
         </scene>
@@ -1359,12 +1371,14 @@
                     <navigationItem key="navigationItem" title="Recipes" id="qyW-h2-eZY"/>
                     <connections>
                         <outlet property="addRecipeButton" destination="9co-0O-ajj" id="oDv-2l-wPr"/>
+                        <outlet property="recipeCollectioDM" destination="N4z-iQ-sTA" id="PXc-uU-tFy"/>
                         <outlet property="recipeCollection" destination="KJZ-eg-bXd" id="oMj-ih-Ld5"/>
                         <segue destination="smL-Su-3ci" kind="show" identifier="goToRecipe" id="nNb-LW-RSX"/>
                         <segue destination="nNz-qA-oX0" kind="presentation" identifier="goToCookingArea" modalTransitionStyle="coverVertical" id="yF2-D2-Ud7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cz9-yA-Ucn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="N4z-iQ-sTA" customClass="RecipeCollectionDataManager" customModule="Cookity" customModuleProvider="target"/>
             </objects>
             <point key="canvasLocation" x="3461.25" y="-633.80281690140851"/>
         </scene>
@@ -1528,11 +1542,13 @@
                     <connections>
                         <outlet property="cookButton" destination="JwA-93-aIC" id="jwU-dM-uh7"/>
                         <outlet property="productTable" destination="5cd-aA-6UI" id="f8B-CA-2FC"/>
+                        <outlet property="recipeDataManager" destination="5B7-ex-Jkr" id="h7d-Zd-Jbr"/>
                         <segue destination="nNz-qA-oX0" kind="presentation" identifier="EditCookingArea" modalTransitionStyle="coverVertical" id="UIC-uQ-2U2"/>
                         <segue destination="vWo-eO-1b2" kind="presentation" identifier="goToCookProcess" id="IIG-wj-e3c"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZWA-od-w4s" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="5B7-ex-Jkr" customClass="RecipeDataManager" customModule="Cookity" customModuleProvider="target"/>
             </objects>
             <point key="canvasLocation" x="4756.875" y="-634.85915492957747"/>
         </scene>
@@ -1690,12 +1706,12 @@
             <color red="0.77600002288818359" green="0.88999998569488525" blue="0.46700000762939453" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="ViewColor">
-            <color red="0.27058823529411763" green="0.27058823529411763" blue="0.27058823529411763" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.27099999785423279" green="0.27099999785423279" blue="0.27099999785423279" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="hfe-HQ-An4"/>
-        <segue reference="mwP-1j-8FP"/>
+        <segue reference="yF2-D2-Ud7"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.21176470589999999" green="0.38431372549999998" blue="0.16862745100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>

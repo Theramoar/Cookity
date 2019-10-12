@@ -13,11 +13,7 @@ import SwipeCellKit
 
 class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEditedDelegate {
     
-    let impact = UIImpactFeedbackGenerator()
-    
-    var productsInFridge: List<Product>?
-    var products: Results<Product>?
-    
+    @IBOutlet var cartDataManager: CartDataManager!
     @IBOutlet var productsTable: UITableView!
     @IBOutlet var productTextField: UITextField!
     @IBOutlet var quantityTextField: UITextField!
@@ -42,15 +38,6 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
         }
     }
 
-    var selectedCart: ShoppingCart?{
-        didSet{
-            Configuration.configureViewController(ofType: self, parentObject: selectedCart)
-            products = selectedCart?.products.filter(NSPredicate(value: true))
-            productsInFridge = Fridge.shared.products
-            
-        }
-    }
-    
     var pickedMeasure: String? {
         didSet {
             measureTextField.text = pickedMeasure
@@ -59,7 +46,7 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = selectedCart?.name
+        title = cartDataManager.selectedCart?.name
         productsTable.delegate = self
         productsTable.dataSource = self
         productsTable.separatorStyle = .none
@@ -89,6 +76,7 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
         self.view.addGestureRecognizer(longPressRecognizer)
     }
     
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         UIView.setAnimationsEnabled(true)
         self.view.endEditing(true)
@@ -108,6 +96,7 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
         }
     }
     
+    
     @objc func longPressed(longPressRecognizer: UILongPressGestureRecognizer) {
         // find the IndexPath of the cell which was "longtouched"
         let touchPoint = longPressRecognizer.location(in: self.productsTable)
@@ -117,28 +106,21 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
         }
     }
     
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationVC = segue.destination as! PopupEditViewController
-        if let indexPath = selectedIndexPath, let product = products?[indexPath.row] {
-            destinationVC.selectedProduct = product
+        if let indexPath = selectedIndexPath, let product = cartDataManager.selectedCart?.products[indexPath.row] {
+//            destinationVC.selectedProduct = product
+            destinationVC.popupDataManager.products.append(product)
             destinationVC.parentVC = self
         }
     }
     
     
     @IBAction func shareButtonPressed(_ sender: UIBarButtonItem) {
-        let shareManager = ShareDataManager()
-        guard
-            let cart = selectedCart,
-            let url = shareManager.exportToURL(object: cart)
-            else { return }
-        
-        let activity = UIActivityViewController(
-            activityItems: ["I prepared the Shopping List for you! You can read it using Cookity app.", url],
-            applicationActivities: nil
-        )
+        let activityController = cartDataManager.shareCart()
+        guard let activity = activityController else { return }
         activity.popoverPresentationController?.barButtonItem = sender
-        
         present(activity, animated: true, completion: nil)
     }
     
@@ -156,99 +138,21 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
             let quantityText = quantityTextField?.text,
             let measureText = measureTextField.text
         else { return false }
-        
-        if saveProduct(productName: nameText, productQuantity: quantityText, productMeasure: measureText) {
-            return true
+        let alert = cartDataManager.checkDataFromTextFields(productName: nameText, productQuantity: quantityText, productMeasure: measureText)
+        if let alert = alert {
+            present(alert, animated: true, completion: nil)
+            return false
         }
-        return false
-    }
-    
-    
-    func saveProduct(productName: String, productQuantity: String, productMeasure: String) -> Bool {
-        let newProduct = Product()
-       
-        let alert = UIAlertController(title: "title", message: "message", preferredStyle: .alert)
-        let action = UIAlertAction(title: "OK", style: .default) { (_) in return }
-        alert.addAction(action)
-        
-        guard alert.check(data: productName, dataName: AlertMessage.name),
-            alert.check(data: productQuantity, dataName: AlertMessage.quantity)
-            else {
-                present(alert, animated: true, completion: nil)
-                return false
-            }
-        
-        let measure = Configuration.configMeasure(measure: productMeasure)
-        let (savedQuantity, savedMeasure) = Configuration.configNumbers(quantity: productQuantity, measure: measure)
-        
-        if let currentCart = selectedCart {
-            newProduct.name = productName
-            newProduct.quantity = savedQuantity
-            newProduct.measure = savedMeasure
-            RealmDataManager.saveToRealm(parentObject: currentCart, object: newProduct)
-            if let cloudID = currentCart.cloudID {
-                CloudManager.saveProductsToCloud(to: .Cart, products: [newProduct], parentRecordID: cloudID)
-            }
-        }
+        let newProduct = cartDataManager.createNewProduct(productName: nameText, productQuantity: quantityText, productMeasure: measureText)
+        cartDataManager.saveProductToCart(product: newProduct)
         productsTable.reloadData()
         return true
     }
-    
-    
-    func moveProductsToFridge() {
-        guard let products = products,
-            let productsInFridge = productsInFridge,
-            let selectedCart = selectedCart
-        else { return }
-        
-        var copiedProducts = [Product]()
-        for product in products {
-            //Checks if the similar product is already in the fridge
-            for fridgeProduct in productsInFridge{
-                // if products name and measure coincide, adds quantity and deletes product from the shopping list
-                if product.name.lowercased() == fridgeProduct.name.lowercased() && product.measure == fridgeProduct.measure {
-                    let newQuantity = fridgeProduct.quantity + product.quantity
-                    RealmDataManager.changeElementIn(object: fridgeProduct,
-                                                     keyValue: "quantity",
-                                                     objectParameter: fridgeProduct.quantity,
-                                                     newParameter: newQuantity)
-                    RealmDataManager.deleteFromRealm(object: product)
-                    CloudManager.updateProductInCloud(product: fridgeProduct)
-                    break
-                }
-            }
-            if product.isInvalidated == false{
-                let coppiedProduct = Product(value: product)
-                coppiedProduct.cloudID = nil
-                coppiedProduct.checked = false
-                RealmDataManager.saveToRealm(parentObject: Fridge.shared, object: coppiedProduct)
-                RealmDataManager.deleteFromRealm(object: product)
-                copiedProducts.append(coppiedProduct)
-            }
-        }
-        if let fridgeRecordID = Fridge.shared.cloudID {
-            CloudManager.saveProductsToCloud(to: .Fridge, products: copiedProducts, parentRecordID: fridgeRecordID)
-        }
-        //Delete Cart from Cloud
-        if let recordID = selectedCart.cloudID {
-            CloudManager.deleteRecordFromCloud(ofType: .Cart, recordID: recordID)
-        }
-        RealmDataManager.deleteFromRealm(object: selectedCart)
-        
-        if let nav = self.navigationController {
-            nav.popToRootViewController(animated: true)
-        }
-        dismiss(animated: true, completion: nil)
-    }
+
     
     override func deleteObject(at indexPath: IndexPath) {
-        if let product = products?[indexPath.row] {
-            if let productID = product.cloudID, let cartID = selectedCart?.cloudID {
-                CloudManager.deleteProductFromCloud(parentRecordID: cartID, productRecordID: productID)
-            }
-            RealmDataManager.deleteFromRealm(object: product)
-            productsTable.reloadData()
-        }
+        cartDataManager.deleteProductFromCart(at: indexPath.row)
+        productsTable.reloadData()
     }
     
 }
@@ -257,47 +161,41 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
 extension CartViewController: UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return products?.count ?? 0
+        return cartDataManager.products.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ProductCell", for: indexPath) as! ProductTableViewCell
-            cell.delegate = self as SwipeTableViewCellDelegate
-            if let item = products?[indexPath.row] {                
-                cell.product = item
-                cell.isChecked = item.checked
-                
-            }
-            return cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ProductCell", for: indexPath) as! ProductTableViewCell
+        cell.delegate = self as SwipeTableViewCellDelegate
+        let item = cartDataManager.products[indexPath.row]
+            cell.product = item
+            cell.isChecked = item.checked
+        
+        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let products = products else { return }
+        let impact = UIImpactFeedbackGenerator()
         impact.impactOccurred()
         
-        let product = products[indexPath.row]
-        RealmDataManager.changeElementIn(object: product,
-                                    keyValue: "checked",
-                                    objectParameter: product.checked,
-                                    newParameter: !product.checked)
-        
-        tableView.reloadData()
-        
-        //If all products are checked, App offers to add them to the Fridge
-        for product in products {
-            guard product.checked == true else { return }
+        guard cartDataManager.checkProduct(at: indexPath.row) else {
+            tableView.reloadData()
+            return
         }
-        
+        tableView.reloadData()
+
         let alert = UIAlertController(title: "Add products to the fridge?", message: "", preferredStyle: .actionSheet)
-        
         let yesAction = UIAlertAction(title: "Yes", style: .default) { (_) in
-            self.moveProductsToFridge()
+            guard let cart = self.cartDataManager.selectedCart else { return }
+            self.cartDataManager.moveProductsToFridge(from: cart)
+            if let nav = self.navigationController {
+                nav.popToRootViewController(animated: true)
+            }
+            self.dismiss(animated: true, completion: nil)
         }
         let noAction = UIAlertAction(title: "No", style: .default) { (_) in
             return
         }
-        
         alert.addAction(yesAction)
         alert.addAction(noAction)
         present(alert, animated: true, completion: nil)

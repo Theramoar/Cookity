@@ -94,7 +94,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: String(describing: CartViewController.self))
             guard let vc2 = vc as? CartViewController else { return true }
-            vc2.selectedCart = cart
+            vc2.cartDataManager.selectedCart = cart
             navigationController.viewControllers = [vc1,vc2]
             return true
         }
@@ -120,7 +120,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: String(describing: RecipeViewController.self))
             guard let vc2 = vc as? RecipeViewController else { return true }
-            vc2.selectedRecipe = recipe
+            vc2.recipeDataManager.selectedRecipe = recipe
             navigationController.viewControllers = [vc1,vc2]
             return true
         }

@@ -12,25 +12,13 @@ import RealmSwift
 class RecipeCollectionViewController: UIViewController, UpdateVCDelegate {
     
     
+    @IBOutlet var recipeCollectioDM: RecipeCollectionDataManager!
     @IBOutlet weak var recipeCollection: UICollectionView!
     @IBOutlet weak var addRecipeButton: UIButton!
     
-    private let dataManager = RealmDataManager()
-    
-    var recipeList: Results<Recipe>? {
-        didSet {
-            guard SettingsVariables.isCloudEnabled else { return }
-            var recipes = [Recipe]()
-            for recipe in recipeList! {
-                recipes.append(recipe)
-            }
-            CloudManager.syncData(ofType: .Recipe, parentObjects: recipes)
-        }
-    }
     
     //MARK:- SearchBar variables
     private var searchController: UISearchController!
-    private var filteredRecipeList: [Recipe] = []
     private var isFiltering: Bool {
         return searchController.isActive && !searchBarIsEmpty
     }
@@ -45,18 +33,18 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate {
         
         recipeCollection.delegate = self
         recipeCollection.dataSource = self
+        recipeCollectioDM.updateVCDelegate = self
         
-        setupSearchBarController()
-    
-        //        self.navigationController?.navigationBar.backgroundColor = Colors.appColor
+        searchController = recipeCollectioDM.setupSearchBarController()
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
         
         addRecipeButton.layer.shadowOffset = CGSize(width: 0, height: 3.0)
         addRecipeButton.layer.shadowOpacity = 0.7
         addRecipeButton.layer.shadowRadius = 5.0
         
-        recipeList = RealmDataManager.dataLoadedFromRealm(ofType: .Recipe)
-        loadDataFromCloud()
-
+        recipeCollectioDM.recipeList = RealmDataManager.dataLoadedFromRealm(ofType: .Recipe)
+        recipeCollectioDM.loadDataFromCloud()
     }
     
     private func setStandardNavBar() {
@@ -66,56 +54,23 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate {
         self.navigationController?.navigationBar.tintColor = Colors.textColor
         self.navigationController?.navigationBar.backgroundColor = Colors.appColor
         self.navigationController?.navigationBar.isTranslucent = false
-        setupSearchBarController()
-    }
-    
-    private func setupSearchBarController() {
-        searchController = UISearchController(searchResultsController: nil)
-        searchController.searchResultsUpdater = self
-        searchController.searchBar.tintColor = Colors.textColor
-        searchController.searchBar.backgroundColor = Colors.appColor
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.searchTextField.backgroundColor = .white
+        searchController = recipeCollectioDM.setupSearchBarController()
         navigationItem.searchController = searchController
         definesPresentationContext = true
     }
     
-    private func loadDataFromCloud() {
-        let recipes = Array(recipeList!)
-        CloudManager.loadDataFromCloud(ofType: .Recipe, recipes: recipes, closure: { (parentObject) in
-            guard let recipe = parentObject as? Recipe else { return }
-            RealmDataManager.saveToRealm(parentObject: nil, object: recipe)
-            self.recipeCollection.reloadData()
-            CloudManager.loadImageFromCloud(recipe: recipe, closure: { (imageData) in
-                guard let data = imageData, let image = UIImage(data: data) else { return }
-                let imagePath = RealmDataManager.savePicture(image: image, imageName: recipe.name)
-                RealmDataManager.saveToRealm(parentObject: recipe, object: imagePath)
-                self.recipeCollection.reloadData()
-            })
-        })
-    }
-    
-    func updateVC() {
-        recipeCollection.reloadData()
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         setStandardNavBar()
-        recipeCollection.reloadData()
+        updateVC()
         searchController.searchBar.placeholder = SettingsVariables.isIngridientSearchEnabled ? "Search for recipe or ingridient" : "Search for recipe"
-    }
-
-    
-    @IBAction func addButtonPressed(_ sender: UIButton) {
-      performSegue(withIdentifier: "goToCookingArea", sender: self)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToRecipe" {
            let destinationVC = segue.destination as! RecipeViewController
             if let indexPath = recipeCollection.indexPathsForSelectedItems?.first{
-                let recipe = isFiltering ? filteredRecipeList[indexPath.row] : recipeList?[indexPath.row]
-                destinationVC.selectedRecipe = recipe
+                let recipe = isFiltering ? recipeCollectioDM.filteredRecipeList[indexPath.row] : recipeCollectioDM.recipeList?[indexPath.row]
+                destinationVC.recipeDataManager.selectedRecipe = recipe
             }
         }
         else if segue.identifier == "goToCookingArea" {
@@ -124,63 +79,35 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate {
         }
     }
     
+    //MARK:- UpdateVCDelegate Method
+    func updateVC() {
+        recipeCollection.reloadData()
+    }
+
+    //MARK:- Methods for Buttons
+    @IBAction func addButtonPressed(_ sender: UIButton) {
+      performSegue(withIdentifier: "goToCookingArea", sender: self)
+    }
 }
 
+//MARK:- RecipeCollection Delegate and DataSource
 extension RecipeCollectionViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if isFiltering {
-            return filteredRecipeList.count
+            return recipeCollectioDM.filteredRecipeList.count
         }
         else {
-            return recipeList?.count ?? 0
+            return recipeCollectioDM.recipeList?.count ?? 0
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecipeCell", for: indexPath) as! RecipeCollectionViewCell
-        cell.recipe = isFiltering ? filteredRecipeList[indexPath.row] : recipeList?[indexPath.row]
+        cell.recipe = isFiltering ? recipeCollectioDM.filteredRecipeList[indexPath.row] : recipeCollectioDM.recipeList?[indexPath.row]
         return cell
     }
-    
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         performSegue(withIdentifier: "goToRecipe", sender: self)
-    }
-}
-
-extension RecipeCollectionViewController: UISearchResultsUpdating {
-    
-    func updateSearchResults(for searchController: UISearchController) {
-        guard let searchText = searchController.searchBar.text else { return }
-        filteredRecipeList.removeAll()
-        var filteredRecipeNames: [String] = [] // заменить потом на уникальный recipe ID
-        
-        if let filteredRecipes = recipeList?.filter("name CONTAINS[cd] %@", searchText), filteredRecipes.count > 0 {
-            filteredRecipeList.append(contentsOf: filteredRecipes)
-            filteredRecipes.forEach { (recipe) in
-                filteredRecipeNames.append(recipe.name)
-            }
-        }
-        //Search for recipe ingridients
-        if SettingsVariables.isIngridientSearchEnabled {
-            searchForRecipeIngridients(searchText: searchText, compare: filteredRecipeNames)
-        }
-        
-        recipeCollection.reloadData()
-    }
-    
-    
-    private func searchForRecipeIngridients(searchText: String, compare filteredNames: [String]) {
-        var recipesContainingProducts: [Recipe] = []
-        
-        recipeList?.forEach({ (recipe) in
-            if recipe.products.filter("name CONTAINS[cd] %@", searchText).count > 0,
-                !filteredNames.contains(recipe.name) {
-                recipesContainingProducts.append(recipe)
-            }
-        })
-        filteredRecipeList.append(contentsOf: recipesContainingProducts)
     }
 }

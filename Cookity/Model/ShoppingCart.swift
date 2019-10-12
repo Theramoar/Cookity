@@ -11,10 +11,13 @@ import RealmSwift
 import CloudKit
 
 
-protocol ParentObject: Object {
+protocol CloudObject: Object {
+    var cloudID: String? { get set }
+}
+
+protocol ParentObject: CloudObject {
     var name: String { get set }
     var products: List<Product> { get set }
-    var cloudID: String? { get set }
 }
 
 enum ShoppingCartCodingKeys: String, CodingKey {

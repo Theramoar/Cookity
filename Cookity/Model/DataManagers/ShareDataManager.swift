@@ -14,7 +14,7 @@ class ShareDataManager {
     
     
     static func importData(from url: URL) -> Object? {
-        // 1
+
         guard let data = try? Data(contentsOf: url) else {
             try? FileManager.default.removeItem(at: url)
             return nil

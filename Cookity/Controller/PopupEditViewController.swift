@@ -18,10 +18,7 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate, MeasurePic
         }
     }
     
-
-    private let dataManager = RealmDataManager()
-    
-    var selectedProduct: Product?
+//    var selectedProduct: Product?
     var parentVC: UIViewController?
     let measures = Measures.allCases
     
@@ -29,6 +26,7 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate, MeasurePic
     var panEndPoint = CGPoint(x: 0, y: 0)
     
     
+    @IBOutlet var popupDataManager: PopupDataManager!
     @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var editView: EditTextView!
     @IBOutlet weak var nameText: UITextField!
@@ -71,8 +69,10 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate, MeasurePic
         dismissTapGesture.cancelsTouchesInView = false
         self.view.addGestureRecognizer(dismissTapGesture)
         
-        Configuration.configureViewController(ofType: self, parentObject: selectedProduct)
-        
+        let (name, quantity, measure) = popupDataManager.configVCData()
+        nameText.text = name
+        quantityText.text = quantity
+        measureText.text = measure
         
     }
     
@@ -90,8 +90,6 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate, MeasurePic
     }
     
     @objc func backgroundViewDragged(sender: UITapGestureRecognizer) {
-        
-        
         switch sender.state {
             case .began:
                 panStartPoint = sender.location(in: view)
@@ -100,18 +98,16 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate, MeasurePic
             default:
                 break
         }
-
         guard (panEndPoint.y - panStartPoint.y) > 40, abs(panStartPoint.x - panEndPoint.x) < 40 else { return }
         
-            if self.isEdited {
-                self.view.endEditing(true)
-                return
-            }
-            else {
-                shadow.removeFromSuperview()
-                self.dismiss(animated: true, completion: nil)
-            }
-        
+        if self.isEdited {
+            self.view.endEditing(true)
+            return
+        }
+        else {
+            shadow.removeFromSuperview()
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
     
@@ -132,34 +128,13 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate, MeasurePic
             let productMeasure = measureText.text
             else { return }
         
-        let alert = UIAlertController(title: "title", message: "message", preferredStyle: .alert)
-        let action = UIAlertAction(title: "OK", style: .default) { (_) in return }
-        alert.addAction(action)
-
-        guard alert.check(data: productName, dataName: .name),
-            alert.check(data: productQuantity, dataName: .quantity)
-        else {
+        let alert = popupDataManager.checkDataFromTextFields(productName: productName, productQuantity: productQuantity, productMeasure: productMeasure)
+        if let alert = alert {
             present(alert, animated: true, completion: nil)
             return
         }
-
-        let measure = Configuration.configMeasure(measure: productMeasure)
-        let (savedQuantity, savedMeasure) = Configuration.configNumbers(quantity: productQuantity, measure: measure)
-        
-        guard let selectedProduct = selectedProduct else { return }
-        RealmDataManager.changeElementIn(object: selectedProduct,
-                                    keyValue: "name",
-                                    objectParameter: selectedProduct.name,
-                                    newParameter: productName)
-        RealmDataManager.changeElementIn(object: selectedProduct,
-                                    keyValue: "quantity",
-                                    objectParameter: selectedProduct.quantity,
-                                    newParameter: savedQuantity)
-        RealmDataManager.changeElementIn(object: selectedProduct,
-                                    keyValue: "measure",
-                                    objectParameter: selectedProduct.measure,
-                                    newParameter: savedMeasure)
-        CloudManager.updateProductInCloud(product: selectedProduct)
+        guard let product = popupDataManager.products.first else { return }
+        popupDataManager.changeProduct(product, newName: productName, newQuantity: productQuantity, newMeasure: productMeasure)
         
         if let parentVC = parentVC as? CartViewController {
             parentVC.productsTable.reloadData()

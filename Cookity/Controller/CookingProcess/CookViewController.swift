@@ -24,6 +24,7 @@ class CookViewController: SwipeTableViewController {
 
     var isEdited: Bool = false // used for to disable touches while textfield are edited.
     
+    @IBOutlet var cookDataManager: CookDataManager!
     @IBOutlet weak var productsTable: UITableView!
     @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var recipeName: UITextField!
@@ -32,15 +33,8 @@ class CookViewController: SwipeTableViewController {
     
     var updateVCDelegate: UpdateVCDelegate?
     
-    var recipeSteps: [RecipeStep]?
-    var products = [Product]()
     let sections = CookSections.allCases
-    var pickedImage: UIImage?
-    var editedRecipe: Recipe? {
-        didSet{
-            Configuration.configureViewController(ofType: self, parentObject: editedRecipe)
-        }
-    }
+
     
     // Storage for edited text used by tableView cellForRow to update data
     var editedValue = [UITextField: String]()
@@ -54,8 +48,8 @@ class CookViewController: SwipeTableViewController {
         productsTable.delegate = self
         productsTable.dataSource = self
         productsTable.keyboardDismissMode = .onDrag
-        if editedRecipe != nil {
-            recipeName.text = editedRecipe?.name
+        if let editedRecipe = cookDataManager.selectedRecipe {
+            recipeName.text = editedRecipe.name
         }
         else {
             deleteButton.isEnabled = false
@@ -115,6 +109,9 @@ class CookViewController: SwipeTableViewController {
         editedText = textField.text ?? ""
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+         updateVCDelegate?.updateVC()
+     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         backButton.isEnabled = true
@@ -137,145 +134,43 @@ class CookViewController: SwipeTableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let vc = segue.destination as! EditImageViewController
         vc.parentVC = self
-        if let pickedImage = pickedImage {
-            vc.editedImage = pickedImage
+        if let recipeImage = cookDataManager.recipeImage {
+            vc.editedImage = recipeImage
         }
     }
     
-    
     //MARK:- Data Management Methods
     internal func saveStep(step: String) {
-        let newStep = RecipeStep()
-        newStep.name = step
-        if recipeSteps?.append(newStep) == nil {
-            recipeSteps = [newStep]
-        }
+        cookDataManager.saveStep(step: step)
         productsTable.reloadData()
     }
     
     override func deleteObject(at indexPath: IndexPath) {
-        
-        switch indexPath.section {
-        case 0:
-            products.remove(at: indexPath.row - 1)
-        case 1:
-            recipeSteps?.remove(at: indexPath.row - 1)
-        default:
-            return
-        }
+        cookDataManager.deleteObject(at: indexPath)
         productsTable.reloadData()
     }
     
-    private func configureNumbers() {
-        for product in products {
-            let quantityString = String(product.quantity)
-            (product.quantity, product.measure) = Configuration.configNumbers(quantity: quantityString,
-                                                                              measure: product.measure)
-        }
-    }
-    
-    private func saveRecipe() {
-        var recipe: Recipe
-        
-        if editedRecipe != nil {
-            recipe = editedRecipe!
-            let newName = (recipeName?.text)!
-            RealmDataManager.changeElementIn(object: recipe, keyValue: "name", objectParameter: recipe.name, newParameter: newName)
-            for product in recipe.products {
-                RealmDataManager.deleteFromRealm(object: product)
-            }
-            for recipeStep in recipe.recipeSteps {
-                RealmDataManager.deleteFromRealm(object: recipeStep)
-            }
-        }
-        else {
-            recipe = Recipe()
-            recipe.name = (recipeName?.text)!
-            RealmDataManager.saveToRealm(parentObject: nil, object: recipe)
-        }
-
-        for product in products {
-            RealmDataManager.saveToRealm(parentObject: recipe, object: product)
-        }
-        
-        if let recipeSteps = recipeSteps {
-            for recipeStep in recipeSteps {
-                RealmDataManager.saveToRealm(parentObject: recipe, object: recipeStep)
-            }
-        }
-        
-        if let imageFileName = RealmDataManager.savePicture(image: pickedImage, imageName: recipe.name) {
-            RealmDataManager.saveToRealm(parentObject: recipe, object: imageFileName)
-        }
-        else if let imageFileName = recipe.imageFileName {
-            RealmDataManager.deletePicture(withName: imageFileName)
-        }
-        
-        saveRecipeToCloud(recipe: recipe)
-    }
-    
-    private func saveRecipeToCloud(recipe: Recipe) {
-        if editedRecipe != nil {
-            CloudManager.updateRecipeInCloud(recipe: recipe)
-        }
-        else {
-            CloudManager.saveDataToCloud(ofType: .Recipe, object: recipe) { (recordID) in
-                DispatchQueue.main.async {
-                    RealmDataManager.changeElementIn(object: recipe,
-                                                     keyValue: "cloudID",
-                                                     objectParameter: recipe.cloudID,
-                                                     newParameter: recordID)
-                }
-            }
-        }
-    }
-    
-
-    
-
     //MARK: - Methods for Buttons
     @IBAction func deleteButtonPressed(_ sender: UIButton) {
-        if let recipe = editedRecipe {
-            if let cloudID = recipe.cloudID {
-                CloudManager.deleteRecordFromCloud(ofType: .Recipe, recordID: cloudID)
-            }
-            for product in recipe.products {
-                RealmDataManager.deleteFromRealm(object: product)
-            }
-            for step in recipe.recipeSteps {
-                RealmDataManager.deleteFromRealm(object: step)
-            }
-            if let imageFileName = recipe.imageFileName {
-               RealmDataManager.deletePicture(withName: imageFileName)
-            }
-            RealmDataManager.deleteFromRealm(object: recipe)
-            
-        }
-        products.removeAll()
+        cookDataManager.deleteRecipe()
         updateVCDelegate?.updateVC()
         self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func cancelButtonPressed(_ sender: UIButton) {
-        products.removeAll()
         self.dismiss(animated: true, completion: nil)
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        updateVCDelegate?.updateVC()
-    }
-    
+ 
     
     @IBAction func addImageButtonPressed(_ sender: UIButton) {
         DecorationHandler.putShadowOnView(vc: self)
         performSegue(withIdentifier: "GoToEditImage", sender: self)
     }
     
-    
-    
     @IBAction func saveButtonPressed(_ sender: UIButton) {
-        configureNumbers()
-        saveRecipe()
+        guard let newName = recipeName?.text else { /*вставить сюда алерт*/ return }
+        cookDataManager.saveRecipe(withName: newName)
         updateVCDelegate?.updateVC()
         self.dismiss(animated: true, completion: nil)
     }
@@ -285,7 +180,7 @@ class CookViewController: SwipeTableViewController {
 
 
 //MARK: - TableView Methods
-extension CookViewController: UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, RecipeStepDelegate {
+extension CookViewController: UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, RecipeStepDelegate {    
     
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -297,14 +192,13 @@ extension CookViewController: UITableViewDelegate, UITableViewDataSource, UIText
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         if section == 0 {
             tableView.rowHeight = 60
-            return (products.count) + 1
+            return (cookDataManager.products.count) + 1
         }
         else {
             
-            return (recipeSteps?.count ?? 0) + 1
+            return (cookDataManager.recipeSteps.count) + 1
         }
     }
     
@@ -325,7 +219,7 @@ extension CookViewController: UITableViewDelegate, UITableViewDataSource, UIText
                 cell.productName.autocapitalizationType = .sentences
                 cell.productMeasure.delegate = self
                 
-                let product = products[indexPath.row - 1]
+                let product = cookDataManager.products[indexPath.row - 1]
     
                 
                 if editedValue[cell.productName] != nil {
@@ -334,11 +228,8 @@ extension CookViewController: UITableViewDelegate, UITableViewDataSource, UIText
                 }
                 
                 if let quantity = editedValue[cell.quantityForRecipe] {
-                    print(quantity)
                     let (newQuantity, newMeasure) = Configuration.configNumbers(quantity: quantity, measure: product.measure)
-                    
-                    print(newQuantity)
-                    print(newMeasure)
+
                     product.quantity = newQuantity
                     product.measure = newMeasure
                     editedValue.removeAll()
@@ -371,14 +262,13 @@ extension CookViewController: UITableViewDelegate, UITableViewDataSource, UIText
                 
 
                 
-                if let recipeStep = recipeSteps?[indexPath.row - 1] {
-                    
-                    if editedValue[cell.recipeStepCell] != nil {
-                        RealmDataManager.changeElementIn(object: recipeStep, keyValue: "name", objectParameter: recipeStep.name, newParameter: editedValue[cell.recipeStepCell])
-                        editedValue.removeAll()
-                    }
-                    cell.recipeStepCell.text = recipeStep.name
+                let recipeStep = cookDataManager.recipeSteps[indexPath.row - 1]
+                if editedValue[cell.recipeStepCell] != nil {
+                    RealmDataManager.changeElementIn(object: recipeStep, keyValue: "name", objectParameter: recipeStep.name, newParameter: editedValue[cell.recipeStepCell])
+                    editedValue.removeAll()
                 }
+                cell.recipeStepCell.text = recipeStep.name
+                
                 return cell
             }
         }
@@ -392,30 +282,13 @@ extension CookViewController: TextFieldDelegate {
     //выделить в отдельную функцию, чтобыне повторять код
     func saveProduct(productName: String, productQuantity: String, productMeasure: String) {
         
-        let newProduct = Product()
-        
-        let alert = UIAlertController(title: "title", message: "message", preferredStyle: .alert)
-        let action = UIAlertAction(title: "OK", style: .default) { (_) in return }
-        alert.addAction(action)
-        
-        guard
-            alert.check(data: productName, dataName: .name),
-            alert.check(data: productQuantity, dataName: .quantity)
-        else {
+        let alert = cookDataManager.checkDataFromTextFields(productName: productName, productQuantity: productQuantity, productMeasure: productMeasure)
+        if let alert = alert {
             present(alert, animated: true, completion: nil)
             return
         }
-    
-        
-        let measure = Configuration.configMeasure(measure: productMeasure)
-        
-        
-        let (savedQuantity, savedMeasure) = Configuration.configNumbers(quantity: productQuantity, measure: measure)
-        newProduct.name = productName
-        newProduct.quantity = savedQuantity
-        newProduct.measure = savedMeasure
-        products.append(newProduct)
-
+        let newProduct = cookDataManager.createNewProduct(productName: productName, productQuantity: productQuantity, productMeasure: productMeasure)
+        cookDataManager.products.append(newProduct)
         productsTable.reloadData()
     }
 }
