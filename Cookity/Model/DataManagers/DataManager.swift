@@ -54,6 +54,7 @@ class DataManager: NSObject {
         }
     }
     
+    
     func checkDataFromTextFields(productName: String, productQuantity: String, productMeasure: String) -> UIAlertController? {
         let alert = UIAlertController(title: "title", message: "message", preferredStyle: .alert)
         let action = UIAlertAction(title: "OK", style: .default) { (_) in return }

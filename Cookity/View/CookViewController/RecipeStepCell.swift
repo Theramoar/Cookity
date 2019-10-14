@@ -9,7 +9,7 @@
 import UIKit
 import SwipeCellKit
 
-class RecipeStepCell: SwipeTableViewCell {
+class RecipeStepCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()

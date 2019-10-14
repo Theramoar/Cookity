@@ -31,7 +31,7 @@ class CloudManager {
     
     //MARK:- Save Data
     static func saveDataToCloud(ofType objectType: ParentData, object: ParentObject, closure: @escaping (String) -> Void) {
-        guard SettingsVariables.isCloudEnabled else { return }
+        guard SettingsVariables.isCloudEnabled, object.isInvalidated == false else { return }
         //Create parent record and save it to cloud
         let record = CKRecord(recordType: objectType.rawValue)
         record.setValue(object.name, forKey: "name")
@@ -42,11 +42,12 @@ class CloudManager {
         })
     
         //Save products and create reference to the parent
+        guard object.isInvalidated == false else { return }
         let products = Array(object.products)
         saveChildrenToCloud(ofType: .Product, objects: products, parentRecord: record)
         
         if objectType == .Recipe {
-            guard let recipe = object as? Recipe else { return }
+            guard object.isInvalidated == false, let recipe = object as? Recipe else { return }
             //Save recipe steps create reference to the parent
             let recipeSteps = Array(recipe.recipeSteps)
             saveChildrenToCloud(ofType: .RecipeStep, objects: recipeSteps, parentRecord: record)
@@ -84,6 +85,7 @@ class CloudManager {
     
     private static func saveChildrenToCloud(ofType objectType: CloudChildData, objects: [Object], parentRecord: CKRecord) {
         objects.forEach { (object) in
+            guard object.isInvalidated == false else { return }
             let record = CKRecord(recordType: objectType.rawValue)
             
             switch objectType {
@@ -113,7 +115,7 @@ class CloudManager {
     //MARK:- Update Data
     static func updateRecipeInCloud(recipe: Recipe) {
         guard SettingsVariables.isCloudEnabled else { return }
-        guard let cloudID = recipe.cloudID else { return }
+        guard recipe.isInvalidated == false, let cloudID = recipe.cloudID else { return }
         saveDataToCloud(ofType: .Recipe, object: recipe) { (recordID) in
             DispatchQueue.main.async {
                 RealmDataManager.changeElementIn(object: recipe,
@@ -128,7 +130,7 @@ class CloudManager {
     
     static func updateProductInCloud(product: Product) {
         guard SettingsVariables.isCloudEnabled else { return }
-        guard let cloudID = product.cloudID else { return }
+        guard product.isInvalidated == false, let cloudID = product.cloudID else { return }
         let recordID = CKRecord.ID(recordName: cloudID)
         privateCloudDatabase.fetch(withRecordID: recordID) { (record, error) in
             guard let record = record, error == nil else { return }
@@ -336,7 +338,6 @@ class CloudManager {
     
     
     //MARK:- Sync Data - перед тем как начать писать протестить как работает без интернета
-    
     static func syncData(ofType data: ParentData, parentObjects: [ParentObject]) {
         guard SettingsVariables.isCloudEnabled else { return }
         

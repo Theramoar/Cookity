@@ -9,12 +9,7 @@
 import UIKit
 import SwipeCellKit
 
-class CookTableViewCell: SwipeTableViewCell, MeasurePickerDelegate {
-    
-//    @IBOutlet weak var productName: UITextField!
-//    @IBOutlet weak var productMeasure: UITextField!
-//    @IBOutlet weak var quantityForRecipe: UITextField!
-    
+class CookTableViewCell: UITableViewCell, MeasurePickerDelegate {
     
     @IBOutlet weak var productName: UITextField!
     @IBOutlet weak var productMeasure: UITextField!

@@ -8,7 +8,7 @@
 
 import UIKit
 import SwipeCellKit
-import RealmSwift
+//import RealmSwift
 
 
 enum CookSections: String, CaseIterable {
@@ -20,7 +20,7 @@ protocol UpdateVCDelegate {
     func updateVC()
 }
 
-class CookViewController: SwipeTableViewController {
+class CookViewController: UIViewController {
 
     var isEdited: Bool = false // used for to disable touches while textfield are edited.
     
@@ -47,6 +47,7 @@ class CookViewController: SwipeTableViewController {
         recipeName.autocapitalizationType = .sentences
         productsTable.delegate = self
         productsTable.dataSource = self
+        productsTable.isEditing = true
         productsTable.keyboardDismissMode = .onDrag
         if let editedRecipe = cookDataManager.selectedRecipe {
             recipeName.text = editedRecipe.name
@@ -145,11 +146,6 @@ class CookViewController: SwipeTableViewController {
         productsTable.reloadData()
     }
     
-    override func deleteObject(at indexPath: IndexPath) {
-        cookDataManager.deleteObject(at: indexPath)
-        productsTable.reloadData()
-    }
-    
     //MARK: - Methods for Buttons
     @IBAction func deleteButtonPressed(_ sender: UIButton) {
         cookDataManager.deleteRecipe()
@@ -197,7 +193,6 @@ extension CookViewController: UITableViewDelegate, UITableViewDataSource, UIText
             return (cookDataManager.products.count) + 1
         }
         else {
-            
             return (cookDataManager.recipeSteps.count) + 1
         }
     }
@@ -213,7 +208,6 @@ extension CookViewController: UITableViewDelegate, UITableViewDataSource, UIText
             }
             else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "CookCell", for: indexPath) as! CookTableViewCell
-                cell.delegate = self as SwipeTableViewCellDelegate
                 cell.quantityForRecipe.delegate = self
                 cell.productName.delegate = self
                 cell.productName.autocapitalizationType = .sentences
@@ -253,11 +247,11 @@ extension CookViewController: UITableViewDelegate, UITableViewDataSource, UIText
             if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AddRecipeCell", for: indexPath) as! RecipeStepTableViewCell
                 cell.delegate = self
+                cell.isEditing = false
                 return cell
             }
             else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCell", for: indexPath) as! RecipeStepCell
-                cell.delegate = self as SwipeTableViewCellDelegate
                 cell.recipeStepCell.delegate = self
                 
 
@@ -271,6 +265,53 @@ extension CookViewController: UITableViewDelegate, UITableViewDataSource, UIText
                 
                 return cell
             }
+        }
+    }
+        
+    //MARK:- TableView Cell Edit Methods
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        guard indexPath.row == 0 else { return true }
+        return false
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+         if (editingStyle == .delete) {
+            cookDataManager.deleteObject(at: indexPath)
+            tableView.reloadData()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        guard indexPath.row == 0 else { return true }
+        return false
+    }
+    
+    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        return false
+    }
+    
+    func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
+        if sourceIndexPath.section != proposedDestinationIndexPath.section {
+            return IndexPath(row: sourceIndexPath.row, section: sourceIndexPath.section)
+        }
+        else if proposedDestinationIndexPath.row == 0 {
+            return IndexPath(row: 1, section: sourceIndexPath.section)
+            
+        }
+        return proposedDestinationIndexPath
+    }
+
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        guard destinationIndexPath.row != 0 else { return }
+        if sourceIndexPath.section == 0, destinationIndexPath.section == 0 {
+            let movedObject = cookDataManager.products[sourceIndexPath.row - 1]
+            cookDataManager.products.remove(at: sourceIndexPath.row - 1)
+            cookDataManager.products.insert(movedObject, at: destinationIndexPath.row - 1)
+        }
+        else if sourceIndexPath.section == 1, destinationIndexPath.section == 1 {
+            let movedObject = cookDataManager.recipeSteps[sourceIndexPath.row - 1]
+            cookDataManager.recipeSteps.remove(at: sourceIndexPath.row - 1)
+            cookDataManager.recipeSteps.insert(movedObject, at: destinationIndexPath.row - 1)
         }
     }
 }

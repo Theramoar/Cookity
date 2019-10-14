@@ -9,7 +9,7 @@
 import RealmSwift
 
 
-class RecipeCollectionDataManager: DataManager {
+class RecipeCollectionDataManager: NSObject {
     
     var filteredRecipeList: [Recipe] = []
     var updateVCDelegate: UpdateVCDelegate?

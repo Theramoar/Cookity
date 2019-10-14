@@ -28,7 +28,7 @@ class TextFieldCell: UITableViewCell, MeasurePickerDelegate{
     
     override func awakeFromNib() {
 
-        self.selectionStyle = .none
+        selectionStyle = .none
         let measurePicker = MeasurePicker()
         measurePicker.mpDelegate = self
         insertMeasure.inputView = measurePicker
