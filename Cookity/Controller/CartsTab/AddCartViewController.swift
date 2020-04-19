@@ -18,7 +18,9 @@ class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, Meas
     var panStartPoint = CGPoint(x: 0, y: 0)
     var panEndPoint = CGPoint(x: 0, y: 0)
     
-    @IBOutlet var cartDataManager: CartDataManager!
+    
+    var viewModel: AddCartViewModel!
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var productTextField: UITextField!
     @IBOutlet weak var quantityTextField: UITextField!
@@ -132,8 +134,7 @@ class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, Meas
     //MARK:- Methods for Buttons
     @IBAction func doneButtonPresed(_ sender: UIButton) {
         guard let cartName = cartNameTextField.text, cartName != "" else { return }
-        let products = cartDataManager.products
-        cartDataManager.saveCart(name: cartName, products: products)
+        viewModel.saveCart(name: cartName)
         dismissView()
     }
     
@@ -155,20 +156,21 @@ class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, Meas
             let quantityText = quantityTextField?.text,
             let measureText = measureTextField.text
             else { return false }
-        let alert = cartDataManager.checkDataFromTextFields(productName: nameText, productQuantity: quantityText, productMeasure: measureText)
+        
+        let alert = viewModel.checkDataFromTextFields(productName: nameText, productQuantity: quantityText, productMeasure: measureText)
         if let alert = alert {
             present(alert, animated: true, completion: nil)
             return false
         }
-        let newProduct = cartDataManager.createNewProduct(productName: nameText, productQuantity: quantityText, productMeasure: measureText)
-        cartDataManager.products.append(newProduct)
+        
+        viewModel.createNewProduct(productName: nameText, productQuantity: quantityText, productMeasure: measureText)
         tableView.reloadData()
         return true
     }
     
     //MARK:- Data Manipulation Products
     override func deleteObject(at indexPath: IndexPath) {
-        cartDataManager.deleteProductFromCart(at: indexPath.row)
+        viewModel.deleteProductFromCart(at: indexPath.row)
         tableView.reloadData()
     }
 }
@@ -179,13 +181,13 @@ extension AddCartViewController: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return cartDataManager.products.count
+        viewModel.numberOfRows
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProductCell", for: indexPath) as! ProductTableViewCell
         cell.delegate = self as SwipeTableViewCellDelegate
-        cell.product = cartDataManager.products[indexPath.row]
+        cell.viewModel = viewModel.cellViewModel(forIndexPath: indexPath) as? ProductTableCellViewModel
         return cell
     }
     

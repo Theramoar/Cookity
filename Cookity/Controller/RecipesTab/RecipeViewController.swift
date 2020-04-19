@@ -18,11 +18,10 @@ class RecipeViewController: UIViewController, UpdateVCDelegate {
     
     @IBOutlet weak var productTable: UITableView!
     @IBOutlet weak var cookButton: UIButton!
-    @IBOutlet var recipeDataManager: RecipeDataManager!
     
+    var viewModel: RecipeViewModel!
     let imageView = UIImageView()
-    let labelRightView = UIView()
-    let recipeNameLabel = UILabel()
+
     
     var navBarHeight: CGFloat {
         guard let navBarHeight = self.navigationController?.navigationBar.frame.height,
@@ -30,8 +29,6 @@ class RecipeViewController: UIViewController, UpdateVCDelegate {
         else { return 0 }
         return statBarHeight + navBarHeight
     }
-
-    let sections = ["Name", "Ingridients:", "Cooking steps:"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,12 +48,11 @@ class RecipeViewController: UIViewController, UpdateVCDelegate {
     }
     
     func updateVC() {
-        if recipeDataManager.selectedRecipe?.isInvalidated ?? true {
+        if viewModel.isRecipeInvalidated {
             navigationController?.popViewController(animated: true)
         }
         else {
-            if let imageFileName = recipeDataManager.selectedRecipe?.imageFileName,
-            let image = Configuration.getImageFromFileManager(with: imageFileName) {
+            if let image = viewModel.recipeImage {
                 addImageView(image: image)
                 productTable.reloadData()
             }
@@ -71,9 +67,8 @@ class RecipeViewController: UIViewController, UpdateVCDelegate {
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
-        self.navigationController?.view.backgroundColor = .clear
-        self.navigationController?.navigationBar.backgroundColor = .clear
         self.navigationController?.navigationBar.tintColor = .white
+        self.navigationController?.navigationBar.backgroundColor = .clear
         
         imageView.image = image
         let imageHeight = 300 + navBarHeight
@@ -86,19 +81,15 @@ class RecipeViewController: UIViewController, UpdateVCDelegate {
     private func setStandardNavBar() {
         imageView.removeFromSuperview()
         self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-        self.navigationController?.navigationBar.shadowImage = nil
-        self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.view.backgroundColor = Colors.appColor
         self.navigationController?.navigationBar.tintColor = Colors.textColor
+        self.navigationController?.navigationBar.barTintColor = Colors.viewColor
+        self.navigationController?.navigationBar.backgroundColor = Colors.viewColor
         productTable.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let labelY = max(navBarHeight, imageView.frame.height - 38)
-        recipeNameLabel.frame.origin.y = labelY
-        labelRightView.frame.origin.y = labelY
         let y = 300 - (scrollView.contentOffset.y + 300)
-        let height = min(max(y, navBarHeight + recipeNameLabel.frame.height), 600)
+        let height = min(max(y, navBarHeight), 600)
         imageView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: height)
     }
     
@@ -106,8 +97,7 @@ class RecipeViewController: UIViewController, UpdateVCDelegate {
     
     
     @IBAction func shareButtonPressed(_ sender: UIBarButtonItem) {
-        guard let recipe = recipeDataManager.selectedRecipe,
-            let activity = recipeDataManager.shareObject(recipe) else { return }
+        guard let activity = viewModel.shareObject() else { return }
         activity.popoverPresentationController?.barButtonItem = sender
         present(activity, animated: true, completion: nil)
     }
@@ -121,16 +111,12 @@ class RecipeViewController: UIViewController, UpdateVCDelegate {
         
         if segue.identifier == "EditCookingArea" {
             let destinationVC = segue.destination as! CookViewController
-            if let recipe = recipeDataManager.selectedRecipe {
-                destinationVC.cookDataManager.selectedRecipe = recipe
-                destinationVC.updateVCDelegate = self
-            }
+            destinationVC.viewModel = viewModel.viewModelForCookVC()
+            destinationVC.updateVCDelegate = self
         }
         else if segue.identifier == "goToCookProcess" {
             let destinationVC = segue.destination as! CookProcessViewController
-            if let selectedRecipe = recipeDataManager.selectedRecipe {
-                destinationVC.recipeSteps = Array(selectedRecipe.recipeSteps)
-            }
+            destinationVC.viewModel = viewModel.viewModelForCookProcess()
         }
     }
         
@@ -140,12 +126,12 @@ class RecipeViewController: UIViewController, UpdateVCDelegate {
         let checkmark = CheckmarkView(frame: self.view.frame, message: "Done!")
         self.view.addSubview(checkmark)
         checkmark.animate()
-        recipeDataManager.createCartFromRecipe()
+        viewModel.createCartFromRecipe()
     }
     
     
     @IBAction func cookButtonPressed(_ sender: UIButton) {
-        if recipeDataManager.selectedRecipe?.recipeSteps.count != 0 {
+        if viewModel.recipeStepsCount != 0 {
             performSegue(withIdentifier: "goToCookProcess", sender: self)
         }
         else {
@@ -153,7 +139,7 @@ class RecipeViewController: UIViewController, UpdateVCDelegate {
             self.view.addSubview(checkmark)
             checkmark.animate()
         }
-        recipeDataManager.editFridgeProducts()
+        viewModel.editFridgeProducts()
         productTable.reloadData()
     }
 }
@@ -164,59 +150,49 @@ extension RecipeViewController: UITableViewDelegate, UITableViewDataSource{
     
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        if recipeDataManager.recipeSteps.count == 0 { return 2 }
-        return sections.count
+        viewModel.numberOfSections
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard section == 0,
-              let name = recipeDataManager.selectedRecipe?.name else { return nil }
+        guard section == 0 else { return nil }
+//        if viewModel.recipeImage == nil { return nil }
         let backgroundView = RecipeSectionView()
-        backgroundView.configureView(.Header, with: name)
+        backgroundView.configureView(.Header, with: viewModel.recipeName)
         return backgroundView
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         guard section != 2 else { return nil }
-        if section == 1, recipeDataManager.recipeSteps.count == 0 { return nil }
+        if section == 1, viewModel.recipeStepsCount == 0 { return nil }
         
         let backgroundView = RecipeSectionView()
-        backgroundView.configureView(.Footer, with: sections[section + 1])
+        backgroundView.configureView(.Footer, with: viewModel.sections[section + 1])
         return backgroundView
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         guard section != 2 else { return 0 }
-        if section == 1, recipeDataManager.recipeSteps.count == 0 { return 0 }
+        if section == 1, viewModel.recipeStepsCount == 0 { return 0 }
         return 30
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         guard section == 0 else { return 0 }
+//        if viewModel.recipeImage == nil { return 0 }
         return 38
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 1 {
-            return recipeDataManager.products.count.advanced(by: 1)
-        }
-        else if section == 2 {
-            return recipeDataManager.recipeSteps.count
-        }
-        else {
-            return 0
-        }
+        viewModel.currentSection(section)
+        return viewModel.numberOfRows
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 1 {
-            if indexPath.row < recipeDataManager.products.count {
+            if indexPath.row < viewModel.productsCount {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeProductCell", for: indexPath) as! RecipeProductCell
-                let product = recipeDataManager.products[indexPath.row]
-                cell.productsInFridge = Array(recipeDataManager.productsInFridge)
-                cell.product = product
-                
+                cell.viewModel = viewModel.cellViewModel(forIndexPath: indexPath) as? RecipeProductCellViewModel
                 return cell
             }
             else {
@@ -226,10 +202,7 @@ extension RecipeViewController: UITableViewDelegate, UITableViewDataSource{
         }
         else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "RVRecipeStepCell", for: indexPath) as! RVRecipeStepCell
-            let recipeStep = recipeDataManager.recipeSteps[indexPath.row]
-            cell.position = indexPath.row + 1
-            cell.recipeStep = recipeStep
-            
+            cell.viewModel = viewModel.cellViewModel(forIndexPath: indexPath) as? RVRecipeStepCellViewModel
             cell.selectionStyle = .none
             return cell
         }

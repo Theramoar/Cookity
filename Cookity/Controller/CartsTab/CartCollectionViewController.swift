@@ -12,10 +12,12 @@ import SwipeCellKit
 
 class CartCollectionViewController: SwipeTableViewController, UpdateVCDelegate {
     
-
-    @IBOutlet var cartDataManager: CartDataManager!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var addCartButton: UIButton!
+    
+    @IBOutlet weak var plusButton: UIButton!
+    @IBOutlet weak var cartTableView: UITableView!
+    let viewModel = CartCollectionViewModel()
     
 
     override func viewDidLoad() {
@@ -32,11 +34,9 @@ class CartCollectionViewController: SwipeTableViewController, UpdateVCDelegate {
         addCartButton.layer.shadowOpacity = 0.7
         addCartButton.layer.shadowRadius = 5.0
         
-        cartDataManager.updateVCDelegate = self
-        
-        cartDataManager.shoppingCarts = RealmDataManager.dataLoadedFromRealm(ofType: .Cart)
-        cartDataManager.productsInFridge = Fridge.shared.products
-        cartDataManager.loadCartsFromCloud()
+        viewModel.loadCartsFromCloud {
+            self.cartTableView.reloadData()
+        }
     }
     
     func updateVC() {
@@ -45,17 +45,17 @@ class CartCollectionViewController: SwipeTableViewController, UpdateVCDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         tableView.reloadData()
+        tabBarController?.tabBar.isHidden = false
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToCart" {
             let destinationVC = segue.destination as! CartViewController
-            if let indexPath = tableView.indexPathForSelectedRow{
-                destinationVC.cartDataManager.selectedCart = cartDataManager.shoppingCarts?[indexPath.row]
-            }
+            destinationVC.viewModel = viewModel.viewModelForSelectedRow() as? CartViewModel
         }
         else if segue.identifier == "addShoppingCart" {
             let destinationVC = segue.destination as! AddCartViewController
+            destinationVC.viewModel = viewModel.viewModelForNewCart()
             destinationVC.updateVCDelegate = self
         }
     }
@@ -68,7 +68,7 @@ class CartCollectionViewController: SwipeTableViewController, UpdateVCDelegate {
     
     //MARK: - Data Manipulation Methods
     override func deleteObject(at indexPath: IndexPath) {
-        cartDataManager.deleteCart(at: indexPath.row)
+        viewModel.deleteCart(at: indexPath.row)
         tableView.reloadData()
     }
     
@@ -77,8 +77,7 @@ class CartCollectionViewController: SwipeTableViewController, UpdateVCDelegate {
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         
         let appendAction = SwipeAction(style: .default, title: nil) { (action, indexPath) in
-            guard let cart = self.cartDataManager.shoppingCarts?[indexPath.row] else { return }
-            self.cartDataManager.moveProductsToFridge(from: cart)
+            self.viewModel.moveProductsToFridge(fromCartAtIndexPath: indexPath)
             tableView.reloadData()
         }
         appendAction.image = UIImage(named: "AddToFridge")
@@ -98,22 +97,25 @@ extension CartCollectionViewController: UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         tableView.rowHeight = 60
         tableView.separatorInset = .init(top: 0, left: 30, bottom: 0, right: 30)
-        return cartDataManager.shoppingCarts?.count ?? 1
+        return viewModel.numberOfRows
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CartCell", for: indexPath) as! CartCell
         cell.delegate = self as SwipeTableViewCellDelegate
-        
-        if let cart = cartDataManager.shoppingCarts?[indexPath.row]{
-            cell.cartName.text = cart.name
-        }
+        cell.viewModel = viewModel.cellViewModel(forIndexPath: indexPath) as? CartCellViewModel
         return cell
     }
     
     //MARK: - TableView Delegate Methods
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        viewModel.selectRow(atIndexPath: indexPath)
+        
+//        let vc = CartViewController()
+//        let vm = viewModel.viewModelForSelectedRow() as! CartViewModel
+//        vc.viewModel = vm
+//        navigationController?.pushViewController(vc, animated: true)
         performSegue(withIdentifier: "goToCart", sender: self)
     }
 }

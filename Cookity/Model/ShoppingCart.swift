@@ -13,11 +13,15 @@ import CloudKit
 
 protocol CloudObject: Object {
     var cloudID: String? { get set }
+    func returnCloudValues() -> [String : Any]
+    init(record: CKRecord)
 }
 
 protocol ParentObject: CloudObject {
     var name: String { get set }
     var products: List<Product> { get set }
+    func appendObject(_ object: Object)
+    func allChildrenObjects() -> [ChildObject]
 }
 
 enum ShoppingCartCodingKeys: String, CodingKey {
@@ -26,17 +30,31 @@ enum ShoppingCartCodingKeys: String, CodingKey {
 }
 
 class ShoppingCart: Object, ParentObject, Codable {
-    
     @objc dynamic var name: String = ""
     @objc dynamic var cloudID: String?
     var products = List<Product>()
     
+    func returnCloudValues() -> [String : Any] {
+        ["name" : name]
+    }
     
-    convenience init(record: CKRecord, products: List<Product>?) {
+    func appendObject(_ object: Object) {
+        products.append(object as! Product)
+    }
+    
+    func allChildrenObjects() -> [ChildObject] {
+        var objects = [ChildObject]()
+        for product in products {
+            objects.append(product)
+        }
+        return objects
+    }
+    
+    
+    required convenience init(record: CKRecord) {
         self.init()
         self.name = record.value(forKey: "name") as! String
         self.cloudID = record.recordID.recordName
-        self.products = products ?? List<Product>()
     }
     
     

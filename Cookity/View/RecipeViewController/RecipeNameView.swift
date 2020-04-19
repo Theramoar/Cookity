@@ -30,8 +30,9 @@ class RecipeSectionView: UIView {
                 nameLabel.numberOfLines = 2
                 nameLabel.adjustsFontSizeToFitWidth = true
                 nameLabel.minimumScaleFactor = 1/3
-                nameLabel.backgroundColor = Colors.viewColor
-                width = (UIScreen.main.bounds.size.width / 4) * 3
+//                nameLabel.backgroundColor = Colors.viewColor
+//                nameLabel.frame.size.width = (UIScreen.main.bounds.size.width / 4) * 3
+                width = UIScreen.main.bounds.size.width
                 height = 38
             case .Footer:
                 nameLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
@@ -41,6 +42,7 @@ class RecipeSectionView: UIView {
         
         nameLabel.frame = CGRect(x: 8, y: 0, width: width, height: height)
         addSubview(nameLabel)
+        nameLabel.frame.size.width = width / 4 * 3
     }
     
 }

@@ -18,15 +18,14 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate, MeasurePic
         }
     }
     
-//    var selectedProduct: Product?
     var parentVC: UIViewController?
     let measures = Measures.allCases
     
     var panStartPoint = CGPoint(x: 0, y: 0)
     var panEndPoint = CGPoint(x: 0, y: 0)
     
+    var viewModel: PopupEditViewModel!
     
-    @IBOutlet var popupDataManager: PopupDataManager!
     @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var editView: EditTextView!
     @IBOutlet weak var nameText: UITextField!
@@ -69,10 +68,9 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate, MeasurePic
         dismissTapGesture.cancelsTouchesInView = false
         self.view.addGestureRecognizer(dismissTapGesture)
         
-        let (name, quantity, measure) = popupDataManager.configVCData()
-        nameText.text = name
-        quantityText.text = quantity
-        measureText.text = measure
+        nameText.text = viewModel.presentedName
+        quantityText.text = viewModel.presentedQuantity
+        measureText.text = viewModel.presentedMeasure
         
     }
     
@@ -128,13 +126,12 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate, MeasurePic
             let productMeasure = measureText.text
             else { return }
         
-        let alert = popupDataManager.checkDataFromTextFields(productName: productName, productQuantity: productQuantity, productMeasure: productMeasure)
+        let alert = viewModel.checkDataFromTextFields(productName: productName, productQuantity: productQuantity, productMeasure: productMeasure)
         if let alert = alert {
             present(alert, animated: true, completion: nil)
             return
         }
-        guard let product = popupDataManager.products.first else { return }
-        popupDataManager.changeProduct(product, newName: productName, newQuantity: productQuantity, newMeasure: productMeasure)
+        viewModel.changeProduct(newName: productName, newQuantity: productQuantity, newMeasure: productMeasure)
         
         if let parentVC = parentVC as? CartViewController {
             parentVC.productsTable.reloadData()
@@ -142,6 +139,7 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate, MeasurePic
         else if let parentVC = parentVC as? FridgeViewController {
             parentVC.fridgeTableView.reloadData()
         }
+        
         shadow.removeFromSuperview()
         self.dismiss(animated: true, completion: nil)
     }

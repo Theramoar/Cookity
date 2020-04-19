@@ -9,41 +9,50 @@
 import UIKit
 
 class RecipeProductCell: UITableViewCell {
-
-    
     @IBOutlet weak var productName: UILabel!
     @IBOutlet weak var detailsLabel: UILabel!
     @IBOutlet weak var fridgeDetailsLabel: UILabel!
+    
+    weak var viewModel: RecipeProductCellViewModel? {
+        willSet(viewModel) {
+            guard let viewModel = viewModel else { return }
+            productName.text = viewModel.productName
+            detailsLabel.text = viewModel.productDetails
+            fridgeDetailsLabel.text = viewModel.fridgeDetails
+            fridgeDetailsLabel.isHidden = viewModel.fridgeDetails.isEmpty
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .none
         self.separatorInset = .zero
     }
+}
+
+
+class RecipeProductCellViewModel: CellViewModelType {
+    private var product: Product
     
-    var fridgeDetails = "(You don't have any)"
-    
-    var productsInFridge: [Product]?
-    
-    var product: Product! {
-        didSet {
-            let (quantity, measure) = Configuration.presentNumbers(quantity: product.quantity, measure: product.measure)
-            if let productsInFridge = productsInFridge {
-                let (productsMatch, productInFridge) = Configuration.compareFridgeToRecipe(selectedProduct: product, compareTo: productsInFridge)
-                if productsMatch, let productInFridge = productInFridge {
-                    let (fridgeQuantity, fridgeMeasure) = Configuration.presentNumbers(quantity: productInFridge.quantity, measure: productInFridge.measure)
-                    fridgeDetails = "(You have \(fridgeQuantity) \(fridgeMeasure))"
-                    fridgeDetailsLabel.isHidden = false
-                }
-                else {
-                    fridgeDetailsLabel.isHidden = true
-                }
-            }
-            
-            productName.text = product.name
-            detailsLabel.text = "\(quantity) \(measure)"
-            fridgeDetailsLabel.text = fridgeDetails
+    var productName: String {
+        product.name
+    }
+    var productDetails: String {
+        let (quantity, measure) = Configuration.presentNumbers(quantity: product.quantity, measure: product.measure)
+        return "\(quantity) \(measure)"
+    }
+    var fridgeDetails: String {
+        let (productsMatch, productInFridge) = Configuration.compareFridgeToRecipe(selectedProduct: product, compareTo: Array(Fridge.shared.products))
+        if productsMatch, let productInFridge = productInFridge {
+            let (fridgeQuantity, fridgeMeasure) = Configuration.presentNumbers(quantity: productInFridge.quantity, measure: productInFridge.measure)
+            return "(You have \(fridgeQuantity) \(fridgeMeasure))"
+        }
+        else {
+            return ""
         }
     }
-
+    
+    init(product: Product) {
+        self.product = product
+    }
 }

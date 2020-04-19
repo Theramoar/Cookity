@@ -13,15 +13,11 @@ class CookProcessViewController: UIViewController {
     
     @IBOutlet weak var recipeStepLabel: UILabel!
     @IBOutlet weak var progressView: UIProgressView!
-    
-    var recipeSteps: [RecipeStep]?
-    var currentStep = 0
-    var progress: Float = 0
-    
+    var viewModel: CookProcessViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        recipeStepLabel.text = recipeSteps?[currentStep].name
+        recipeStepLabel.text = viewModel.currentStepText
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
         self.view.addGestureRecognizer(tapGesture)
         progressView.progressViewStyle = UIProgressView.Style.bar
@@ -29,27 +25,15 @@ class CookProcessViewController: UIViewController {
     
     
     @IBAction func cancelButtonPressed(_ sender: UIButton) {
-        recipeSteps?.removeAll()
         self.dismiss(animated: true, completion: nil)
     }
     
     
     @objc func viewTapped() {
-        guard let recipeSteps = recipeSteps else { return }
-        if progress >= 1 {
+        if viewModel.progress >= 1 {
             self.dismiss(animated: true, completion: nil)
         }
-
-        let progressStep = 1 / Float(recipeSteps.count)
-        progress += progressStep
-        progressView.setProgress(progress, animated: true)
-        
-        currentStep += 1
-        if recipeSteps.count > currentStep {
-            recipeStepLabel.text = recipeSteps[currentStep].name
-        }
-        else {
-            recipeStepLabel.text = "Done!"
-        }
+        recipeStepLabel.text = viewModel.updateProgressAndLabel()
+        progressView.setProgress(viewModel.progress, animated: true)
     }
 }

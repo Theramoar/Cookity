@@ -11,15 +11,15 @@ import RealmSwift
 
 class RecipeCollectionViewController: UIViewController, UpdateVCDelegate {
     
-    
-    @IBOutlet var recipeCollectioDM: RecipeCollectionDataManager!
     @IBOutlet weak var recipeCollection: UICollectionView!
     @IBOutlet weak var addRecipeButton: UIButton!
-    
+    var viewModel = RecipeCollectionViewModel()
     
     //MARK:- SearchBar variables
     private var searchController: UISearchController!
+    
     private var isFiltering: Bool {
+        viewModel.isFiltering = searchController.isActive && !searchBarIsEmpty
         return searchController.isActive && !searchBarIsEmpty
     }
     private var searchBarIsEmpty: Bool {
@@ -33,30 +33,28 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate {
         
         recipeCollection.delegate = self
         recipeCollection.dataSource = self
-        recipeCollectioDM.updateVCDelegate = self
-        
-        searchController = recipeCollectioDM.setupSearchBarController()
-        navigationItem.searchController = searchController
-        definesPresentationContext = true
-        
+
         addRecipeButton.layer.shadowOffset = CGSize(width: 0, height: 3.0)
         addRecipeButton.layer.shadowOpacity = 0.7
         addRecipeButton.layer.shadowRadius = 5.0
         
-        recipeCollectioDM.recipeList = RealmDataManager.dataLoadedFromRealm(ofType: .Recipe)
-        recipeCollectioDM.loadDataFromCloud()
+        viewModel.loadDataFromCloud {
+            self.recipeCollection.reloadData()
+        }
     }
     
     private func setStandardNavBar() {
-        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-        self.navigationController?.navigationBar.shadowImage = nil
-        self.navigationController?.view.backgroundColor = Colors.appColor
-        self.navigationController?.navigationBar.tintColor = Colors.textColor
-        self.navigationController?.navigationBar.backgroundColor = Colors.appColor
-        self.navigationController?.navigationBar.isTranslucent = false
-        searchController = recipeCollectioDM.setupSearchBarController()
+        searchController = setupSearchBarController()
         navigationItem.searchController = searchController
-        definesPresentationContext = true
+//        self.navigationController?.navigationBar.prefersLargeTitles = true
+        self.navigationController?.definesPresentationContext = true
+    }
+    
+    private func setupSearchBarController() -> UISearchController {
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        return searchController
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -68,13 +66,11 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToRecipe" {
            let destinationVC = segue.destination as! RecipeViewController
-            if let indexPath = recipeCollection.indexPathsForSelectedItems?.first{
-                let recipe = isFiltering ? recipeCollectioDM.filteredRecipeList[indexPath.row] : recipeCollectioDM.recipeList?[indexPath.row]
-                destinationVC.recipeDataManager.selectedRecipe = recipe
-            }
+            destinationVC.viewModel = viewModel.viewModelForSelectedRow() as? RecipeViewModel
         }
         else if segue.identifier == "goToCookingArea" {
             let destinationVC = segue.destination as! CookViewController
+            destinationVC.viewModel = viewModel.viewModelForNewRecipe()
             destinationVC.updateVCDelegate = self
         }
     }
@@ -93,21 +89,25 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate {
 //MARK:- RecipeCollection Delegate and DataSource
 extension RecipeCollectionViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if isFiltering {
-            return recipeCollectioDM.filteredRecipeList.count
-        }
-        else {
-            return recipeCollectioDM.recipeList?.count ?? 0
-        }
+        viewModel.numberOfRows
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecipeCell", for: indexPath) as! RecipeCollectionViewCell
-        cell.recipe = isFiltering ? recipeCollectioDM.filteredRecipeList[indexPath.row] : recipeCollectioDM.recipeList?[indexPath.row]
+        cell.viewModel = viewModel.cellViewModel(forIndexPath: indexPath)  as? RecipeCollectionCellViewModel
         return cell
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        viewModel.selectRow(atIndexPath: indexPath)
         performSegue(withIdentifier: "goToRecipe", sender: self)
+    }
+}
+
+extension RecipeCollectionViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchText = searchController.searchBar.text else { return }
+        viewModel.updateSearchResults(with: searchText)
+        recipeCollection.reloadData()
     }
 }

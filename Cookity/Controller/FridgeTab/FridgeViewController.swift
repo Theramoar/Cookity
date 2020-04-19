@@ -12,9 +12,7 @@ import SwipeCellKit
 
 class FridgeViewController: SwipeTableViewController, UpdateVCDelegate {
     
-    var selectedIndexPath: IndexPath? //variable is used to store the IndexPath selected by LongTap Gesture
-    
-    @IBOutlet var fridgeDataManager: FridgeDataManager!
+    var viewModel = FridgeViewModel()
     @IBOutlet weak var fridgeTableView: UITableView!
     @IBOutlet weak var addButton: UIButton!
     @IBOutlet weak var emptyFridgeImageView: UIImageView!
@@ -24,6 +22,8 @@ class FridgeViewController: SwipeTableViewController, UpdateVCDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationController?.navigationBar.isTranslucent = true
         
         fridgeTableView.delegate = self
         fridgeTableView.dataSource = self
@@ -39,7 +39,7 @@ class FridgeViewController: SwipeTableViewController, UpdateVCDelegate {
         self.view.addGestureRecognizer(longPressRecognizer)
         
         guard SettingsVariables.isCloudEnabled else { return }
-        CloudManager.syncData(ofType: .Fridge, parentObjects: [Fridge.shared])
+        CloudManager.syncData(parentObjects: [Fridge.shared])
     }
     
     
@@ -57,8 +57,9 @@ class FridgeViewController: SwipeTableViewController, UpdateVCDelegate {
 
         // find the IndexPath of the cell which was "longtouched"
         let touchPoint = longPressRecognizer.location(in: self.fridgeTableView)
-        selectedIndexPath = fridgeTableView.indexPathForRow(at: touchPoint)
+        let selectedIndexPath = fridgeTableView.indexPathForRow(at: touchPoint)
         guard selectedIndexPath != nil else { return }
+        viewModel.longTapRow(atIndexPath: selectedIndexPath!)
         if self.presentedViewController == nil {
             performSegue(withIdentifier: "popupEditFridge", sender: self)
         }
@@ -74,32 +75,29 @@ class FridgeViewController: SwipeTableViewController, UpdateVCDelegate {
         
         if segue.identifier == "popupEditFridge"{
             let destinationVC = segue.destination as! PopupEditViewController
-            if let indexPath = selectedIndexPath {
-                let product = fridgeDataManager.productsInFridge[indexPath.row]
-                destinationVC.popupDataManager.products.append(product)
-                destinationVC.parentVC = self
-            }
+            destinationVC.viewModel = viewModel.viewModelForSelectedRow() as? PopupEditViewModel
+            destinationVC.parentVC = self
         }
         else if segue.identifier == "goToCookingAreaFromFridge" {
             let destinationVC = segue.destination as! CookViewController
             destinationVC.updateVCDelegate = self
-            destinationVC.cookDataManager.products = fridgeDataManager.moveProductsToCookArea()
+            destinationVC.viewModel = viewModel.viewModelForCookdArea()
             uncheck()
         }
     }
     
     override func deleteObject(at indexPath: IndexPath) {
-        fridgeDataManager.deleteProductFromFridge(at: indexPath.row)
+        viewModel.deleteProductFromFridge(at: indexPath.row)
         fridgeTableView.reloadData()
     }
     
     func uncheck() {
-        fridgeDataManager.uncheckProducts()
+        viewModel.uncheckProducts()
         configButton()
     }
     
     func configButton() {
-        if fridgeDataManager.checkedProducts > 0 {
+        if viewModel.checkedProducts > 0 {
             addButton.isEnabled = true
             addButton.isHidden = false
         }
@@ -115,7 +113,7 @@ class FridgeViewController: SwipeTableViewController, UpdateVCDelegate {
 extension FridgeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if fridgeDataManager.productsInFridge.count == 0 {
+        if viewModel.fridgeIsEmpty {
             emptyFridgeImageView.isHidden = false
             emptyFridgeLabel.isHidden = false
             emptyFridgeDescriptionLabel.isHidden = false
@@ -124,24 +122,26 @@ extension FridgeViewController: UITableViewDelegate, UITableViewDataSource {
             emptyFridgeLabel.isHidden = true
             emptyFridgeDescriptionLabel.isHidden = true
         }
-        return fridgeDataManager.productsInFridge.count
+        return viewModel.numberOfRows
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FridgeCell", for: indexPath) as! ProductTableViewCell
         cell.delegate = self as SwipeTableViewCellDelegate
+        cell.viewModel = viewModel.cellViewModel(forIndexPath: indexPath) as? ProductTableCellViewModel
+        cell.isInFridge = true
         
-        let product = fridgeDataManager.productsInFridge[indexPath.row]
-            cell.isChecked = product.checkForRecipe // вместо этого можно использовать checked
-            cell.product = product
+//        let product = fridgeDataManager.productsInFridge[indexPath.row]
+//            cell.isChecked = product.checkForRecipe // вместо этого можно использовать checked
+//            cell.product = product
         
         return cell
     }
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        fridgeDataManager.checkProduct(at: indexPath.row)
+        viewModel.checkProduct(at: indexPath.row)
         configButton()
         tableView.reloadData()
     }

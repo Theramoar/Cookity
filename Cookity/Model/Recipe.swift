@@ -25,16 +25,52 @@ class Recipe: Object, ParentObject, Codable {
     var recipeSteps = List<RecipeStep>()
     @objc dynamic var imageFileName: String?
     @objc dynamic var cloudID: String?
-
     
     
-    convenience init(record: CKRecord, products: List<Product>?, steps: List<RecipeStep>?) {
+    func getImageFromFileManager() -> UIImage? {
+        guard let imageFileName = imageFileName else { return nil }
+        let imagePath: String = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/\(imageFileName)"
+        let imageUrl: URL = URL(fileURLWithPath: imagePath)
+        if FileManager.default.fileExists(atPath: imagePath),
+            let imageData: Data = try? Data(contentsOf: imageUrl),
+            let image: UIImage = UIImage(data: imageData) {
+            return image
+        }
+        else {
+            return nil
+        }
+    }
+    
+    
+    
+    
+    func appendObject(_ object: Object) {
+        if type(of: object) == Product.self {
+            products.append(object as! Product)
+        }
+        else if type(of: object) == RecipeStep.self {
+            recipeSteps.append(object as! RecipeStep)
+        }
+    }
+    func returnCloudValues() -> [String : Any] {
+        ["name" : name]
+    }
+    
+    func allChildrenObjects() -> [ChildObject] {
+        var objects = [ChildObject]()
+        for product in products {
+            objects.append(product)
+        }
+        for step in recipeSteps {
+            objects.append(step)
+        }
+        return objects
+    }
+    
+    required convenience init(record: CKRecord) {
         self.init()
-        
         self.name = record.value(forKey: "name") as! String
         self.cloudID = record.recordID.recordName
-        self.products = products ?? List<Product>()
-        self.recipeSteps = steps ?? List<RecipeStep>()
     }
     
     
@@ -57,6 +93,7 @@ class Recipe: Object, ParentObject, Codable {
     }
     
     required convenience init(from decoder: Decoder) throws {
+        print("DECODING")
         self.init()
         let container = try decoder.container(keyedBy: RecipeCodingKeys.self)
         name = try container.decode(String.self, forKey: .name)

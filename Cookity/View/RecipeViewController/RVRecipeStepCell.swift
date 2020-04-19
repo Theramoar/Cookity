@@ -9,17 +9,26 @@
 import UIKit
 
 class RVRecipeStepCell: UITableViewCell {
-
-    
-    
     @IBOutlet weak var recipeStepLabel: UILabel!
     
-    
-    var position: Int!
-    
-    var recipeStep: RecipeStep! {
-        didSet {
-            recipeStepLabel.text = "\(position.description). \(recipeStep.name)"
+    weak var viewModel: RVRecipeStepCellViewModel? {
+        willSet(viewModel) {
+            guard let viewModel = viewModel else { return }
+            recipeStepLabel.text = viewModel.cellText
         }
+    }
+}
+
+class RVRecipeStepCellViewModel: CellViewModelType {
+    private var recipeStep: RecipeStep
+    private var stepPosition: Int
+    
+    var cellText: String {
+        "\(stepPosition.description). \(recipeStep.name)"
+    }
+    
+    init(recipeStep: RecipeStep, stepPosition: Int) {
+        self.recipeStep = recipeStep
+        self.stepPosition = stepPosition
     }
 }

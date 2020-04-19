@@ -6,117 +6,74 @@
 //  Copyright © 2019 Mihails Kuznecovs. All rights reserved.
 //
 
-import Foundation
 import CloudKit
 import RealmSwift
-
-
-enum ParentData: String {
-    case Cart = "ShoppingCart"
-    case Recipe = "Recipe"
-    case Fridge = "Fridge"
-}
-
-enum CloudChildData: String {
-    case Product = "Product"
-    case RecipeStep = "RecipeStep"
-}
-
 
 class CloudManager {
     
     private static let privateCloudDatabase = CKContainer.default().privateCloudDatabase
     private static var records: [CKRecord] = []
     
-    
-    //MARK:- Save Data
-    static func saveDataToCloud(ofType objectType: ParentData, object: ParentObject, closure: @escaping (String) -> Void) {
+//MARK:- Save Data
+    static func saveParentDataToCloud<T: ParentObject>(object: T, objectImageName: String?, closure: @escaping (String) -> Void) {
         guard SettingsVariables.isCloudEnabled, object.isInvalidated == false else { return }
-        //Create parent record and save it to cloud
-        let record = CKRecord(recordType: objectType.rawValue)
-        record.setValue(object.name, forKey: "name")
+        let record = CKRecord(recordType: String(describing: T.self))
+        for value in object.returnCloudValues() {
+            record.setValue(value.value, forKey: value.key)
+        }
+        if let imageFileName = objectImageName {
+            saveImageToCloud(to: record, imageFileName: imageFileName)
+        }
+        
         privateCloudDatabase.save(record, completionHandler: { (record, error) in
             if let error = error { print(error); return }
             guard let record = record else { return }
-            closure(record.recordID.recordName)
-        })
-    
-        //Save products and create reference to the parent
-        guard object.isInvalidated == false else { return }
-        let products = Array(object.products)
-        saveChildrenToCloud(ofType: .Product, objects: products, parentRecord: record)
-        
-        if objectType == .Recipe {
-            guard object.isInvalidated == false, let recipe = object as? Recipe else { return }
-            //Save recipe steps create reference to the parent
-            let recipeSteps = Array(recipe.recipeSteps)
-            saveChildrenToCloud(ofType: .RecipeStep, objects: recipeSteps, parentRecord: record)
-            //Save Image
-            if let imageFileName = recipe.imageFileName {
-                let imagePath: String = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/\(imageFileName)"
-                guard FileManager.default.fileExists(atPath: imagePath) else { return }
-                let imageAsset = prepareImageToSaveToCloud(imagePath: imagePath)
-                record.setValue(imageAsset, forKey: "imageAsset")
-            }
-        }
-    }
-    
-    
-    static func saveProductsToCloud(to parentData: ParentData, products: [Product], parentRecordID: String) {
-        guard SettingsVariables.isCloudEnabled else { return }
-        let recordID = CKRecord.ID(recordName: parentRecordID)
-        let record = CKRecord(recordType: parentData.rawValue, recordID: recordID)
-        saveChildrenToCloud(ofType: .Product, objects: products, parentRecord: record)
-    }
-    
-    
-    static func saveFridgeToCloud(_ fridge: Fridge) {
-        guard SettingsVariables.isCloudEnabled else { return }
-        let record = CKRecord(recordType: "Fridge")
-        privateCloudDatabase.save(record) { (record, error) in
-            if let error = error { print(error); return }
-            guard let record = record else { return }
             DispatchQueue.main.async {
-                RealmDataManager.saveToRealm(parentObject: Fridge.shared, object: record.recordID.recordName)
+                RealmDataManager.saveCloudID(parentObject: object, cloudID: record.recordID.recordName)
+                closure(record.recordID.recordName)
+                saveChildrenDataToCloud(objects: object.allChildrenObjects(), to: object)
             }
-        }
+        })
     }
-    
-    
-    private static func saveChildrenToCloud(ofType objectType: CloudChildData, objects: [Object], parentRecord: CKRecord) {
+
+    static func saveChildrenDataToCloud<T: CloudObject, P: ParentObject>(objects: [T], to parentObject: P) {
+        guard SettingsVariables.isCloudEnabled else { return }
         objects.forEach { (object) in
             guard object.isInvalidated == false else { return }
-            let record = CKRecord(recordType: objectType.rawValue)
-            
-            switch objectType {
-            case .Product:
-                let product = object as! Product
-                record.setValue(product.name, forKey: "name")
-                record.setValue(product.quantity, forKey: "quantity")
-                record.setValue(product.measure, forKey: "measure")
-                record.setValue(product.checked, forKey: "checked")
-            case .RecipeStep:
-                let step = object as! RecipeStep
-                record.setValue(step.name, forKey: "name")
+            let record = CKRecord(recordType: String(describing: type(of: object)))
+            for value in object.returnCloudValues() {
+                record.setValue(value.value, forKey: value.key)
             }
-            record["parent"] = CKRecord.Reference(record: parentRecord, action: .deleteSelf)
 
+            guard let cloudID = parentObject.cloudID else { return }
+            let recordID = CKRecord.ID(recordName: cloudID)
+            let parentRecord = CKRecord(recordType: String(describing: P.self), recordID: recordID)
+
+            record["parent"] = CKRecord.Reference(record: parentRecord, action: .deleteSelf)
             privateCloudDatabase.save(record, completionHandler: { (record, error) in
                 if let error = error { print(error); return }
-                guard let record = record, let product = object as? Product else { return }
+                guard let record = record else { return }
                 DispatchQueue.main.async {
-                    RealmDataManager.changeElementIn(object: product, keyValue: "cloudID", objectParameter: product.cloudID, newParameter: record.recordID.recordName)
+                    RealmDataManager.changeElementIn(object: object, keyValue: "cloudID", objectParameter: object.cloudID, newParameter: record.recordID.recordName)
                 }
             })
         }
     }
     
+    private static func saveImageToCloud(to record: CKRecord, imageFileName: String) {
+        let imagePath: String = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/\(imageFileName)"
+        guard FileManager.default.fileExists(atPath: imagePath) else { return }
+        let imageAsset = prepareImageToSaveToCloud(imagePath: imagePath)
+        record.setValue(imageAsset, forKey: "imageAsset")
+    }
+    
+    
     
     //MARK:- Update Data
     static func updateRecipeInCloud(recipe: Recipe) {
         guard SettingsVariables.isCloudEnabled else { return }
-        guard recipe.isInvalidated == false, let cloudID = recipe.cloudID else { return }
-        saveDataToCloud(ofType: .Recipe, object: recipe) { (recordID) in
+        guard recipe.isInvalidated == false else { return }
+        saveParentDataToCloud(object: recipe, objectImageName: recipe.imageFileName) { (recordID) in
             DispatchQueue.main.async {
                 RealmDataManager.changeElementIn(object: recipe,
                                                  keyValue: "cloudID",
@@ -124,21 +81,19 @@ class CloudManager {
                                                  newParameter: recordID)
             }
         }
-        deleteRecordFromCloud(ofType: .Recipe, recordID: cloudID)
+        deleteRecordFromCloud(ofObject: recipe)
     }
     
-    
-    static func updateProductInCloud(product: Product) {
+    static func updateChildInCloud<T: ChildObject>(childObject: T) {
         guard SettingsVariables.isCloudEnabled else { return }
-        guard product.isInvalidated == false, let cloudID = product.cloudID else { return }
+        guard childObject.isInvalidated == false, let cloudID = childObject.cloudID else { return }
         let recordID = CKRecord.ID(recordName: cloudID)
         privateCloudDatabase.fetch(withRecordID: recordID) { (record, error) in
             guard let record = record, error == nil else { return }
             DispatchQueue.main.async {
-                record.setValue(product.name, forKey: "name")
-                record.setValue(product.quantity, forKey: "quantity")
-                record.setValue(product.measure, forKey: "measure")
-                record.setValue(product.checked, forKey: "checked")
+                for value in childObject.returnCloudValues() {
+                    record.setValue(value.value, forKey: value.key)
+                }
                 privateCloudDatabase.save(record, completionHandler: { (_, error) in
                     if let error = error { print(error); return }
                 })
@@ -146,63 +101,45 @@ class CloudManager {
         }
     }
     
-    //MARK:- Loading Data
-    static func loadDataFromCloud(ofType data: ParentData, recipes: [ParentObject], closure: @escaping (ParentObject) -> Void) {
+    //MARK:- Loading Data - 363
+    static func loadDataFromCloud<T: ParentObject>(objects: [T], closure: @escaping ([T]) -> Void) {
         guard SettingsVariables.isCloudEnabled else { return }
-        let query = CKQuery(recordType: data.rawValue, predicate: NSPredicate(value: true))
+        let query = CKQuery(recordType: String(describing: T.self), predicate: NSPredicate(value: true))
         query.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         let queryOperation = CKQueryOperation(query: query)
         queryOperation.desiredKeys = ["recordID", "name"]
-//        queryOperation.resultsLimit = 5 - сделать потом
+        //        queryOperation.resultsLimit = 5 - сделать потом
         queryOperation.queuePriority = .veryHigh
         
         queryOperation.recordFetchedBlock = { record in
             self.records.append(record)
-            var parentObject: ParentObject!
-            switch data {
-            case .Recipe:
-                parentObject = Recipe(record: record,
-                                      products: nil,
-                                      steps: nil)
-            case .Cart:
-                parentObject = ShoppingCart(record: record,
-                                            products: nil)
-            case .Fridge:
-                return
+            let parentObject = T.init(record: record)
+            DispatchQueue.main.async {
+                if newCloudRecordIsAvailable(objects: objects, recordID: record.recordID.recordName) { closure([parentObject]) }
             }
-            loadChildrenFromCloud(ofType: .Product, record: record, closure: { (products) in
-                let loadedProducts = List<Product>()
-                for product in products {
-                    loadedProducts.append(product as! Product)
-                }
-                
-                parentObject.products = loadedProducts
+
+            loadChildrenFromCloud(ofType: Product.self, record: record) { loadedObjects in
                 DispatchQueue.main.async {
-                    if newCloudRecordIsAvailable(objects: recipes, recordID: record.recordID.recordName) { closure(parentObject) }
-                }
-            })
-            
-            if data == .Recipe {
-                loadChildrenFromCloud(ofType: .RecipeStep, record: record, closure: { (recipeSteps) in
-                    for step in recipeSteps {
-                        guard let step = step as? RecipeStep else { return }
-                        DispatchQueue.main.async {
-                            RealmDataManager.saveToRealm(parentObject: parentObject, object: step)
-                        }
+                    for object in loadedObjects {
+                        RealmDataManager.saveToRealm(parentObject: parentObject, object: object)
                     }
-                })
+                }
+            }
+            loadChildrenFromCloud(ofType: RecipeStep.self, record: record) { loadedObjects in
+                DispatchQueue.main.async {
+                    for object in loadedObjects {
+                        RealmDataManager.saveToRealm(parentObject: parentObject, object: object)
+                    }
+                }
             }
         }
-        
         queryOperation.queryCompletionBlock = { (_, error) in
-            if let error = error { print(error); return }
+                if let error = error { print(error); return }
         }
-        
         privateCloudDatabase.add(queryOperation)
     }
     
-    
-    private static func loadChildrenFromCloud<T: Object>(ofType objectType: CloudChildData, record: CKRecord?, closure: @escaping ([T]) -> Void) {
+    private static func loadChildrenFromCloud<T: ChildObject>(ofType: T.Type, record: CKRecord?, closure: @escaping ([T]) -> Void) {
         var objects = [T]()
         let predicate: NSPredicate!
         if let record = record {
@@ -216,21 +153,12 @@ class CloudManager {
             let recordToMatch = CKRecord.Reference(recordID: recordID, action: .deleteSelf)
             predicate = NSPredicate(format: "parent == %@", recordToMatch)
         }
-        
-        // Load Products
-        let query = CKQuery(recordType: objectType.rawValue, predicate: predicate)
+        let query = CKQuery(recordType: String(describing: T.self), predicate: predicate)
         let queryOperation = CKQueryOperation(query: query)
         
         queryOperation.recordFetchedBlock = { record in
-            switch objectType {
-            case .Product:
-                guard let object: T = Product(record: record) as? T else { return }
-                objects.append(object)
-            case .RecipeStep:
-                guard let object = RecipeStep(record: record) as? T else { return }
-                objects.append(object)
-            }
-            
+            let object = T.init(record: record)
+            objects.append(object)
         }
         queryOperation.queryCompletionBlock = { (_, error) in
             if let error = error { print(error); return }
@@ -238,7 +166,6 @@ class CloudManager {
         }
         privateCloudDatabase.add(queryOperation)
     }
-    
     
     static func loadImageFromCloud(recipe: Recipe, closure: @escaping (Data?) -> Void) {
         guard SettingsVariables.isCloudEnabled else { return }
@@ -261,7 +188,6 @@ class CloudManager {
         
     }
     
-    
     static func loadFridgeFromCloud(closure: @escaping (String) -> Void) {
         guard SettingsVariables.isCloudEnabled else { return }
         var recordFetchCount = 0
@@ -271,21 +197,31 @@ class CloudManager {
         queryOperation.resultsLimit = 1
         queryOperation.queuePriority = .veryHigh
         queryOperation.recordFetchedBlock = { record in
-            
             recordFetchCount += 1
-            closure(record.recordID.recordName)
-            loadChildrenFromCloud(ofType: .Product, record: record, closure: { (products) in
-                DispatchQueue.main.async {
-                    for product in products {
-                        RealmDataManager.saveToRealm(parentObject: Fridge.shared, object: product)
+            DispatchQueue.main.async {
+                if Fridge.shared.cloudID != record.recordID.recordName {
+                    closure(record.recordID.recordName)
+                    loadChildrenFromCloud(ofType: Product.self, record: record) { (products) in
+                        for product in products {
+                            RealmDataManager.saveToRealm(parentObject: Fridge.shared, object: product)
+                        }
                     }
                 }
-            })
+            }
         }
         queryOperation.queryCompletionBlock = { (_, error) in
             if let error = error { print(error); return }
             if recordFetchCount == 0 {
-                saveFridgeToCloud(Fridge.shared)
+                DispatchQueue.main.async {
+                    saveParentDataToCloud(object: Fridge.shared, objectImageName: nil) { (recordID) in
+                        DispatchQueue.main.async {
+                            RealmDataManager.changeElementIn(object: Fridge.shared,
+                                                             keyValue: "cloudID",
+                                                             objectParameter: Fridge.shared.cloudID,
+                                                             newParameter: recordID)
+                        }
+                    }
+                }
             }
         }
         privateCloudDatabase.add(queryOperation)
@@ -293,38 +229,15 @@ class CloudManager {
     
     
     //MARK:- Delete Data
-    static func deleteRecordFromCloud(ofType type: ParentData, recordID: String) {
-        guard SettingsVariables.isCloudEnabled else { return }
-        let query = CKQuery(recordType: type.rawValue, predicate: NSPredicate(value: true))
+    
+    static func deleteRecordFromCloud<T: CloudObject>(ofObject object: T) {
+        guard SettingsVariables.isCloudEnabled, let cloudID = object.cloudID else { return }
+        let query = CKQuery(recordType: String(describing: T.self), predicate: NSPredicate(value: true))
         let queryOperation = CKQueryOperation(query: query)
         queryOperation.desiredKeys = ["recordID"]
         queryOperation.queuePriority = .veryHigh
-        
         queryOperation.recordFetchedBlock = { record in
-            if record.recordID.recordName == recordID {
-                privateCloudDatabase.delete(withRecordID: record.recordID, completionHandler: { (_, error) in
-                    if let error = error { print(error); return }
-                })
-            }
-        }
-        queryOperation.queryCompletionBlock = { _, error in
-            if let error = error { print(error); return }
-        }
-        privateCloudDatabase.add(queryOperation)
-    }
-    
-    
-    static func deleteProductFromCloud(parentRecordID: String, productRecordID: String) {
-        guard SettingsVariables.isCloudEnabled else { return }
-        let recordID = CKRecord.ID(recordName: parentRecordID)
-        let recordToMatch = CKRecord.Reference(recordID: recordID, action: .deleteSelf)
-        let predicate = NSPredicate(format: "parent == %@", recordToMatch)
-        
-        let query = CKQuery(recordType: "Product", predicate: predicate)
-        let queryOperation = CKQueryOperation(query: query)
-        
-        queryOperation.recordFetchedBlock = { record in
-            if record.recordID.recordName == productRecordID {
+            if record.recordID.recordName == cloudID {
                 privateCloudDatabase.delete(withRecordID: record.recordID, completionHandler: { (_, error) in
                     if let error = error { print(error); return }
                 })
@@ -338,89 +251,41 @@ class CloudManager {
     
     
     //MARK:- Sync Data - перед тем как начать писать протестить как работает без интернета
-    static func syncData(ofType data: ParentData, parentObjects: [ParentObject]) {
+    static func syncData<T: ParentObject>(parentObjects: [T]) {
         guard SettingsVariables.isCloudEnabled else { return }
-        
-        switch data {
-        case .Cart:
-            for object in parentObjects {
-                guard let cart = object as? ShoppingCart else { return }
-                syncCart(cart)
+        for object in parentObjects {
+            if object.cloudID == nil {
+                var imageFileName: String?
+                if let recipe = object as? Recipe { imageFileName = recipe.imageFileName }
+                saveParentDataToCloud(object: object, objectImageName: imageFileName) { (recordID) in
+                    DispatchQueue.main.async {
+                        RealmDataManager.changeElementIn(object: object,
+                                                         keyValue: "cloudID",
+                                                         objectParameter: object.cloudID,
+                                                         newParameter: recordID)
+                    }
+                }
             }
-        case .Recipe:
-            
-            for object in parentObjects {
-                guard let recipe = object as? Recipe else { return }
-                syncRecipe(recipe)
-            }
-        case .Fridge:
-            syncFridge()
-        }
-    }
-    
-    private static func syncFridge() {
-        guard let fridgeID = Fridge.shared.cloudID else { return }
-        for product in Fridge.shared.products {
-            syncProduct(in: .Fridge, product: product, parentRecordID: fridgeID)
-        }
-        
-    }
-    
-    private static func syncRecipe(_ recipe: Recipe) {
-        if recipe.cloudID == nil {
-            saveDataToCloud(ofType: .Recipe, object: recipe) { (recordID) in
-                DispatchQueue.main.async {
-                    RealmDataManager.changeElementIn(object: recipe,
-                                                     keyValue: "cloudID",
-                                                     objectParameter: recipe.cloudID,
-                                                     newParameter: recordID)
+            else {
+                for childObject in object.allChildrenObjects() {
+                    syncChildObject(in: object, childObject: childObject)
                 }
             }
         }
-        else {
-            for product in recipe.products {
-                syncProduct(in: .Recipe, product: product, parentRecordID: recipe.cloudID!)
-            }
-        }
     }
     
-    private static func syncCart(_ cart: ShoppingCart) {
-        if cart.cloudID == nil {
-            saveDataToCloud(ofType: .Cart, object: cart) { (recordID) in
-                DispatchQueue.main.async {
-                    RealmDataManager.changeElementIn(object: cart,
-                                                     keyValue: "cloudID",
-                                                     objectParameter: cart.cloudID,
-                                                     newParameter: recordID)
-                }
-            }
+    private static func syncChildObject<P: ParentObject, C: ChildObject>(in object: P, childObject: C) {
+        if childObject.cloudID == nil {
+            saveChildrenDataToCloud(objects: [childObject], to: object)
         }
         else {
-            for product in cart.products {
-                syncProduct(in: .Cart, product: product, parentRecordID: cart.cloudID!)
-            }
-        }
-    }
-    
-    private static func syncProduct(in data: ParentData, product: Product, parentRecordID: String) {
-        if product.cloudID == nil {
-            switch data {
-                case .Cart:
-                    saveProductsToCloud(to: .Cart, products: [product], parentRecordID: parentRecordID)
-                case .Recipe:
-                    saveProductsToCloud(to: .Recipe, products: [product], parentRecordID: parentRecordID)
-                case .Fridge: return
-                    saveProductsToCloud(to: .Fridge, products: [product], parentRecordID: parentRecordID)
-            }
-        }
-        else {
-            updateProductInCloud(product: product)
+            updateChildInCloud(childObject: childObject)
         }
     }
     
     
     //MARK:- Supporting Methods
-    private static func newCloudRecordIsAvailable(objects: [ParentObject], recordID: String) -> Bool {
+    private static func newCloudRecordIsAvailable<T: ParentObject>(objects: [T], recordID: String) -> Bool {
         for object in objects {
             if object.cloudID == recordID { return false }
         }

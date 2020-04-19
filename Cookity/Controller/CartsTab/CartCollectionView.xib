@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CartCollectionViewController" customModule="Cookity_Test" customModuleProvider="target">
+            <connections>
+                <outlet property="cartTableView" destination="Fwk-aA-Z0u" id="4JR-VK-Yjl"/>
+                <outlet property="plusButton" destination="o7T-m0-YwF" id="VGe-Es-Lha"/>
+                <outlet property="view" destination="iN0-l3-epB" id="gkt-ru-OoN"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Fwk-aA-Z0u">
+                    <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                </tableView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o7T-m0-YwF">
+                    <rect key="frame" x="299" y="734" width="70" height="70"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="70" id="em8-mH-Xue"/>
+                        <constraint firstAttribute="height" constant="70" id="sbT-Lr-5gE"/>
+                    </constraints>
+                    <state key="normal" image="addButton"/>
+                </button>
+            </subviews>
+            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="o7T-m0-YwF" secondAttribute="trailing" constant="45" id="Bgk-Cc-BII"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Fwk-aA-Z0u" secondAttribute="trailing" id="Hj3-SC-0Gc"/>
+                <constraint firstItem="Fwk-aA-Z0u" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="OnG-oe-gqS"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="Fwk-aA-Z0u" secondAttribute="bottom" id="VII-Ae-SH1"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="o7T-m0-YwF" secondAttribute="bottom" constant="58" id="eae-Bs-dtC"/>
+                <constraint firstItem="Fwk-aA-Z0u" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="xTB-4J-yNu"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="137.68115942028987" y="120.53571428571428"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="addButton" width="128" height="128"/>
+    </resources>
+</document>

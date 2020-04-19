@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TestCartViewController">
+            <connections>
+                <outlet property="tfView" destination="Kh0-6Q-rf4" id="4PA-Ti-wVs"/>
+                <outlet property="view" destination="iN0-l3-epB" id="nvd-Uq-NUV"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="kvU-cD-pMN">
+                    <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kh0-6Q-rf4" customClass="TextFieldView" customModule="Cookity_Test" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="821" width="414" height="41"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="9UR-dC-94t">
+                            <rect key="frame" x="8" y="5" width="406" height="31"/>
+                            <subviews>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ocr-xq-XPD">
+                                    <rect key="frame" x="0.0" y="0.0" width="150" height="31"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="150" id="wOB-CM-uF9"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </textField>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vHh-cc-cml">
+                                    <rect key="frame" x="160" y="0.0" width="116" height="31"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </textField>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4dO-3Y-v5J">
+                                    <rect key="frame" x="286" y="0.0" width="70" height="31"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="70" id="Lr3-tt-7eF"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </textField>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="af7-NN-GWC">
+                                    <rect key="frame" x="366" y="0.0" width="40" height="31"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="40" id="lIO-hg-lBp"/>
+                                    </constraints>
+                                    <state key="normal" image="addButton_50"/>
+                                </button>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemPurpleColor" red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="41" id="3c5-6r-UCA"/>
+                        <constraint firstItem="9UR-dC-94t" firstAttribute="leading" secondItem="Kh0-6Q-rf4" secondAttribute="leading" constant="8" id="BMc-s9-UgS"/>
+                        <constraint firstAttribute="trailing" secondItem="9UR-dC-94t" secondAttribute="trailing" id="H2i-m4-jae"/>
+                        <constraint firstAttribute="bottom" secondItem="9UR-dC-94t" secondAttribute="bottom" constant="5" id="VRG-fV-S02"/>
+                        <constraint firstItem="9UR-dC-94t" firstAttribute="top" secondItem="Kh0-6Q-rf4" secondAttribute="top" constant="5" id="rag-kK-8T0"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+            <constraints>
+                <constraint firstItem="kvU-cD-pMN" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="0Di-jY-euS"/>
+                <constraint firstItem="Kh0-6Q-rf4" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Hze-Vw-cOV"/>
+                <constraint firstItem="kvU-cD-pMN" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="XS6-Yp-tkz"/>
+                <constraint firstItem="Kh0-6Q-rf4" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="beO-fk-7yq"/>
+                <constraint firstItem="Kh0-6Q-rf4" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="lp7-9x-XE1"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="kvU-cD-pMN" secondAttribute="trailing" id="uYO-33-Dv8"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="kvU-cD-pMN" secondAttribute="bottom" id="xkg-sf-eNJ"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="137.68115942028987" y="120.53571428571428"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="addButton_50" width="25" height="25"/>
+    </resources>
+</document>

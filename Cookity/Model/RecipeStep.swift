@@ -10,11 +10,15 @@ import Foundation
 import RealmSwift
 import CloudKit
 
-class RecipeStep: Object, Codable {
+class RecipeStep: ChildObject, Codable {
     
     @objc dynamic var name: String = ""
-    convenience init(record: CKRecord) {
+    convenience required init(record: CKRecord) {
         self.init()
         name = record.value(forKey: "name") as! String
+    }
+    
+    override func returnCloudValues() -> [String : Any] {
+        ["name" : name]
     }
 }

@@ -109,7 +109,7 @@ class EditImageViewController: UIViewController {
     
     
     @IBAction func deleteButtonPressed(_ sender: UIButton) {
-        parentVC?.cookDataManager.recipeImage = nil
+        parentVC?.viewModel.recipeImage = nil
         editedImage = nil
         shrinkView()
     }
@@ -143,7 +143,7 @@ class EditImageViewController: UIViewController {
     
     
     @IBAction func doneButtonPressed(_ sender: UIButton) {
-        parentVC?.cookDataManager.recipeImage = editedImage
+        parentVC?.viewModel.recipeImage = editedImage
         shadow.removeFromSuperview()
         self.dismiss(animated: true, completion: nil)
     }

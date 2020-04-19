@@ -13,15 +13,16 @@ import SwipeCellKit
 
 class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEditedDelegate {
     
-    @IBOutlet var cartDataManager: CartDataManager!
+    
+    var viewModel: CartViewModel!
     @IBOutlet var productsTable: UITableView!
     @IBOutlet var productTextField: UITextField!
     @IBOutlet var quantityTextField: UITextField!
     @IBOutlet var measureTextField: UITextField!
-    @IBOutlet var tfView: TextFieldView!
     @IBOutlet var addButton: UIButton!
-    @IBOutlet weak var tfHeightConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var tfHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var tfView: TextFieldView!
     // не надо
     var measurePicker: MeasurePicker!
     var selectedIndexPath: IndexPath? //variable is used to store the IndexPath selected by LongTap Gesture
@@ -46,12 +47,12 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = cartDataManager.selectedCart?.name
+        title = viewModel.cartName
         productsTable.delegate = self
         productsTable.dataSource = self
         productsTable.separatorStyle = .none
         productsTable.rowHeight = 45
-        
+        tabBarController?.tabBar.isHidden = true
         tfView.delegate = self
         tfView.heightConstraint = tfHeightConstraint
         tfView.initialHeight = tfHeightConstraint.constant
@@ -102,6 +103,7 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
         let touchPoint = longPressRecognizer.location(in: self.productsTable)
         selectedIndexPath = productsTable.indexPathForRow(at: touchPoint)
         if selectedIndexPath != nil {
+            viewModel.longTapRow(atIndexPath: selectedIndexPath!)
             performSegue(withIdentifier: "popupEdit", sender: self)
         }
     }
@@ -109,49 +111,46 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationVC = segue.destination as! PopupEditViewController
-        if let indexPath = selectedIndexPath, let product = cartDataManager.selectedCart?.products[indexPath.row] {
-//            destinationVC.selectedProduct = product
-            destinationVC.popupDataManager.products.append(product)
-            destinationVC.parentVC = self
-        }
+        destinationVC.viewModel = viewModel.viewModelForSelectedRow() as? PopupEditViewModel
+        destinationVC.parentVC = self
     }
     
     
     @IBAction func shareButtonPressed(_ sender: UIBarButtonItem) {
-        let activityController = cartDataManager.shareCart()
+        let activityController = viewModel.shareCart()
         guard let activity = activityController else { return }
         activity.popoverPresentationController?.barButtonItem = sender
         present(activity, animated: true, completion: nil)
     }
     
-    
-    @IBAction func addButtonPressed(_ sender: UIButton) {
+    @IBAction func addButtonPressed(_ sender: Any) {
         UIView.setAnimationsEnabled(true)
-        guard addProduct() else { return }
-        productTextField.text = ""
-        quantityTextField.text = ""
-        measureTextField.text = ""
+         guard addProduct() else { return }
+         productTextField.text = ""
+         quantityTextField.text = ""
+         measureTextField.text = ""
     }
+    
     
     func addProduct() -> Bool {
         guard let nameText = productTextField?.text,
             let quantityText = quantityTextField?.text,
             let measureText = measureTextField.text
         else { return false }
-        let alert = cartDataManager.checkDataFromTextFields(productName: nameText, productQuantity: quantityText, productMeasure: measureText)
+        let alert = viewModel.checkDataFromTextFields(productName: nameText, productQuantity: quantityText, productMeasure: measureText)
         if let alert = alert {
             present(alert, animated: true, completion: nil)
             return false
         }
-        let newProduct = cartDataManager.createNewProduct(productName: nameText, productQuantity: quantityText, productMeasure: measureText)
-        cartDataManager.saveProductToCart(product: newProduct)
+        let newProduct = viewModel.createNewProduct(productName: nameText, productQuantity: quantityText, productMeasure: measureText)
+        viewModel.saveProductToCart(product: newProduct)
         productsTable.reloadData()
         return true
     }
 
     
     override func deleteObject(at indexPath: IndexPath) {
-        cartDataManager.deleteProductFromCart(at: indexPath.row)
+        viewModel.deleteProductFromCart(at: indexPath.row)
         productsTable.reloadData()
     }
     
@@ -161,16 +160,14 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
 extension CartViewController: UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return cartDataManager.products.count
+        return viewModel.numberOfRows
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProductCell", for: indexPath) as! ProductTableViewCell
         cell.delegate = self as SwipeTableViewCellDelegate
-        let item = cartDataManager.products[indexPath.row]
-            cell.product = item
-            cell.isChecked = item.checked
-        
+        cell.viewModel = viewModel.cellViewModel(forIndexPath: indexPath) as? ProductTableCellViewModel
+
         return cell
     }
     
@@ -178,7 +175,7 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource, UIText
         let impact = UIImpactFeedbackGenerator()
         impact.impactOccurred()
         
-        guard cartDataManager.checkProduct(at: indexPath.row) else {
+        guard viewModel.checkProduct(at: indexPath.row) else {
             tableView.reloadData()
             return
         }
@@ -186,8 +183,7 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource, UIText
 
         let alert = UIAlertController(title: "Add products to the fridge?", message: "", preferredStyle: .actionSheet)
         let yesAction = UIAlertAction(title: "Yes", style: .default) { (_) in
-            guard let cart = self.cartDataManager.selectedCart else { return }
-            self.cartDataManager.moveProductsToFridge(from: cart)
+            self.viewModel.moveProductsToFridge()
             if let nav = self.navigationController {
                 nav.popToRootViewController(animated: true)
             }
