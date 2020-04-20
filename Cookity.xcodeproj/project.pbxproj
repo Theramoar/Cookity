@@ -56,6 +56,7 @@
 		BB3C781322B66C6000F556BC /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3C781222B66C6000F556BC /* SettingsViewController.swift */; };
 		BB592033233939C300692E6C /* ContactsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB592032233939C300692E6C /* ContactsCell.swift */; };
 		BB592039234141A300692E6C /* launchIcon_500.png in Resources */ = {isa = PBXBuildFile; fileRef = BB592038234141A300692E6C /* launchIcon_500.png */; };
+		BB6EF735244E043F00AE2CAC /* PopupEditView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB6EF734244E043F00AE2CAC /* PopupEditView.xib */; };
 		BBB6B009228730CA00E518CC /* EditTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB6B008228730CA00E518CC /* EditTextView.swift */; };
 		BBB6B07522A8F29700E518CC /* icon_320.png in Resources */ = {isa = PBXBuildFile; fileRef = BBB6B07122A8F29700E518CC /* icon_320.png */; };
 		BBB6B07622A8F29700E518CC /* icon_22.png in Resources */ = {isa = PBXBuildFile; fileRef = BBB6B07222A8F29700E518CC /* icon_22.png */; };
@@ -132,6 +133,7 @@
 		BB3C781222B66C6000F556BC /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		BB592032233939C300692E6C /* ContactsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsCell.swift; sourceTree = "<group>"; };
 		BB592038234141A300692E6C /* launchIcon_500.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launchIcon_500.png; sourceTree = "<group>"; };
+		BB6EF734244E043F00AE2CAC /* PopupEditView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PopupEditView.xib; sourceTree = "<group>"; };
 		BBB6B008228730CA00E518CC /* EditTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTextView.swift; sourceTree = "<group>"; };
 		BBB6B07122A8F29700E518CC /* icon_320.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_320.png; sourceTree = "<group>"; };
 		BBB6B07222A8F29700E518CC /* icon_22.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_22.png; sourceTree = "<group>"; };
@@ -237,6 +239,7 @@
 				1C3D635E2238339800FC4485 /* SwipeTableViewController.swift */,
 				BB1BBB6224477E27008B3431 /* MainTabBarController.swift */,
 				1CCC6375219383B40066919E /* PopupEditViewController.swift */,
+				BB6EF734244E043F00AE2CAC /* PopupEditView.xib */,
 				BB180B2024434399007E7124 /* PopupEditViewModel.swift */,
 				BBFA65EB227A2D2900EE3C2A /* CartsTab */,
 				BBFA6602227F101B00EE3C2A /* CookingProcess */,
@@ -479,6 +482,7 @@
 				BB592039234141A300692E6C /* launchIcon_500.png in Resources */,
 				1CBEB2B021CE7DBE0036E996 /* Assets.xcassets in Resources */,
 				BBBE2E73244A60EC0092334C /* CartView.xib in Resources */,
+				BB6EF735244E043F00AE2CAC /* PopupEditView.xib in Resources */,
 				BBB6B07622A8F29700E518CC /* icon_22.png in Resources */,
 				BBBE2E75244A63200092334C /* CartCollectionView.xib in Resources */,
 				BBB6B07822A8F29700E518CC /* icon_44.png in Resources */,
@@ -744,7 +748,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.551;
+				MARKETING_VERSION = 1.553;
 				PRODUCT_BUNDLE_IDENTIFIER = com.michaelk.Cookity;
 				PRODUCT_NAME = Cookity;
 				SWIFT_VERSION = 5.0;
@@ -767,7 +771,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.551;
+				MARKETING_VERSION = 1.553;
 				PRODUCT_BUNDLE_IDENTIFIER = com.michaelk.Cookity;
 				PRODUCT_NAME = Cookity;
 				SWIFT_VERSION = 5.0;

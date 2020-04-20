@@ -15,6 +15,9 @@ class RecipeCollectionViewModel {
     private var recipeList: Results<Recipe>?
     var isFiltering: Bool
     var isImageInSelectedRow: Bool = false
+    var isRecipeListEmpty: Bool {
+        recipeList?.isEmpty ?? true
+    }
     private var selectedIndexPath: IndexPath?
     
     init() {

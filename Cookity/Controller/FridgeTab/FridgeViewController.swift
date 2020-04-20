@@ -132,10 +132,6 @@ extension FridgeViewController: UITableViewDelegate, UITableViewDataSource {
         cell.viewModel = viewModel.cellViewModel(forIndexPath: indexPath) as? ProductTableCellViewModel
         cell.isInFridge = true
         
-//        let product = fridgeDataManager.productsInFridge[indexPath.row]
-//            cell.isChecked = product.checkForRecipe // вместо этого можно использовать checked
-//            cell.product = product
-        
         return cell
     }
     

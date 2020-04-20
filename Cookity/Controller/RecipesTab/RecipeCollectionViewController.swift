@@ -13,6 +13,11 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate {
     
     @IBOutlet weak var recipeCollection: UICollectionView!
     @IBOutlet weak var addRecipeButton: UIButton!
+    
+    @IBOutlet weak var bookImageView: UIImageView!
+    @IBOutlet weak var bookMainLabel: UILabel!
+    @IBOutlet weak var bookSecondaryLabel: UILabel!
+    
     var viewModel = RecipeCollectionViewModel()
     
     //MARK:- SearchBar variables
@@ -89,7 +94,10 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate {
 //MARK:- RecipeCollection Delegate and DataSource
 extension RecipeCollectionViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.numberOfRows
+        bookImageView.isHidden = !viewModel.isRecipeListEmpty
+        bookMainLabel.isHidden = !viewModel.isRecipeListEmpty
+        bookSecondaryLabel.isHidden = !viewModel.isRecipeListEmpty
+        return viewModel.numberOfRows
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

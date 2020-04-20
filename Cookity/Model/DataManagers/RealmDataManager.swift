@@ -103,9 +103,8 @@ class RealmDataManager {
 
     //MARK:- Filepath data saving
     static func savePicture(to recipe: Recipe, image: UIImage?) -> Bool {
-
         guard let image = image else { return false }
-        let imageFileName = "\(recipe.name).png"
+        let imageFileName = "\(UUID().uuidString).png"
         let imagePath: String = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/\(imageFileName)"
         let imageUrl: URL = URL(fileURLWithPath: imagePath)
         do{
