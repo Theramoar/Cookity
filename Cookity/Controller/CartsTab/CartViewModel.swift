@@ -9,6 +9,11 @@
 import UIKit
 import RealmSwift
 
+enum ExportType {
+    case text
+    case file
+}
+
 
 class CartViewModel: DetailViewModelType {
     
@@ -81,19 +86,28 @@ class CartViewModel: DetailViewModelType {
         return true
     }
     
-    func shareCart() -> UIActivityViewController? {
-           let shareManager = ShareDataManager()
-           guard
-               let cart = selectedCart,
-               let url = shareManager.exportToURL(object: cart)
-               else { return nil }
-               
-           let activity = UIActivityViewController(
-               activityItems: ["I prepared the Shopping List for you! You can read it using Cookity app.", url],
-               applicationActivities: nil
-           )
-           return activity
-       }
+    func shareCart(as type: ExportType) -> UIActivityViewController? {
+        let shareManager = ShareDataManager()
+        guard
+            let cart = selectedCart,
+            let url = shareManager.exportToURL(object: cart)
+            else { return nil }
+        
+        switch type {
+        case .text:
+            let exportMessage = shareManager.prepareExportMessage(for: cart)
+            let activity = UIActivityViewController(
+            activityItems: [exportMessage],
+            applicationActivities: nil)
+            return activity
+        case .file:
+            let activity = UIActivityViewController(
+            activityItems: [url],
+            applicationActivities: nil)
+            return activity
+        }
+
+    }
        
        
     func moveProductsToFridge() {

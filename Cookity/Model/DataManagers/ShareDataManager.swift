@@ -56,6 +56,37 @@ class ShareDataManager {
         }
     }
     
+    func prepareExportMessage(for cart: ShoppingCart) -> String {
+        var exportMessage = "I prepared the Shopping List for you:\n"
+        var position = 1
+        cart.products.forEach { (product) in
+           let (productQuantity, productMeasure) = Configuration.presentNumbers(quantity: product.quantity, measure: product.measure)
+            exportMessage += "\(position). \(product.name) - \(productQuantity) \(productMeasure)\n"
+            position += 1
+        }
+//        exportMessage += "\nYou can read it using Cookity app."
+        return exportMessage
+    }
+    
+        func prepareExportMessage(for recipe: Recipe) -> String {
+            var exportMessage = "Checkout the Recipe I found for you:\n"
+            var position = 1
+            exportMessage += "\nIngridiets:\n"
+            recipe.products.forEach { (product) in
+               let (productQuantity, productMeasure) = Configuration.presentNumbers(quantity: product.quantity, measure: product.measure)
+                exportMessage += "\(position). \(product.name) - \(productQuantity) \(productMeasure)\n"
+                position += 1
+            }
+            guard !recipe.recipeSteps.isEmpty else { return exportMessage }
+            position = 1
+            exportMessage += "\nCooking Steps:\n"
+            recipe.recipeSteps.forEach { (step) in
+                exportMessage += "\(position). \(step.name)\n"
+                position += 1
+            }
+            return exportMessage
+        }
+    
     
     private func encodeObject<T: Codable>(object: T, path: URL) -> URL? {
         guard let encodedObject = try? JSONEncoder().encode(object) else { return nil }

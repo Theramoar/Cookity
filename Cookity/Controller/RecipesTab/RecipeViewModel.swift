@@ -65,17 +65,31 @@ class RecipeViewModel: DetailViewModelType {
         }
     }
     
-    func shareObject() -> UIActivityViewController? {
+    func shareRecipet(as type: ExportType) -> UIActivityViewController? {
         let shareManager = ShareDataManager()
-        guard
-            let url = shareManager.exportToURL(object: selectedRecipe)
+        
+        switch type {
+        case .text:
+            let exportMessage = shareManager.prepareExportMessage(for: selectedRecipe)
+            let activity = UIActivityViewController(
+            activityItems: [exportMessage],
+            applicationActivities: nil)
+            return activity
+        case .file:
+            guard let url = shareManager.exportToURL(object: selectedRecipe)
             else { return nil }
-            
-        let activity = UIActivityViewController(
-            activityItems: [/*"I prepared the Shopping List for you! You can read it using Cookity app.", */url],
-            applicationActivities: nil
-        )
-        return activity
+            let activity = UIActivityViewController(
+            activityItems: [url],
+            applicationActivities: nil)
+            return activity
+        }
+//
+//
+//        let activity = UIActivityViewController(
+//            activityItems: [/*"I prepared the Shopping List for you! You can read it using Cookity app.", */url],
+//            applicationActivities: nil
+//        )
+//        return activity
     }
     
     func createCartFromRecipe() {

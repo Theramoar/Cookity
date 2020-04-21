@@ -93,7 +93,6 @@ class Recipe: Object, ParentObject, Codable {
     }
     
     required convenience init(from decoder: Decoder) throws {
-        print("DECODING")
         self.init()
         let container = try decoder.container(keyedBy: RecipeCodingKeys.self)
         name = try container.decode(String.self, forKey: .name)
@@ -104,7 +103,7 @@ class Recipe: Object, ParentObject, Codable {
         
         let imageData = try? container.decode(Data.self, forKey: .recipeImageData)
         
-        let imageFileName = "\(name).png"
+        let imageFileName = "\(UUID().uuidString).png"
         let imagePath: String = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/\(imageFileName)"
         let imageUrl: URL = URL(fileURLWithPath: imagePath)
     

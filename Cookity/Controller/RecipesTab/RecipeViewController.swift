@@ -97,9 +97,28 @@ class RecipeViewController: UIViewController, UpdateVCDelegate {
     
     
     @IBAction func shareButtonPressed(_ sender: UIBarButtonItem) {
-        guard let activity = viewModel.shareObject() else { return }
-        activity.popoverPresentationController?.barButtonItem = sender
-        present(activity, animated: true, completion: nil)
+        var activityController: UIActivityViewController?
+        
+        
+        let alert = UIAlertController(title: "How would you like to share this cart?", message: nil, preferredStyle: .actionSheet)
+        alert.view.tintColor = Colors.textColor
+        let textAction = UIAlertAction(title: "Send as text", style: .default) { (_) in
+            activityController = self.viewModel.shareRecipet(as: .text)
+            guard let activity = activityController else { return }
+            activity.popoverPresentationController?.barButtonItem = sender
+            self.present(activity, animated: true, completion: nil)
+        }
+        let fileAction = UIAlertAction(title: "Send as Cookity file", style: .default) { (_) in
+            activityController = self.viewModel.shareRecipet(as: .file)
+            guard let activity = activityController else { return }
+            activity.popoverPresentationController?.barButtonItem = sender
+            self.present(activity, animated: true, completion: nil)
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alert.addAction(textAction)
+        alert.addAction(fileAction)
+        alert.addAction(cancelAction)
+        present(alert, animated: true) {}
     }
     
     @IBAction func editButtonPressed(_ sender: UIBarButtonItem) {
