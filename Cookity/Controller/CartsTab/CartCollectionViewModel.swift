@@ -32,6 +32,10 @@ class CartCollectionViewModel {
     
     private var shoppingCarts: Results<ShoppingCart>?
     
+    var cartCollectionIsEmpty: Bool {
+        shoppingCarts?.isEmpty ?? true
+    }
+    
     init() {
         shoppingCarts = RealmDataManager.dataLoadedFromRealm(ofType: ShoppingCart.self)
         productsInFridge = Fridge.shared.products
@@ -52,6 +56,7 @@ class CartCollectionViewModel {
         let products = cart.products
         var copiedProducts = [Product]()
         for product in products {
+            setDefaultExpirationDate(for: product)
             //Checks if the similar product is already in the fridge
             for fridgeProduct in productsInFridge{
                 // if products name and measure coincide, adds quantity and deletes product from the shopping list
@@ -80,6 +85,16 @@ class CartCollectionViewModel {
         //Delete Cart from Cloud
         CloudManager.deleteRecordFromCloud(ofObject: cart)
         RealmDataManager.deleteFromRealm(object: cart)
+    }
+    
+    func setDefaultExpirationDate(for product: Product) {
+        guard SettingsVariables.isDefaultDateEnabled, product.expirationDate == nil else { return }
+        let date = Date()
+        let days = SettingsVariables.defaultExpirationDate
+        let addbyUnit = Calendar.Component.day
+        let endDate = Calendar.current.date(byAdding: addbyUnit, value: days, to: date)
+        
+        RealmDataManager.changeElementIn(object: product, keyValue: "expirationDate", objectParameter: product.expirationDate, newParameter: endDate)
     }
     
     func loadCartsFromCloud(completion: @escaping () -> ()) {

@@ -20,4 +20,20 @@ struct SettingsVariables {
             UserDefaults.standard.set(isCloudEnabled, forKey: "isCloudEnabled")
         }
     }
+    static var isDefaultDateEnabled: Bool = UserDefaults.standard.bool(forKey: "isDefaultDateEnabled") {
+        didSet {
+            UserDefaults.standard.set(isDefaultDateEnabled, forKey: "isDefaultDateEnabled")
+        }
+    }
+    
+    static var defaultExpirationDate: Int = UserDefaults.standard.integer(forKey: "defaultExpirationDate") {
+        didSet {
+            UserDefaults.standard.set(defaultExpirationDate, forKey: "defaultExpirationDate")
+            
+        }
+    }
 }
+
+
+
+

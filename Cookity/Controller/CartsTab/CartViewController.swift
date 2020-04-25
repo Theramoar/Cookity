@@ -51,7 +51,13 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
         productsTable.delegate = self
         productsTable.dataSource = self
         productsTable.separatorStyle = .none
-        productsTable.rowHeight = 45
+        
+        productsTable.rowHeight = UITableView.automaticDimension
+        productsTable.estimatedRowHeight = 100
+        
+//        productsTable.rowHeight = 45
+        productsTable.register(UINib(nibName: "ProductCell", bundle: nil), forCellReuseIdentifier: "ProductCell")
+        
         tabBarController?.tabBar.isHidden = true
         tfView.delegate = self
         tfView.heightConstraint = tfHeightConstraint
@@ -102,18 +108,16 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
         // find the IndexPath of the cell which was "longtouched"
         let touchPoint = longPressRecognizer.location(in: self.productsTable)
         selectedIndexPath = productsTable.indexPathForRow(at: touchPoint)
+        
         if selectedIndexPath != nil {
             viewModel.longTapRow(atIndexPath: selectedIndexPath!)
-            performSegue(withIdentifier: "popupEdit", sender: self)
+            let vc = PopupEditViewController()
+            vc.viewModel = viewModel.viewModelForSelectedRow() as? PopupEditViewModel
+            vc.parentVC = self
+            present(vc, animated: true, completion: nil)
         }
     }
-    
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let destinationVC = segue.destination as! PopupEditViewController
-        destinationVC.viewModel = viewModel.viewModelForSelectedRow() as? PopupEditViewModel
-        destinationVC.parentVC = self
-    }
+
     
     
     @IBAction func shareButtonPressed(_ sender: UIBarButtonItem) {

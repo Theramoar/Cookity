@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DefaultDatePickerCell" rowHeight="250" id="onR-C7-iKx" customClass="DefaultDatePickerCell" customModule="Cookity" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="410" height="194"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="onR-C7-iKx" id="c5u-U6-koS">
+                <rect key="frame" x="0.0" y="0.0" width="410" height="194"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="7wq-KB-vbF">
+                        <rect key="frame" x="20" y="0.0" width="390" height="194"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GJr-nz-YK8">
+                                <rect key="frame" x="23" y="0.0" width="46" height="30"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleColor" name="HighlightColor"/>
+                                </state>
+                                <connections>
+                                    <action selector="defaultButtonPressed:" destination="onR-C7-iKx" eventType="touchUpInside" id="VJD-WM-NEc"/>
+                                </connections>
+                            </button>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LD5-iP-N8u">
+                                <rect key="frame" x="23" y="30" width="367" height="164"/>
+                            </pickerView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="LD5-iP-N8u" secondAttribute="trailing" id="FFJ-hi-faJ"/>
+                            <constraint firstItem="GJr-nz-YK8" firstAttribute="leading" secondItem="7wq-KB-vbF" secondAttribute="leading" constant="23" id="J8X-eS-xaZ"/>
+                            <constraint firstItem="LD5-iP-N8u" firstAttribute="leading" secondItem="7wq-KB-vbF" secondAttribute="leading" id="TxL-TX-GJH"/>
+                            <constraint firstAttribute="bottom" secondItem="LD5-iP-N8u" secondAttribute="bottom" id="dsK-XD-v6p"/>
+                        </constraints>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="7wq-KB-vbF" secondAttribute="trailing" id="BHV-7b-cJ1"/>
+                    <constraint firstItem="7wq-KB-vbF" firstAttribute="top" secondItem="c5u-U6-koS" secondAttribute="top" id="Qgo-69-JFo"/>
+                    <constraint firstItem="7wq-KB-vbF" firstAttribute="leading" secondItem="c5u-U6-koS" secondAttribute="leading" constant="20" id="VHc-Zd-JdZ"/>
+                    <constraint firstAttribute="bottom" secondItem="7wq-KB-vbF" secondAttribute="bottom" id="kw0-E9-FbL"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="defaultDateButton" destination="GJr-nz-YK8" id="dRM-B3-zsj"/>
+                <outlet property="defaultDatePicker" destination="LD5-iP-N8u" id="fL5-3z-j8t"/>
+            </connections>
+            <point key="canvasLocation" x="114.49275362318842" y="229.6875"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <namedColor name="HighlightColor">
+            <color red="0.77600002288818359" green="0.88999998569488525" blue="0.46700000762939453" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

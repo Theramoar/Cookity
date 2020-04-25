@@ -10,6 +10,14 @@ import UIKit
 import RealmSwift
 import SwipeCellKit
 
+enum ExpirationFrame: String, CaseIterable {
+    case expired = "Expired"
+    case in3Days = "Expire in 3 days"
+    case in1Week = "Expire in 1 week"
+    case in1Month = "Expire in 1 month"
+    case other = "Other"
+}
+
 class FridgeViewController: SwipeTableViewController, UpdateVCDelegate {
     
     var viewModel = FridgeViewModel()
@@ -19,7 +27,6 @@ class FridgeViewController: SwipeTableViewController, UpdateVCDelegate {
     @IBOutlet weak var emptyFridgeLabel: UILabel!
     @IBOutlet weak var emptyFridgeDescriptionLabel: UILabel!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -28,7 +35,8 @@ class FridgeViewController: SwipeTableViewController, UpdateVCDelegate {
         fridgeTableView.delegate = self
         fridgeTableView.dataSource = self
         fridgeTableView.separatorStyle = .none
-        fridgeTableView.rowHeight = 45
+        fridgeTableView.register(UINib(nibName: "ProductCell", bundle: nil), forCellReuseIdentifier: "ProductCell")
+        fridgeTableView.rowHeight = 50
         
         addButton.layer.shadowOffset = CGSize(width: 0, height: 3.0)
         addButton.layer.shadowOpacity = 0.7
@@ -61,7 +69,10 @@ class FridgeViewController: SwipeTableViewController, UpdateVCDelegate {
         guard selectedIndexPath != nil else { return }
         viewModel.longTapRow(atIndexPath: selectedIndexPath!)
         if self.presentedViewController == nil {
-            performSegue(withIdentifier: "popupEditFridge", sender: self)
+            let vc = PopupEditViewController()
+            vc.viewModel = viewModel.viewModelForSelectedRow() as? PopupEditViewModel
+            vc.parentVC = self
+            present(vc, animated: true, completion: nil)
         }
     }
     
@@ -72,13 +83,7 @@ class FridgeViewController: SwipeTableViewController, UpdateVCDelegate {
 
     //MARK:- Data Manipulation Methods
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if segue.identifier == "popupEditFridge"{
-            let destinationVC = segue.destination as! PopupEditViewController
-            destinationVC.viewModel = viewModel.viewModelForSelectedRow() as? PopupEditViewModel
-            destinationVC.parentVC = self
-        }
-        else if segue.identifier == "goToCookingAreaFromFridge" {
+        if segue.identifier == "goToCookingAreaFromFridge" {
             let destinationVC = segue.destination as! CookViewController
             destinationVC.updateVCDelegate = self
             destinationVC.viewModel = viewModel.viewModelForCookdArea()
@@ -87,7 +92,7 @@ class FridgeViewController: SwipeTableViewController, UpdateVCDelegate {
     }
     
     override func deleteObject(at indexPath: IndexPath) {
-        viewModel.deleteProductFromFridge(at: indexPath.row)
+        viewModel.deleteProductFromFridge(at: indexPath)
         fridgeTableView.reloadData()
     }
     
@@ -122,22 +127,34 @@ extension FridgeViewController: UITableViewDelegate, UITableViewDataSource {
             emptyFridgeLabel.isHidden = true
             emptyFridgeDescriptionLabel.isHidden = true
         }
-        return viewModel.numberOfRows
+        return viewModel.numberOfRowsForCurrentSection(section)
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        viewModel.numberOfSections
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        ExpirationFrame.allCases[section].rawValue
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        viewModel.numberOfRowsForCurrentSection(section) == 0  ? 0 : 20
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "FridgeCell", for: indexPath) as! ProductTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ProductCell", for: indexPath) as! ProductTableViewCell
         cell.delegate = self as SwipeTableViewCellDelegate
-        cell.viewModel = viewModel.cellViewModel(forIndexPath: indexPath) as? ProductTableCellViewModel
         cell.isInFridge = true
+        cell.viewModel = viewModel.cellViewModel(forIndexPath: indexPath) as? ProductTableCellViewModel
         
         return cell
     }
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        viewModel.checkProduct(at: indexPath.row)
+        viewModel.checkProduct(at: indexPath)
         configButton()
         tableView.reloadData()
     }

@@ -11,6 +11,7 @@ import UIKit
 enum EnableCellTypes {
     case enableIngridient
     case enableCloud
+    case enableDefaultDate
     case noType
 }
 
@@ -19,6 +20,8 @@ class EnableOptionCell: UITableViewCell {
     @IBOutlet weak var cellImageView: UIImageView!
     @IBOutlet weak var cellLabel: UILabel!
     @IBOutlet weak var ingridientSwitch: UISwitch!
+    
+    var delegate: UpdateVCDelegate?
     
     var enableCellType: EnableCellTypes {
         didSet {
@@ -40,6 +43,12 @@ class EnableOptionCell: UITableViewCell {
                 }
                 else {
                     cellImageView.image = #imageLiteral(resourceName: "cloud_40")
+                }
+            case .enableDefaultDate:
+                ingridientSwitch.isOn = SettingsVariables.isDefaultDateEnabled == true ? true : false
+                cellLabel.text = "Set default expiration date"
+                if #available(iOS 13.0, *) {
+                    cellImageView.image = UIImage(systemName: "calendar")?.withTintColor(Colors.textColor!)
                 }
                 
             case .noType:
@@ -69,6 +78,9 @@ class EnableOptionCell: UITableViewCell {
             SettingsVariables.isIngridientSearchEnabled = !SettingsVariables.isIngridientSearchEnabled
         case .enableCloud:
             SettingsVariables.isCloudEnabled = !SettingsVariables.isCloudEnabled
+        case .enableDefaultDate:
+            SettingsVariables.isDefaultDateEnabled = !SettingsVariables.isDefaultDateEnabled
+            delegate?.updateVC()
         case .noType:
             return
         }

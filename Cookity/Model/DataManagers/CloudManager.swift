@@ -29,6 +29,12 @@ class CloudManager {
             if let error = error { print(error); return }
             guard let record = record else { return }
             DispatchQueue.main.async {
+                if object.isInvalidated {
+                    privateCloudDatabase.delete(withRecordID: record.recordID, completionHandler: { (_, error) in
+                        if let error = error { print(error); return }
+                    })
+                    return
+                }
                 RealmDataManager.saveCloudID(parentObject: object, cloudID: record.recordID.recordName)
                 closure(record.recordID.recordName)
                 saveChildrenDataToCloud(objects: object.allChildrenObjects(), to: object)
@@ -37,7 +43,7 @@ class CloudManager {
     }
 
     static func saveChildrenDataToCloud<T: CloudObject, P: ParentObject>(objects: [T], to parentObject: P) {
-        guard SettingsVariables.isCloudEnabled else { return }
+        guard SettingsVariables.isCloudEnabled, let parentObjectID = parentObject.cloudID else { print("parentObject.cloudID is invalid") ; return }
         objects.forEach { (object) in
             guard object.isInvalidated == false else { return }
             let record = CKRecord(recordType: String(describing: type(of: object)))
@@ -54,6 +60,20 @@ class CloudManager {
                 if let error = error { print(error); return }
                 guard let record = record else { return }
                 DispatchQueue.main.async {
+                    
+                    if parentObject.isInvalidated {
+                        let parentRecordID = CKRecord.ID(recordName: parentObjectID)
+                        privateCloudDatabase.delete(withRecordID: parentRecordID, completionHandler: { (_, error) in
+                            if let error = error { print(error); return }
+                        })
+                        return
+                    }
+                    else if object.isInvalidated {
+                        privateCloudDatabase.delete(withRecordID: record.recordID, completionHandler: { (_, error) in
+                            if let error = error { print(error); return }
+                        })
+                        return
+                    }
                     RealmDataManager.changeElementIn(object: object, keyValue: "cloudID", objectParameter: object.cloudID, newParameter: record.recordID.recordName)
                 }
             })
@@ -91,6 +111,13 @@ class CloudManager {
         privateCloudDatabase.fetch(withRecordID: recordID) { (record, error) in
             guard let record = record, error == nil else { return }
             DispatchQueue.main.async {
+                if childObject.isInvalidated {
+                    print("INVALIDATED PRODUCT CATCHED AND DELETED")
+                    privateCloudDatabase.delete(withRecordID: record.recordID, completionHandler: { (_, error) in
+                        if let error = error { print(error); return }
+                    })
+                    return
+                }
                 for value in childObject.returnCloudValues() {
                     record.setValue(value.value, forKey: value.key)
                 }
@@ -201,9 +228,13 @@ class CloudManager {
             DispatchQueue.main.async {
                 if Fridge.shared.cloudID != record.recordID.recordName {
                     closure(record.recordID.recordName)
-                    loadChildrenFromCloud(ofType: Product.self, record: record) { (products) in
-                        for product in products {
-                            RealmDataManager.saveToRealm(parentObject: Fridge.shared, object: product)
+                }
+                loadChildrenFromCloud(ofType: Product.self, record: record) { (products) in
+                    for product in products {
+                        DispatchQueue.main.async {
+                            if let id = product.cloudID, Fridge.shared.products.first(where: {$0.cloudID == id}) == nil {
+                                RealmDataManager.saveToRealm(parentObject: Fridge.shared, object: product)
+                            }
                         }
                     }
                 }
@@ -229,24 +260,16 @@ class CloudManager {
     
     
     //MARK:- Delete Data
-    
     static func deleteRecordFromCloud<T: CloudObject>(ofObject object: T) {
         guard SettingsVariables.isCloudEnabled, let cloudID = object.cloudID else { return }
-        let query = CKQuery(recordType: String(describing: T.self), predicate: NSPredicate(value: true))
-        let queryOperation = CKQueryOperation(query: query)
-        queryOperation.desiredKeys = ["recordID"]
-        queryOperation.queuePriority = .veryHigh
-        queryOperation.recordFetchedBlock = { record in
-            if record.recordID.recordName == cloudID {
-                privateCloudDatabase.delete(withRecordID: record.recordID, completionHandler: { (_, error) in
-                    if let error = error { print(error); return }
-                })
-            }
+        let recordID = CKRecord.ID(recordName: cloudID)
+        privateCloudDatabase.fetch(withRecordID: recordID) { (record, error) in
+            guard let record = record, error == nil else { return }
+            privateCloudDatabase.delete(withRecordID: record.recordID, completionHandler: { (_, error) in
+                if let error = error { print(error); return }
+                print("OBJECT DELETED")
+            })
         }
-        queryOperation.queryCompletionBlock = { _, error in
-            if let error = error { print(error); return }
-        }
-        privateCloudDatabase.add(queryOperation)
     }
     
     

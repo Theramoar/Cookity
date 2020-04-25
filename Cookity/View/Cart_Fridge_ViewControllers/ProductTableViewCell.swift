@@ -14,6 +14,7 @@ import SwipeCellKit
 class ProductTableViewCell: SwipeTableViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var measureLabel: UILabel!
+    @IBOutlet weak var expirationDateLabel: UILabel!
     
     var attributedName: NSMutableAttributedString!
     var attributedNumber: NSMutableAttributedString!
@@ -22,6 +23,7 @@ class ProductTableViewCell: SwipeTableViewCell {
     weak var viewModel: ProductTableCellViewModel? {
         willSet(viewModel) {
             guard let viewModel = viewModel else { return }
+            expirationDateLabel.isHidden = !isInFridge
             
             attributedName = NSMutableAttributedString(string: viewModel.productName)
             attributedNumber = NSMutableAttributedString(string: "\(viewModel.productQuantity) \(viewModel.productMeasure)")
@@ -31,10 +33,15 @@ class ProductTableViewCell: SwipeTableViewCell {
             
             nameLabel.textColor = viewModel.isChecked ? Colors.highlightColor : Colors.textColor
             measureLabel.textColor = viewModel.isChecked ? Colors.highlightColor : Colors.textColor
+            
             if viewModel.isChecked, !isInFridge {
                 attributedName.addAttribute(strikethroughAttribute, value: 2, range: NSMakeRange(0, attributedName.length))
                 attributedNumber.addAttribute(strikethroughAttribute, value: 2, range: NSMakeRange(0, attributedNumber.length))
             }
+            if isInFridge {
+                expirationDateLabel.text = viewModel.expirationDate
+            }
+            
             nameLabel.attributedText = attributedName
             measureLabel.attributedText = attributedNumber
         }
@@ -56,6 +63,11 @@ class ProductTableCellViewModel: CellViewModelType {
     var isChecked: Bool {
         product.checked
     }
+    
+    var expirationDate: String {
+        product.expirationDate != nil ? Configuration.createStringFromDate(product.expirationDate!) : ""
+    }
+    
     var productMeasure: String
     var productQuantity: String
     

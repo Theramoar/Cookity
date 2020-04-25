@@ -22,11 +22,7 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate {
     
     //MARK:- SearchBar variables
     private var searchController: UISearchController!
-    
-    private var isFiltering: Bool {
-        viewModel.isFiltering = searchController.isActive && !searchBarIsEmpty
-        return searchController.isActive && !searchBarIsEmpty
-    }
+
     private var searchBarIsEmpty: Bool {
         guard let text = searchController.searchBar.text else { return false }
         return text.isEmpty
@@ -51,7 +47,6 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate {
     private func setStandardNavBar() {
         searchController = setupSearchBarController()
         navigationItem.searchController = searchController
-//        self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationController?.definesPresentationContext = true
     }
     
@@ -115,6 +110,7 @@ extension RecipeCollectionViewController: UICollectionViewDelegate, UICollection
 extension RecipeCollectionViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text else { return }
+        viewModel.isFiltering = searchController.isActive && !searchBarIsEmpty
         viewModel.updateSearchResults(with: searchText)
         recipeCollection.reloadData()
     }

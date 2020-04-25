@@ -36,11 +36,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         else {
             RealmDataManager.saveToRealm(parentObject: nil, object: Fridge.shared)
         }
-            CloudManager.loadFridgeFromCloud { (recordID) in
-                DispatchQueue.main.async {
-                    RealmDataManager.saveCloudID(parentObject: Fridge.shared, cloudID: recordID)
-                }
+        CloudManager.loadFridgeFromCloud { (recordID) in
+            DispatchQueue.main.async {
+                RealmDataManager.saveCloudID(parentObject: Fridge.shared, cloudID: recordID)
             }
+        }
         
     }
 }

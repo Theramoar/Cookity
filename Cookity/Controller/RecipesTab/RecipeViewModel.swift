@@ -83,13 +83,6 @@ class RecipeViewModel: DetailViewModelType {
             applicationActivities: nil)
             return activity
         }
-//
-//
-//        let activity = UIActivityViewController(
-//            activityItems: [/*"I prepared the Shopping List for you! You can read it using Cookity app.", */url],
-//            applicationActivities: nil
-//        )
-//        return activity
     }
     
     func createCartFromRecipe() {

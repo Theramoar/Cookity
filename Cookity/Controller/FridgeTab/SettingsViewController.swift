@@ -10,16 +10,25 @@ import UIKit
 import MessageUI
 
 
-class SettingsViewController: UIViewController {
+class SettingsViewController: UIViewController, UpdateVCDelegate {
+    
+    func updateVC() {
+        tableView.reloadData()
+    }
+    
 
     @IBOutlet weak var tableView: UITableView!
-    let sections = ["Settings", "Contact us"]
+    let sections = ["General", "Contact us"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none
+        tableView.register(UINib(nibName: "DefaultDatePickerCell", bundle: nil), forCellReuseIdentifier: "DefaultDatePickerCell")
+        
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 300
     }
     
     func showMailComposer() {
@@ -99,25 +108,13 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        guard section != 0 else { return 0 }
         return 35
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 {
-            if indexPath.row == 0 {
-                return 210
-            }
-            return 44
-        }
-        else {
-            return 44
-        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
+            if SettingsVariables.isDefaultDateEnabled { return 4 }
             return 3
         default:
             return 2
@@ -131,15 +128,23 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         if indexPath.section == 0 {
             switch indexPath.row {
             case 0:
-                cell = tableView.dequeueReusableCell(withIdentifier: "workInProgressCell", for: indexPath)
-            case 1:
                 let enableCell = tableView.dequeueReusableCell(withIdentifier: "enableIngridientCell", for: indexPath) as! EnableOptionCell
                 enableCell.enableCellType = .enableIngridient
                 return enableCell
-            case 2:
+            case 1:
                 let enableCell = tableView.dequeueReusableCell(withIdentifier: "enableIngridientCell", for: indexPath) as! EnableOptionCell
                 enableCell.enableCellType = .enableCloud
                 return enableCell
+            case 2:
+                let enableCell = tableView.dequeueReusableCell(withIdentifier: "enableIngridientCell", for: indexPath) as! EnableOptionCell
+                enableCell.enableCellType = .enableDefaultDate
+                enableCell.delegate = self
+                return enableCell
+            case 3:
+                let defCell = tableView.dequeueReusableCell(withIdentifier: "DefaultDatePickerCell", for: indexPath) as! DefaultDatePickerCell
+                defCell.delegate = self
+                return defCell
+                
             default:
                 cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
             }
@@ -175,3 +180,4 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         
     }
 }
+

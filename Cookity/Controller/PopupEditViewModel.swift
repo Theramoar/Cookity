@@ -16,6 +16,7 @@ class PopupEditViewModel: DetailViewModelType {
     var presentedName: String
     var presentedQuantity: String
     var presentedMeasure: String
+    var presentedDate: String
     
     
     init(product: Product) {
@@ -23,8 +24,16 @@ class PopupEditViewModel: DetailViewModelType {
         self.presentedName = product.name
         (self.presentedQuantity, self.presentedMeasure) = Configuration.presentNumbers(quantity: product.quantity, measure: product.measure)
         self.presentedMeasure = Configuration.configMeasure(measure: self.presentedMeasure)
+        if let date = product.expirationDate {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "dd.MM.yyyy"
+            let result = formatter.string(from: date)
+            self.presentedDate = result
+        }
+        else {
+            self.presentedDate = ""
+        }
     }
-    
     
     func checkDataFromTextFields(productName: String, productQuantity: String, productMeasure: String) -> UIAlertController? {
           let alert = UIAlertController(title: "title", message: "message", preferredStyle: .alert)
@@ -42,7 +51,7 @@ class PopupEditViewModel: DetailViewModelType {
     
     
     
-    func changeProduct(newName productName: String, newQuantity productQuantity: String, newMeasure productMeasure: String) {
+    func changeProduct(newName productName: String, newQuantity productQuantity: String, newMeasure productMeasure: String, newDate: String) {
         
         let measure = Configuration.configMeasure(measure: productMeasure)
         let (savedQuantity, savedMeasure) = Configuration.configNumbers(quantity: productQuantity, measure: measure)
@@ -59,6 +68,16 @@ class PopupEditViewModel: DetailViewModelType {
                                     keyValue: "measure",
                                     objectParameter: product.measure,
                                     newParameter: savedMeasure)
+        
+        
+        // HERE
+        if let date = Configuration.createDateFromString(newDate) {
+            RealmDataManager.changeElementIn(object: product,
+                                             keyValue: "expirationDate",
+                                             objectParameter: product.expirationDate,
+                                             newParameter: date)
+        }
+        
         CloudManager.updateChildInCloud(childObject: product)
     }
 }

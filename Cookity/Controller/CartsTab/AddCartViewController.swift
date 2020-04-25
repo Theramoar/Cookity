@@ -56,6 +56,7 @@ class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, Meas
         tableView.keyboardDismissMode = .onDrag
         tableView.separatorStyle = .none
         tableView.rowHeight = 45
+        tableView.register(UINib(nibName: "ProductCell", bundle: nil), forCellReuseIdentifier: "ProductCell")
         
         tfView.heightConstraint = tfHeight
         tfView.initialHeight = tfHeight.constant

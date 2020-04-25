@@ -14,9 +14,14 @@ class CartCollectionViewController: SwipeTableViewController, UpdateVCDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var addCartButton: UIButton!
-    
     @IBOutlet weak var plusButton: UIButton!
     @IBOutlet weak var cartTableView: UITableView!
+    
+    
+    @IBOutlet weak var emptycartImageView: UIImageView!
+    @IBOutlet weak var emptyCartMainLabel: UILabel!
+    @IBOutlet weak var emptyCartSecondLabel: UILabel!
+    
     let viewModel = CartCollectionViewModel()
     
 
@@ -95,6 +100,11 @@ extension CartCollectionViewController: UITableViewDelegate, UITableViewDataSour
     
     //MARK: - TableView DataSource Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+            emptycartImageView.isHidden = !viewModel.cartCollectionIsEmpty
+            emptyCartMainLabel.isHidden = !viewModel.cartCollectionIsEmpty
+            emptyCartSecondLabel.isHidden = !viewModel.cartCollectionIsEmpty
+        
         tableView.rowHeight = 60
         tableView.separatorInset = .init(top: 0, left: 30, bottom: 0, right: 30)
         return viewModel.numberOfRows

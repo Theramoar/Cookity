@@ -12,7 +12,7 @@ import RealmSwift
 class RealmDataManager {
 
     private static var realm: Realm {
-        let schemaVersion: UInt64 = 4
+        let schemaVersion: UInt64 = 5
         let config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
             // version (if you've never set a schema version before, the version is 0).
@@ -79,6 +79,7 @@ class RealmDataManager {
 
 
     static func changeElementIn<T>(object: Object, keyValue: String, objectParameter: T, newParameter: T) {
+        guard object.isInvalidated == false else { return }
         do{
             try self.realm.write {
                 object.setValue(newParameter, forKey: keyValue)

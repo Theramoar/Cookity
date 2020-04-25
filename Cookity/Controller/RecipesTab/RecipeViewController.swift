@@ -100,7 +100,7 @@ class RecipeViewController: UIViewController, UpdateVCDelegate {
         var activityController: UIActivityViewController?
         
         
-        let alert = UIAlertController(title: "How would you like to share this cart?", message: nil, preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: "How would you like to share this recipe?", message: nil, preferredStyle: .actionSheet)
         alert.view.tintColor = Colors.textColor
         let textAction = UIAlertAction(title: "Send as text", style: .default) { (_) in
             activityController = self.viewModel.shareRecipet(as: .text)

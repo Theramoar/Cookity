@@ -102,6 +102,17 @@ class Configuration {
         return (false, nil)
     }
     
+    static func createDateFromString(_ dateString: String) -> Date? {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yyyy"
+        return formatter.date(from: dateString)
+    }
+    
+    static func createStringFromDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yyyy"
+        return formatter.string(from: date)
+    }
     
     //Удалить эту функцию/ вызывать её с рецепта
     static func getImageFromFileManager(with imageFileName: String) -> UIImage? {

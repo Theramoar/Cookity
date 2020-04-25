@@ -27,7 +27,7 @@ class Product: ChildObject, Codable {
     @objc dynamic var name: String = ""
     @objc dynamic var quantity: Int = 0
     @objc dynamic var measure: String = ""
-    
+    @objc dynamic var expirationDate: Date?
     @objc dynamic var checked: Bool = false
     @objc dynamic var checkForRecipe: Bool = false
     
@@ -40,14 +40,21 @@ class Product: ChildObject, Codable {
         measure = record.value(forKey: "measure") as! String
         self.cloudID = record.recordID.recordName
         checked = record.value(forKey: "checked") as! Bool
+        if let expirationDate = record.value(forKey: "expirationDate") as? Date {
+            self.expirationDate = expirationDate
+        }
         checkForRecipe = false
     }
     
     override func returnCloudValues() -> [String : Any] {
-        ["name": name,
-         "quantity" : quantity,
-         "measure" : measure,
-         "checked" : checked
-        ]
+        var cloudValues = ["name": name,
+                           "quantity" : quantity,
+                           "measure" : measure,
+                           "checked" : checked
+            ] as [String : Any]
+        if let date = expirationDate {
+            cloudValues["expirationDate"] = date
+        }
+        return cloudValues
     }
 }

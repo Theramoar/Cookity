@@ -57,6 +57,9 @@
 		BB592033233939C300692E6C /* ContactsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB592032233939C300692E6C /* ContactsCell.swift */; };
 		BB592039234141A300692E6C /* launchIcon_500.png in Resources */ = {isa = PBXBuildFile; fileRef = BB592038234141A300692E6C /* launchIcon_500.png */; };
 		BB6EF735244E043F00AE2CAC /* PopupEditView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB6EF734244E043F00AE2CAC /* PopupEditView.xib */; };
+		BB6EF737244EE05E00AE2CAC /* DefaultDatePickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB6EF736244EE05E00AE2CAC /* DefaultDatePickerCell.xib */; };
+		BB6EF739244EE13A00AE2CAC /* DefaultDatePickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6EF738244EE13A00AE2CAC /* DefaultDatePickerCell.swift */; };
+		BB9F5DB7244F75AE00125874 /* ProductCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB9F5DB6244F75AE00125874 /* ProductCell.xib */; };
 		BBB6B009228730CA00E518CC /* EditTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB6B008228730CA00E518CC /* EditTextView.swift */; };
 		BBB6B07522A8F29700E518CC /* icon_320.png in Resources */ = {isa = PBXBuildFile; fileRef = BBB6B07122A8F29700E518CC /* icon_320.png */; };
 		BBB6B07622A8F29700E518CC /* icon_22.png in Resources */ = {isa = PBXBuildFile; fileRef = BBB6B07222A8F29700E518CC /* icon_22.png */; };
@@ -134,6 +137,9 @@
 		BB592032233939C300692E6C /* ContactsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsCell.swift; sourceTree = "<group>"; };
 		BB592038234141A300692E6C /* launchIcon_500.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launchIcon_500.png; sourceTree = "<group>"; };
 		BB6EF734244E043F00AE2CAC /* PopupEditView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PopupEditView.xib; sourceTree = "<group>"; };
+		BB6EF736244EE05E00AE2CAC /* DefaultDatePickerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DefaultDatePickerCell.xib; sourceTree = "<group>"; };
+		BB6EF738244EE13A00AE2CAC /* DefaultDatePickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultDatePickerCell.swift; sourceTree = "<group>"; };
+		BB9F5DB6244F75AE00125874 /* ProductCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProductCell.xib; sourceTree = "<group>"; };
 		BBB6B008228730CA00E518CC /* EditTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTextView.swift; sourceTree = "<group>"; };
 		BBB6B07122A8F29700E518CC /* icon_320.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_320.png; sourceTree = "<group>"; };
 		BBB6B07222A8F29700E518CC /* icon_22.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_22.png; sourceTree = "<group>"; };
@@ -309,6 +315,8 @@
 				BB18B21822CD3E6D004F2F65 /* CreditsViewCell.swift */,
 				BB592032233939C300692E6C /* ContactsCell.swift */,
 				BBC6C5B222F5D57500AF8423 /* EnableOptionCell.swift */,
+				BB6EF736244EE05E00AE2CAC /* DefaultDatePickerCell.xib */,
+				BB6EF738244EE13A00AE2CAC /* DefaultDatePickerCell.swift */,
 			);
 			path = SettingsViewController;
 			sourceTree = "<group>";
@@ -377,6 +385,7 @@
 			children = (
 				1C4B1A012180EC32007CB9FD /* FridgeViewController.swift */,
 				BB180B2224434BC9007E7124 /* FridgeViewModel.swift */,
+				BB9F5DB6244F75AE00125874 /* ProductCell.xib */,
 				BB3C781222B66C6000F556BC /* SettingsViewController.swift */,
 				BB18B21622CB0B17004F2F65 /* CreditsViewController.swift */,
 			);
@@ -479,9 +488,11 @@
 				BBB6B07522A8F29700E518CC /* icon_320.png in Resources */,
 				BBB6B07722A8F29700E518CC /* icon_64.png in Resources */,
 				1CA007D22165571E0072A908 /* LaunchScreen.storyboard in Resources */,
+				BB9F5DB7244F75AE00125874 /* ProductCell.xib in Resources */,
 				BB592039234141A300692E6C /* launchIcon_500.png in Resources */,
 				1CBEB2B021CE7DBE0036E996 /* Assets.xcassets in Resources */,
 				BBBE2E73244A60EC0092334C /* CartView.xib in Resources */,
+				BB6EF737244EE05E00AE2CAC /* DefaultDatePickerCell.xib in Resources */,
 				BB6EF735244E043F00AE2CAC /* PopupEditView.xib in Resources */,
 				BBB6B07622A8F29700E518CC /* icon_22.png in Resources */,
 				BBBE2E75244A63200092334C /* CartCollectionView.xib in Resources */,
@@ -578,6 +589,7 @@
 				BB0F24E52247872D00A3D8EF /* TextFieldView.swift in Sources */,
 				1C72FBAD222D29A100735546 /* RealmDataManager.swift in Sources */,
 				BB592033233939C300692E6C /* ContactsCell.swift in Sources */,
+				BB6EF739244EE13A00AE2CAC /* DefaultDatePickerCell.swift in Sources */,
 				BBFA65E2226659B700EE3C2A /* RecipeProductCell.swift in Sources */,
 				1CA007DC216559360072A908 /* CartViewController.swift in Sources */,
 				1C4B1A0821887081007CB9FD /* Recipe.swift in Sources */,
@@ -748,7 +760,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.561;
+				MARKETING_VERSION = 1.56;
 				PRODUCT_BUNDLE_IDENTIFIER = com.michaelk.Cookity;
 				PRODUCT_NAME = Cookity;
 				SWIFT_VERSION = 5.0;
@@ -771,7 +783,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.561;
+				MARKETING_VERSION = 1.56;
 				PRODUCT_BUNDLE_IDENTIFIER = com.michaelk.Cookity;
 				PRODUCT_NAME = Cookity;
 				SWIFT_VERSION = 5.0;
