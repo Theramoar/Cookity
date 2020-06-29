@@ -26,6 +26,9 @@ class Recipe: Object, ParentObject, Codable {
     @objc dynamic var imageFileName: String?
     @objc dynamic var cloudID: String?
     
+    @objc dynamic var checkedForGroup: Bool = false
+    @objc dynamic var recipeGroup: String?
+    
     
     func getImageFromFileManager() -> UIImage? {
         guard let imageFileName = imageFileName else { return nil }

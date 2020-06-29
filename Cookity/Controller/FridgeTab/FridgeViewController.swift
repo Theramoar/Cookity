@@ -78,18 +78,13 @@ class FridgeViewController: SwipeTableViewController, UpdateVCDelegate {
     
     
     @IBAction func addButtonPressed(_ sender: UIButton) {
-        performSegue(withIdentifier: "goToCookingAreaFromFridge", sender: self)
+        let vc = CookViewController()
+        vc.viewModel = viewModel.viewModelForCookdArea()
+        vc.updateVCDelegate = self
+        present(vc, animated: true, completion: nil)
     }
 
     //MARK:- Data Manipulation Methods
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "goToCookingAreaFromFridge" {
-            let destinationVC = segue.destination as! CookViewController
-            destinationVC.updateVCDelegate = self
-            destinationVC.viewModel = viewModel.viewModelForCookdArea()
-            uncheck()
-        }
-    }
     
     override func deleteObject(at indexPath: IndexPath) {
         viewModel.deleteProductFromFridge(at: indexPath)

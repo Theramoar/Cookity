@@ -49,8 +49,7 @@ class EnableOptionCell: UITableViewCell {
                 cellLabel.text = "Set default expiration date"
                 if #available(iOS 13.0, *) {
                     cellImageView.image = UIImage(systemName: "calendar")?.withTintColor(Colors.textColor!)
-                }
-                
+                } 
             case .noType:
                 return
             }

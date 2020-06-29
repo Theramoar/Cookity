@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CookViewController" customModule="Cookity" customModuleProvider="target">
+            <connections>
+                <outlet property="backButton" destination="qYU-ld-zb8" id="YFN-Hn-ZzP"/>
+                <outlet property="deleteButton" destination="AvV-hJ-frm" id="N0d-o7-pe5"/>
+                <outlet property="productsTable" destination="tCx-11-jbd" id="bS0-4R-r5h"/>
+                <outlet property="recipeName" destination="ZgN-Ye-SXg" id="3iN-Mm-2dN"/>
+                <outlet property="saveButton" destination="AUo-Jp-3dd" id="QPH-DV-VJg"/>
+                <outlet property="view" destination="iN0-l3-epB" id="lZ4-PM-uoD"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qYU-ld-zb8">
+                    <rect key="frame" x="16" y="61" width="25" height="25"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="25" id="L6r-2i-bc4"/>
+                        <constraint firstAttribute="height" constant="25" id="SQR-6o-2Da"/>
+                    </constraints>
+                    <state key="normal" image="close"/>
+                    <connections>
+                        <action selector="cancelButtonPressed:" destination="-1" eventType="touchUpInside" id="c90-EI-Uih"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AvV-hJ-frm">
+                    <rect key="frame" x="373" y="61" width="25" height="25"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="25" id="gvE-uP-bGj"/>
+                        <constraint firstAttribute="width" constant="25" id="ikl-K7-B4l"/>
+                    </constraints>
+                    <state key="normal" image="deleteGreen"/>
+                    <connections>
+                        <action selector="deleteButtonPressed:" destination="-1" eventType="touchUpInside" id="i1h-e3-iAx"/>
+                    </connections>
+                </button>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="What do you cook?" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ZgN-Ye-SXg">
+                    <rect key="frame" x="31" y="106" width="352" height="31.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h1w-ZP-pE7">
+                    <rect key="frame" x="186.5" y="52" width="41" height="41"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="41" id="8zI-lx-r5z"/>
+                        <constraint firstAttribute="height" constant="41" id="WxD-VB-stv"/>
+                    </constraints>
+                    <state key="normal" image="addPicture"/>
+                    <connections>
+                        <action selector="addImageButtonPressed:" destination="-1" eventType="touchUpInside" id="RTs-Pp-M9i"/>
+                    </connections>
+                </button>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tCx-11-jbd">
+                    <rect key="frame" x="0.0" y="150.5" width="414" height="665.5"/>
+                    <color key="backgroundColor" name="ViewColor"/>
+                </tableView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AUo-Jp-3dd">
+                    <rect key="frame" x="0.0" y="816" width="414" height="46"/>
+                    <color key="backgroundColor" name="ViewColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="46" id="aFI-BE-2Tp"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                    <state key="normal" title="Save Recipe">
+                        <color key="titleColor" name="TextColor"/>
+                    </state>
+                    <connections>
+                        <action selector="saveButtonPressed:" destination="-1" eventType="touchUpInside" id="tKE-3H-tzf"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" name="ViewColor"/>
+            <constraints>
+                <constraint firstItem="ZgN-Ye-SXg" firstAttribute="top" secondItem="h1w-ZP-pE7" secondAttribute="bottom" constant="13" id="3FN-Rx-lwT"/>
+                <constraint firstItem="AUo-Jp-3dd" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="AXb-zJ-siK"/>
+                <constraint firstItem="tCx-11-jbd" firstAttribute="top" secondItem="ZgN-Ye-SXg" secondAttribute="bottom" constant="13" id="Ajr-Do-0q3"/>
+                <constraint firstItem="qYU-ld-zb8" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="DeE-sY-VDn"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="ZgN-Ye-SXg" secondAttribute="trailing" constant="31" id="K8U-oN-VF2"/>
+                <constraint firstItem="AUo-Jp-3dd" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Kzu-dl-18j"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="AUo-Jp-3dd" secondAttribute="trailing" id="LQ8-Yc-Qzs"/>
+                <constraint firstItem="h1w-ZP-pE7" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="8" id="Rjp-Eu-u7B"/>
+                <constraint firstItem="tCx-11-jbd" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="SFU-D8-mu9"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="AvV-hJ-frm" secondAttribute="trailing" constant="16" id="ZJS-ez-b8z"/>
+                <constraint firstItem="AUo-Jp-3dd" firstAttribute="top" secondItem="tCx-11-jbd" secondAttribute="bottom" id="Zl7-Z4-uhb"/>
+                <constraint firstItem="ZgN-Ye-SXg" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="31" id="jIK-pO-m6b"/>
+                <constraint firstItem="qYU-ld-zb8" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="17" id="nyK-QP-a2L"/>
+                <constraint firstItem="tCx-11-jbd" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="u3S-ZK-QWZ"/>
+                <constraint firstItem="AvV-hJ-frm" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="17" id="uBU-2F-q1L"/>
+                <constraint firstItem="h1w-ZP-pE7" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="yOZ-In-UjU"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="137.68115942028987" y="153.34821428571428"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="addPicture" width="64" height="64"/>
+        <image name="close" width="32" height="32"/>
+        <image name="deleteGreen" width="64" height="64"/>
+        <namedColor name="TextColor">
+            <color red="0.18000000715255737" green="0.3529999852180481" blue="0.10999999940395355" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="ViewColor">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

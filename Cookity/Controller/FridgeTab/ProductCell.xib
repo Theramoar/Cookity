@@ -35,8 +35,8 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HCv-ZU-cx8">
-                                <rect key="frame" x="14.5" y="20.5" width="28.5" height="13.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <rect key="frame" x="15.5" y="20.5" width="27.5" height="13.5"/>
+                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="11"/>
                                 <color key="textColor" name="HighlightColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -61,10 +61,10 @@
     </objects>
     <resources>
         <namedColor name="HighlightColor">
-            <color red="0.77600002288818359" green="0.88999998569488525" blue="0.46700000762939453" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.30588235294117649" green="0.58431372549019611" blue="0.14509803921568626" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="TextColor">
-            <color red="0.21199999749660492" green="0.38400000333786011" blue="0.16899999976158142" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.1803921568627451" green="0.3529411764705882" blue="0.10980392156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="ViewColor">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

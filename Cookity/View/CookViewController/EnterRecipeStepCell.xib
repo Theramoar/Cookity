@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="ixI-HK-CR7" customClass="RecipeStepTableViewCell" customModule="Cookity" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ixI-HK-CR7" id="e7Q-xI-w1t">
+                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="MoZ-i2-WTH">
+                        <rect key="frame" x="20" y="5" width="394" height="34"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Add Cooking step here" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="y02-qh-JaY">
+                                <rect key="frame" x="0.0" y="0.0" width="337" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ORj-Q6-Qsa">
+                                <rect key="frame" x="347" y="0.0" width="47" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="47" id="4an-5I-zQe"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="38"/>
+                                <state key="normal" title="+">
+                                    <color key="titleColor" name="TextColor"/>
+                                </state>
+                                <connections>
+                                    <action selector="addButtonPressed:" destination="ixI-HK-CR7" eventType="touchUpInside" id="BmF-Wv-nHq"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="MoZ-i2-WTH" firstAttribute="top" secondItem="e7Q-xI-w1t" secondAttribute="top" constant="5" id="QeE-lS-7Pk"/>
+                    <constraint firstAttribute="trailing" secondItem="MoZ-i2-WTH" secondAttribute="trailing" id="SPr-70-edK"/>
+                    <constraint firstItem="MoZ-i2-WTH" firstAttribute="leading" secondItem="e7Q-xI-w1t" secondAttribute="leading" constant="20" id="pyQ-yC-0ht"/>
+                    <constraint firstAttribute="bottom" secondItem="MoZ-i2-WTH" secondAttribute="bottom" constant="5" id="swh-Oj-K3q"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" name="ViewColor"/>
+            <connections>
+                <outlet property="recipeStep" destination="y02-qh-JaY" id="8fV-6b-Ryz"/>
+            </connections>
+            <point key="canvasLocation" x="163.768115942029" y="124.55357142857142"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <namedColor name="TextColor">
+            <color red="0.1803921568627451" green="0.3529411764705882" blue="0.10980392156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="ViewColor">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

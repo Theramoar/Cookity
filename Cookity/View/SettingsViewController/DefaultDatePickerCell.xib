@@ -22,7 +22,7 @@
                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GJr-nz-YK8">
                                 <rect key="frame" x="23" y="0.0" width="46" height="30"/>
                                 <state key="normal" title="Button">
-                                    <color key="titleColor" name="HighlightColor"/>
+                                    <color key="titleColor" red="1" green="0.36078431370000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="defaultButtonPressed:" destination="onR-C7-iKx" eventType="touchUpInside" id="VJD-WM-NEc"/>
@@ -30,6 +30,7 @@
                             </button>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LD5-iP-N8u">
                                 <rect key="frame" x="23" y="30" width="367" height="164"/>
+                                <color key="backgroundColor" name="ViewColor"/>
                             </pickerView>
                         </subviews>
                         <constraints>
@@ -40,6 +41,7 @@
                         </constraints>
                     </stackView>
                 </subviews>
+                <color key="backgroundColor" name="ViewColor"/>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="7wq-KB-vbF" secondAttribute="trailing" id="BHV-7b-cJ1"/>
                     <constraint firstItem="7wq-KB-vbF" firstAttribute="top" secondItem="c5u-U6-koS" secondAttribute="top" id="Qgo-69-JFo"/>
@@ -55,8 +57,8 @@
         </tableViewCell>
     </objects>
     <resources>
-        <namedColor name="HighlightColor">
-            <color red="0.77600002288818359" green="0.88999998569488525" blue="0.46700000762939453" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="ViewColor">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

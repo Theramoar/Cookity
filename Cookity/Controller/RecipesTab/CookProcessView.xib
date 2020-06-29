@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CookProcessViewController" customModule="Cookity" customModuleProvider="target">
+            <connections>
+                <outlet property="progressView" destination="205-7U-VGs" id="Zsv-fm-UQv"/>
+                <outlet property="recipeStepLabel" destination="oVS-6i-s6W" id="FfZ-iP-6TG"/>
+                <outlet property="view" destination="iN0-l3-epB" id="Wgh-QM-QGO"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rUp-Hb-NVV">
+                    <rect key="frame" x="16" y="57" width="32" height="32"/>
+                    <state key="normal" image="close"/>
+                    <connections>
+                        <action selector="cancelButtonPressed:" destination="-1" eventType="touchUpInside" id="rI6-Np-KeA"/>
+                    </connections>
+                </button>
+                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="205-7U-VGs">
+                    <rect key="frame" x="20" y="693" width="374" height="2"/>
+                    <color key="progressTintColor" name="TextColor"/>
+                    <color key="trackTintColor" name="AppColor"/>
+                </progressView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="oVS-6i-s6W">
+                    <rect key="frame" x="102" y="430" width="210" height="36"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="210" id="dCt-66-C4h"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="30"/>
+                    <color key="textColor" name="TextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" name="AppColor"/>
+            <constraints>
+                <constraint firstItem="rUp-Hb-NVV" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="0t7-y7-8pt"/>
+                <constraint firstItem="oVS-6i-s6W" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="2hk-qM-NmV"/>
+                <constraint firstItem="205-7U-VGs" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" constant="246" id="73E-Or-5pB"/>
+                <constraint firstItem="205-7U-VGs" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="Gaf-he-kXi"/>
+                <constraint firstAttribute="trailing" secondItem="205-7U-VGs" secondAttribute="trailing" constant="20" id="MOz-Va-ojh"/>
+                <constraint firstItem="oVS-6i-s6W" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="eEY-bx-RZS"/>
+                <constraint firstItem="rUp-Hb-NVV" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="13" id="yes-WG-0LV"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="137.68115942028987" y="153.34821428571428"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="close" width="32" height="32"/>
+        <namedColor name="AppColor">
+            <color red="0.77600002288818359" green="0.88999998569488525" blue="0.46700000762939453" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TextColor">
+            <color red="0.21199999749660492" green="0.38400000333786011" blue="0.16899999976158142" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

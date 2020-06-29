@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RecipeGroupViewController" customModule="Cookity" customModuleProvider="target">
+            <connections>
+                <outlet property="addButton" destination="ylP-bq-RCp" id="lIb-Pf-3Wf"/>
+                <outlet property="collectionView" destination="6xB-ob-fqh" id="Vvy-PL-l4S"/>
+                <outlet property="collectionViewConstraint" destination="DCh-uB-kWK" id="40D-RM-pU6"/>
+                <outlet property="nameTextField" destination="apw-iN-OMe" id="6KU-9B-gVj"/>
+                <outlet property="textFieldConstraint" destination="c4J-3F-tvf" id="GUu-cg-iNL"/>
+                <outlet property="textFieldHeightConstraint" destination="5a4-yM-Bw2" id="Zza-Lo-z0V"/>
+                <outlet property="view" destination="iN0-l3-epB" id="4rA-OJ-SsA"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="6xB-ob-fqh">
+                    <rect key="frame" x="0.0" y="116" width="414" height="746"/>
+                    <color key="backgroundColor" name="ViewColor"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="InV-TP-YeZ">
+                        <size key="itemSize" width="128" height="128"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ylP-bq-RCp">
+                    <rect key="frame" x="329" y="784" width="60" height="60"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="60" id="PXy-bM-DED"/>
+                        <constraint firstAttribute="height" constant="60" id="dhZ-JZ-irF"/>
+                    </constraints>
+                    <state key="normal" image="addButton"/>
+                    <connections>
+                        <action selector="addButtonPressed:" destination="-1" eventType="touchUpInside" id="eF9-Lj-Vwd"/>
+                    </connections>
+                </button>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Group Name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="apw-iN-OMe">
+                    <rect key="frame" x="107" y="64" width="200" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="5a4-yM-Bw2"/>
+                        <constraint firstAttribute="width" constant="200" id="wYw-mD-WzS"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+            </subviews>
+            <color key="backgroundColor" name="ViewColor"/>
+            <constraints>
+                <constraint firstItem="6xB-ob-fqh" firstAttribute="top" secondItem="apw-iN-OMe" secondAttribute="bottom" constant="20" id="DCh-uB-kWK"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="ylP-bq-RCp" secondAttribute="trailing" constant="25" id="G96-bX-7fw"/>
+                <constraint firstItem="6xB-ob-fqh" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="GcS-Xz-bLu"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="ylP-bq-RCp" secondAttribute="bottom" constant="18" id="UIP-gj-EdM"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="6xB-ob-fqh" secondAttribute="trailing" id="Z2A-zf-kin"/>
+                <constraint firstItem="apw-iN-OMe" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Z6T-fc-1P1"/>
+                <constraint firstItem="apw-iN-OMe" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="20" id="c4J-3F-tvf"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="6xB-ob-fqh" secondAttribute="bottom" id="lvX-sO-jOq"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="140.57971014492756" y="153.34821428571428"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="addButton" width="128" height="128"/>
+        <namedColor name="ViewColor">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

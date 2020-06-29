@@ -9,20 +9,71 @@
 import RealmSwift
 import UIKit
 
+class RecipeGroup {
+    var name: String
+    var recipes = [Recipe]()
+    
+    init(name: String, recipes: [Recipe]) {
+        self.name = name
+        self.recipes = recipes
+    }
+}
+
 class RecipeCollectionViewModel {
+    
     
     private var filteredRecipeList: [Recipe] = []
     private var recipeList: Results<Recipe>?
+    private var recipeGroups = [RecipeGroup]()
+    private var noGroupRecipes = [Recipe]()
+    var recipeCollectionType: RecipeCollectionType
+
+    
+
+    
+    private var selectedRecipesForGroup: [Recipe] = []
     var isFiltering: Bool
-    var isImageInSelectedRow: Bool = false
+    
     var isRecipeListEmpty: Bool {
         recipeList?.isEmpty ?? true
     }
+    var numberOfSelectedRecipes: Int {
+        selectedRecipesForGroup.count
+    }
+    var numberOfGroups: Int {
+        recipeGroups.count
+    }
+    
     private var selectedIndexPath: IndexPath?
+    private var currentSection: Int?
     
     init() {
+        self.recipeCollectionType = .recipCollection
         recipeList = RealmDataManager.dataLoadedFromRealm(ofType: Recipe.self)
         self.isFiltering = false
+        self.fillRecipeGroups()
+    }
+    
+    private func fillRecipeGroups() {
+        recipeGroups.removeAll()
+        noGroupRecipes.removeAll()
+        recipeList?.forEach({
+            if let groupName = $0.recipeGroup, !groupName.isEmpty {
+                if let recipeGroup = recipeGroups.first(where: {$0.name == groupName}) {
+                    recipeGroup.recipes.append($0)
+                }
+                else {
+                    recipeGroups.append(RecipeGroup(name: groupName, recipes: [$0]))
+                }
+            }
+            else {
+                noGroupRecipes.append($0)
+            }
+        })
+    }
+    
+    func updateviewModel() {
+        fillRecipeGroups()
     }
     
     func loadDataFromCloud(completion: @escaping() -> ()) {
@@ -69,6 +120,20 @@ class RecipeCollectionViewModel {
         })
         filteredRecipeList.append(contentsOf: recipesContainingProducts)
     }
+    
+    
+    
+    func createGroupWith(name: String) -> Bool {
+        guard !selectedRecipesForGroup.isEmpty else { return false }
+        selectedRecipesForGroup.forEach({
+            RealmDataManager.changeElementIn(object: $0, keyValue: "checkedForGroup", objectParameter: $0.checkedForGroup, newParameter: false)
+            RealmDataManager.changeElementIn(object: $0, keyValue: "recipeGroup", objectParameter: $0.recipeGroup, newParameter: name)
+        })
+        selectedRecipesForGroup.removeAll()
+        fillRecipeGroups()
+        return true
+    }
+    
 }
 
 extension RecipeCollectionViewModel: TableViewModelType {
@@ -77,39 +142,84 @@ extension RecipeCollectionViewModel: TableViewModelType {
         if isFiltering {
             return filteredRecipeList.count
         }
+        else if numberOfGroups == 0 {
+            return noGroupRecipes.count
+        }
         else {
-            return recipeList?.count ?? 0
+            switch currentSection {
+            case 0: return recipeGroups.count
+            case 1: return noGroupRecipes.count
+            default:
+                return 0
+            }
         }
     }
     
     var numberOfSections: Int {
-        0
+        if isFiltering {
+            return 1
+        }
+        else if numberOfGroups == 0 {
+            return 1
+        }
+        else {
+            return 2
+        }
+            
+    }
+    
+    func numberOfRowsForCurrentSection(_ section: Int) -> Int {
+        currentSection = section
+        return numberOfRows
     }
     
     func cellViewModel(forIndexPath indexPath: IndexPath) -> CellViewModelType? {
-        guard let recipe = isFiltering ? filteredRecipeList[indexPath.row] : recipeList?[indexPath.row] else { return nil }
-        return RecipeCollectionCellViewModel(recipe: recipe)
+        if isFiltering {
+            let recipe = filteredRecipeList[indexPath.row]
+            return RecipeCollectionCellViewModel(recipe: recipe)
+        }
+        else if numberOfGroups == 0 {
+            let recipe = noGroupRecipes[indexPath.row]
+            return RecipeCollectionCellViewModel(recipe: recipe)
+        }
+        
+        if indexPath.section == 0 {
+            let vm = RecipeGroupCellViewModel(recipeGroup: recipeGroups[indexPath.row])
+            return vm
+        }
+        else {
+            let recipe = noGroupRecipes[indexPath.row]
+            return RecipeCollectionCellViewModel(recipe: recipe)
+        }
+        
+        
+        
     }
     
     func viewModelForSelectedRow() -> DetailViewModelType? {
-        guard let row = selectedIndexPath?.row,
-            let recipe = isFiltering ? filteredRecipeList[row] : recipeList?[row]
-        else { return nil }
-        isImageInSelectedRow = recipe.getImageFromFileManager() != nil ? true : false
+        guard let row = selectedIndexPath?.row else { return nil }
+        let recipe = isFiltering ? filteredRecipeList[row] : noGroupRecipes[row]
         return RecipeViewModel(recipe: recipe)
     }
     
     func selectRow(atIndexPath indexPath: IndexPath) {
         selectedIndexPath = indexPath
-        if let recipe = isFiltering ? filteredRecipeList[indexPath.row] : recipeList?[indexPath.row] {
-            isImageInSelectedRow = recipe.getImageFromFileManager() != nil ? true : false
+    }
+    
+    func selectRecipeForGroup(atIndexPath indexPath: IndexPath, completion: @escaping () -> ()) {
+        //Добавить filtered recipe??
+        let recipe = noGroupRecipes[indexPath.row]
+        RealmDataManager.changeElementIn(object: recipe, keyValue: "checkedForGroup", objectParameter: recipe.checkedForGroup, newParameter: !recipe.checkedForGroup)
+        if recipe.checkedForGroup {
+            selectedRecipesForGroup.append(recipe)
         }
-        
+        else {
+            selectedRecipesForGroup.removeAll(where: {$0 == recipe})
+        }
+        completion()
     }
     
     func viewModelForNewRecipe() -> CookViewModel {
         CookViewModel(recipe: nil)
     }
-    
-    
 }

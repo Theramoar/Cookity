@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="PAc-en-IWV" customClass="RecipeStepCell" customModule="Cookity" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PAc-en-IWV" id="jGZ-cN-Ysh">
+                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EfC-Gc-Vtm">
+                        <rect key="frame" x="20" y="5" width="374" height="34"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits"/>
+                    </textField>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="EfC-Gc-Vtm" firstAttribute="top" secondItem="jGZ-cN-Ysh" secondAttribute="top" constant="5" id="IUz-1W-x36"/>
+                    <constraint firstAttribute="bottom" secondItem="EfC-Gc-Vtm" secondAttribute="bottom" constant="5" id="SUf-tp-M8U"/>
+                    <constraint firstItem="EfC-Gc-Vtm" firstAttribute="leading" secondItem="jGZ-cN-Ysh" secondAttribute="leading" constant="20" id="cUf-Sn-SyI"/>
+                    <constraint firstAttribute="trailing" secondItem="EfC-Gc-Vtm" secondAttribute="trailing" constant="20" id="zWP-4x-Uli"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" name="ViewColor"/>
+            <connections>
+                <outlet property="recipeStepCell" destination="EfC-Gc-Vtm" id="hfH-kn-dTS"/>
+            </connections>
+            <point key="canvasLocation" x="159" y="169"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <namedColor name="ViewColor">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

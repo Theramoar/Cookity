@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="nAD-d5-gc9" customClass="RecipeGroupCell" customModule="Cookity" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="465" height="195"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="7qB-2y-XmP">
+                <rect key="frame" x="0.0" y="0.0" width="465" height="195"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="7er-Fz-NhX" customClass="RecipeGroupCollectionView" customModule="Cookity" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="29" width="465" height="166"/>
+                        <color key="backgroundColor" name="ViewColor"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="xEb-aW-UE0">
+                            <size key="itemSize" width="302" height="152"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="35" minY="0.0" maxX="35" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                    </collectionView>
+                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="tNX-68-eYI">
+                        <rect key="frame" x="35" y="0.0" width="390" height="29"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Group Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S3p-tQ-Ok0">
+                                <rect key="frame" x="0.0" y="0.0" width="140" height="29"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                <color key="textColor" name="TextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wg9-FN-mLr">
+                                <rect key="frame" x="350" y="1" width="40" height="28"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <state key="normal" title="See all">
+                                    <color key="titleColor" red="1" green="0.36078431372549019" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="seeAllButtonPressed:" destination="nAD-d5-gc9" eventType="touchUpInside" id="5z0-6n-EHd"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="tNX-68-eYI" secondAttribute="trailing" constant="40" id="3AR-cg-MAr"/>
+                    <constraint firstAttribute="bottom" secondItem="7er-Fz-NhX" secondAttribute="bottom" id="I9m-zx-fKf"/>
+                    <constraint firstItem="tNX-68-eYI" firstAttribute="top" secondItem="7qB-2y-XmP" secondAttribute="top" id="MPt-Bl-rak"/>
+                    <constraint firstAttribute="trailing" secondItem="7er-Fz-NhX" secondAttribute="trailing" id="UUu-5N-3vd"/>
+                    <constraint firstItem="7er-Fz-NhX" firstAttribute="leading" secondItem="7qB-2y-XmP" secondAttribute="leading" id="fVY-Ed-0CT"/>
+                    <constraint firstItem="7er-Fz-NhX" firstAttribute="top" secondItem="tNX-68-eYI" secondAttribute="bottom" id="hXb-aT-Mtf"/>
+                    <constraint firstItem="tNX-68-eYI" firstAttribute="leading" secondItem="7qB-2y-XmP" secondAttribute="leading" constant="35" id="i1r-Uv-CIA"/>
+                </constraints>
+            </collectionViewCellContentView>
+            <size key="customSize" width="465" height="195"/>
+            <connections>
+                <outlet property="groupNameLabel" destination="S3p-tQ-Ok0" id="OoP-CP-zue"/>
+                <outlet property="recipeCollection" destination="7er-Fz-NhX" id="Ve1-gV-53T"/>
+            </connections>
+            <point key="canvasLocation" x="16.666666666666668" y="168.41517857142856"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <namedColor name="TextColor">
+            <color red="0.21199999749660492" green="0.38400000333786011" blue="0.16899999976158142" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="ViewColor">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

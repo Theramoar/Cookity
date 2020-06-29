@@ -18,6 +18,7 @@ class CookViewModel: DetailViewModelType {
     private var selectedRecipe: Recipe?
     private var recipeSteps = List<RecipeStep>()
     private var products = List<Product>()
+    private var recipeGroup: RecipeGroup?
     let sections = CookSections.allCases
     var currentSection: Int!
     var recipeImage: UIImage?
@@ -47,6 +48,10 @@ class CookViewModel: DetailViewModelType {
         }
     }
     
+    init(recipeGroup: RecipeGroup) {
+        self.recipeGroup = recipeGroup
+    }
+    
     init(products: List<Product>) {
         self.products = products
     }
@@ -73,7 +78,12 @@ class CookViewModel: DetailViewModelType {
         configureNumbers()
         var recipe: Recipe
         
-        if selectedRecipe != nil {
+        if isNewRecipe {
+            recipe = Recipe()
+            recipe.name = name
+            RealmDataManager.saveToRealm(parentObject: nil, object: recipe)
+        }
+        else {
             recipe = selectedRecipe!
             let newName = name
             RealmDataManager.changeElementIn(object: recipe, keyValue: "name", objectParameter: recipe.name, newParameter: newName)
@@ -84,12 +94,6 @@ class CookViewModel: DetailViewModelType {
                 RealmDataManager.deleteFromRealm(object: recipeStep)
             }
         }
-        else {
-            recipe = Recipe()
-            recipe.name = name
-            RealmDataManager.saveToRealm(parentObject: nil, object: recipe)
-        }
-
         for product in products {
             RealmDataManager.saveToRealm(parentObject: recipe, object: product)
         }
@@ -103,15 +107,12 @@ class CookViewModel: DetailViewModelType {
         if !RealmDataManager.savePicture(to: recipe, image: recipeImage), let imageFileName = recipe.imageFileName {
             RealmDataManager.deletePicture(withName: imageFileName)
         }
-
+        updateRecipeGroup(with: recipe)
         saveRecipeToCloud(recipe: recipe)
     }
     
     private func saveRecipeToCloud(recipe: Recipe) {
-        if selectedRecipe != nil {
-            CloudManager.updateRecipeInCloud(recipe: recipe)
-        }
-        else {
+        if isNewRecipe {
             CloudManager.saveParentDataToCloud(object: recipe, objectImageName: recipe.imageFileName) { (recordID) in
                 DispatchQueue.main.async {
                     RealmDataManager.changeElementIn(object: recipe,
@@ -120,6 +121,9 @@ class CookViewModel: DetailViewModelType {
                                                      newParameter: recordID)
                 }
             }
+        }
+        else {
+            CloudManager.updateRecipeInCloud(recipe: recipe)
         }
     }
     
@@ -150,6 +154,7 @@ class CookViewModel: DetailViewModelType {
     
     func deleteRecipe() {
         if let recipe = selectedRecipe {
+            deleteRecipeFromGroup(recipe)
             CloudManager.deleteRecordFromCloud(ofObject: recipe)
             for product in recipe.products {
                 RealmDataManager.deleteFromRealm(object: product)
@@ -160,10 +165,21 @@ class CookViewModel: DetailViewModelType {
             if let imageFileName = recipe.imageFileName {
                RealmDataManager.deletePicture(withName: imageFileName)
             }
+            
             RealmDataManager.deleteFromRealm(object: recipe)
             
         }
         products.removeAll()
+    }
+    
+    private func updateRecipeGroup(with recipe: Recipe) {
+        guard let name = recipeGroup?.name else { return }
+        RealmDataManager.changeElementIn(object: recipe, keyValue: "recipeGroup", objectParameter: recipe.recipeGroup, newParameter: name)
+        NotificationCenter.default.post(name: NSNotification.Name(NotificationNames.groupIsUpdated), object: nil)
+    }
+    private func deleteRecipeFromGroup(_ recipe: Recipe) {
+        RealmDataManager.changeElementIn(object: recipe, keyValue: "recipeGroup", objectParameter: recipe.recipeGroup, newParameter: "")
+        NotificationCenter.default.post(name: NSNotification.Name(NotificationNames.groupIsUpdated), object: nil)
     }
     
     private func configureNumbers() {

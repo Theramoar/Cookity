@@ -25,7 +25,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         configFridge()
+        configPayments()
         return true
+    }
+    
+    private func configPayments() {
+        IAPManager.shared.setupPurchases { successful in
+            if successful {
+                print("Can make payments")
+                IAPManager.shared.getProducts()
+            }
+        }
     }
     
     private func configFridge() {

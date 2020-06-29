@@ -8,17 +8,24 @@
 
 import UIKit
 
+protocol CreateButtonDelegate {
+    func createCart()
+}
 
  class CreateListCell: UITableViewCell {
     
+    var delegate: CreateButtonDelegate?
     @IBOutlet weak var createListButton: UIButton! {
         didSet {
-            createListButton.layer.cornerRadius = createListButton.frame.size.height / 2.5
+            createListButton.layer.cornerRadius = createListButton.frame.size.height / 1.5
             createListButton.layer.borderColor = Colors.textColor?.cgColor
             createListButton.layer.borderWidth = 2
         }
     }
     
+    @IBAction func createButtonPressed(_ sender: Any) {
+        delegate?.createCart()
+    }
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .none

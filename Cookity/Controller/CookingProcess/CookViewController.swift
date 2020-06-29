@@ -32,6 +32,12 @@ class CookViewController: UIViewController {
         super.viewDidLoad()
         recipeName.delegate = self
         recipeName.autocapitalizationType = .sentences
+        
+        productsTable.register(UINib(nibName: "TextFieldCell", bundle: nil), forCellReuseIdentifier: "TextFieldCell")
+        productsTable.register(UINib(nibName: "CookTableViewCell", bundle: nil), forCellReuseIdentifier: "CookTableViewCell")
+        productsTable.register(UINib(nibName: "EnterRecipeStepCell", bundle: nil), forCellReuseIdentifier: "EnterRecipeStepCell")
+        productsTable.register(UINib(nibName: "RecipeStepCell", bundle: nil), forCellReuseIdentifier: "RecipeStepCell")
+        
         productsTable.delegate = self
         productsTable.dataSource = self
         productsTable.isEditing = true
@@ -92,14 +98,6 @@ class CookViewController: UIViewController {
          updateVCDelegate?.updateVC()
      }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let vc = segue.destination as! EditImageViewController
-        vc.parentVC = self
-        if let recipeImage = viewModel.recipeImage {
-            vc.editedImage = recipeImage
-        }
-    }
-    
     //MARK:- Data Management Methods
     internal func saveStep(step: String) {
         viewModel.saveStep(step: step)
@@ -119,7 +117,12 @@ class CookViewController: UIViewController {
     
     @IBAction func addImageButtonPressed(_ sender: UIButton) {
         DecorationHandler.putShadowOnView(vc: self)
-        performSegue(withIdentifier: "GoToEditImage", sender: self)
+        let vc = EditImageViewController()
+        vc.parentVC = self
+        if let recipeImage = viewModel.recipeImage {
+            vc.editedImage = recipeImage
+        }
+        present(vc, animated: true, completion: nil)
     }
     
     @IBAction func saveButtonPressed(_ sender: UIButton) {
@@ -155,25 +158,25 @@ extension CookViewController: UITableViewDelegate, UITableViewDataSource, UIText
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             if indexPath.row == 0 {
-                let textCell = tableView.dequeueReusableCell(withIdentifier: "TextCell") as! TextFieldCell
+                let textCell = tableView.dequeueReusableCell(withIdentifier: "TextFieldCell") as! TextFieldCell
                 textCell.delegate = self
                 return textCell
             }
             else {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "CookCell", for: indexPath) as! CookTableViewCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: "CookTableViewCell", for: indexPath) as! CookTableViewCell
                 cell.viewModel = viewModel.cellViewModel(forIndexPath: indexPath) as? CookCellViewModel
                 return cell
             }
         }
         else {
             if indexPath.row == 0 {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "AddRecipeCell", for: indexPath) as! RecipeStepTableViewCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: "EnterRecipeStepCell", for: indexPath) as! RecipeStepTableViewCell
                 cell.delegate = self
                 cell.isEditing = false
                 return cell
             }
             else {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCell", for: indexPath) as! RecipeStepCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeStepCell", for: indexPath) as! RecipeStepCell
                 cell.viewModel = viewModel.cellViewModel(forIndexPath: indexPath) as? RecipeStepCellViewModel
                 return cell
             }

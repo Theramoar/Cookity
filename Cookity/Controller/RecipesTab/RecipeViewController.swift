@@ -14,10 +14,9 @@ enum ParentViewForLabel {
     case view
 }
 
-class RecipeViewController: UIViewController, UpdateVCDelegate {
+class RecipeViewController: UIViewController, UpdateVCDelegate, CreateButtonDelegate {
     
-    @IBOutlet weak var productTable: UITableView!
-    @IBOutlet weak var cookButton: UIButton!
+    var tableView = UITableView()
     
     var viewModel: RecipeViewModel!
     let imageView = UIImageView()
@@ -32,29 +31,27 @@ class RecipeViewController: UIViewController, UpdateVCDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        productTable.delegate = self
-        productTable.dataSource = self
-        productTable.separatorStyle = .none
-        productTable.rowHeight = UITableView.automaticDimension
-        productTable.estimatedRowHeight = 100
-        
-        cookButton.layer.shadowOffset = CGSize(width: 0, height: 3.0)
-        cookButton.layer.shadowOpacity = 0.7
-        cookButton.layer.shadowRadius = 5.0
+        setTableView()
+        setCookButton()
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        navigationItem.largeTitleDisplayMode = .never
         updateVC()
     }
     
     func updateVC() {
+        let editButton = UIBarButtonItem(image: UIImage(named: "edit"), style: .plain, target: self, action: #selector(editButtonPressed))
+        let shareButton = UIBarButtonItem(image: UIImage(named: "share"), style: .plain, target: self, action: #selector(shareButtonPressed))
+        navigationItem.setRightBarButtonItems([editButton, shareButton], animated: true)
+        
         if viewModel.isRecipeInvalidated {
             navigationController?.popViewController(animated: true)
         }
         else {
             if let image = viewModel.recipeImage {
                 addImageView(image: image)
-                productTable.reloadData()
+                tableView.reloadData()
             }
             else {
                 setStandardNavBar()
@@ -62,8 +59,40 @@ class RecipeViewController: UIViewController, UpdateVCDelegate {
         }
     }
     
+    private func setTableView() {
+        tableView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        view.addSubview(tableView)
+        tableView.backgroundColor = Colors.viewColor
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.separatorStyle = .none
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 100
+        
+        tableView.register(UINib(nibName: "RecipeProductCell", bundle: nil), forCellReuseIdentifier: "RecipeProductCell")
+        tableView.register(UINib(nibName: "CreateListCell", bundle: nil), forCellReuseIdentifier: "CreateListCell")
+        tableView.register(UINib(nibName: "RVRecipeStepCell", bundle: nil), forCellReuseIdentifier: "RVRecipeStepCell")
+    }
+    
+    private func setCookButton() {
+        let cookButton = UIButton()
+        cookButton.frame.size = CGSize(width: 60, height: 60)
+        let image = UIImage(named: "cookButton")
+        cookButton.setImage(image, for: .normal)
+        let x = view.frame.maxX - 85
+        let y = view.frame.maxY - 127
+        cookButton.frame.origin = CGPoint(x: x, y: y)
+        
+        cookButton.layer.shadowOffset = CGSize(width: 0, height: 3.0)
+        cookButton.layer.shadowOpacity = 0.7
+        cookButton.layer.shadowRadius = 5.0
+        cookButton.addTarget(self, action: #selector(cookButtonPressed), for: .touchUpInside)
+        view.addSubview(cookButton)
+    }
+    
     private func addImageView(image: UIImage) {
-        productTable.contentInset = UIEdgeInsets(top: 300, left: 0, bottom: 0, right: 0)
+        tableView.contentInset = UIEdgeInsets(top: 300, left: 0, bottom: 0, right: 0)
+        
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
@@ -71,7 +100,7 @@ class RecipeViewController: UIViewController, UpdateVCDelegate {
         self.navigationController?.navigationBar.backgroundColor = .clear
         
         imageView.image = image
-        let imageHeight = 300 + navBarHeight
+        let imageHeight = CGFloat(300) + navBarHeight
         imageView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: imageHeight)
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
@@ -84,7 +113,7 @@ class RecipeViewController: UIViewController, UpdateVCDelegate {
         self.navigationController?.navigationBar.tintColor = Colors.textColor
         self.navigationController?.navigationBar.barTintColor = Colors.viewColor
         self.navigationController?.navigationBar.backgroundColor = Colors.viewColor
-        productTable.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -96,7 +125,7 @@ class RecipeViewController: UIViewController, UpdateVCDelegate {
 
     
     
-    @IBAction func shareButtonPressed(_ sender: UIBarButtonItem) {
+    @objc func shareButtonPressed(_ sender: UIBarButtonItem) {
         var activityController: UIActivityViewController?
         
         
@@ -121,37 +150,28 @@ class RecipeViewController: UIViewController, UpdateVCDelegate {
         present(alert, animated: true) {}
     }
     
-    @IBAction func editButtonPressed(_ sender: UIBarButtonItem) {
-        performSegue(withIdentifier: "EditCookingArea", sender: self)
+    @objc func editButtonPressed(_ sender: UIBarButtonItem) {
+        let vc = CookViewController()
+        vc.viewModel = viewModel.viewModelForCookVC()
+        vc.updateVCDelegate = self
+        present(vc, animated: true, completion: nil)
     }
     
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if segue.identifier == "EditCookingArea" {
-            let destinationVC = segue.destination as! CookViewController
-            destinationVC.viewModel = viewModel.viewModelForCookVC()
-            destinationVC.updateVCDelegate = self
-        }
-        else if segue.identifier == "goToCookProcess" {
-            let destinationVC = segue.destination as! CookProcessViewController
-            destinationVC.viewModel = viewModel.viewModelForCookProcess()
-        }
-    }
         
     
     //Creates a new shopping list the adds the products from recipe to it
-    @IBAction func createButtonPressed(_ sender: UIButton) {
+    func createCart() {
         let checkmark = CheckmarkView(frame: self.view.frame, message: "Done!")
         self.view.addSubview(checkmark)
         checkmark.animate()
         viewModel.createCartFromRecipe()
     }
     
-    
-    @IBAction func cookButtonPressed(_ sender: UIButton) {
+    @objc func cookButtonPressed(_ sender: UIButton) {
         if viewModel.recipeStepsCount != 0 {
-            performSegue(withIdentifier: "goToCookProcess", sender: self)
+            let vc = CookProcessViewController()
+            vc.viewModel = viewModel.viewModelForCookProcess()
+            present(vc, animated: true, completion: nil)
         }
         else {
             let checkmark = CheckmarkView(frame: self.view.frame, message: "Fridge was edited")
@@ -159,7 +179,7 @@ class RecipeViewController: UIViewController, UpdateVCDelegate {
             checkmark.animate()
         }
         viewModel.editFridgeProducts()
-        productTable.reloadData()
+        tableView.reloadData()
     }
 }
 
@@ -174,7 +194,6 @@ extension RecipeViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard section == 0 else { return nil }
-//        if viewModel.recipeImage == nil { return nil }
         let backgroundView = RecipeSectionView()
         backgroundView.configureView(.Header, with: viewModel.recipeName)
         return backgroundView
@@ -197,7 +216,6 @@ extension RecipeViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         guard section == 0 else { return 0 }
-//        if viewModel.recipeImage == nil { return 0 }
         return 38
     }
     
@@ -215,7 +233,8 @@ extension RecipeViewController: UITableViewDelegate, UITableViewDataSource{
                 return cell
             }
             else {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "createShoppingListCell", for: indexPath) as! CreateListCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: "CreateListCell", for: indexPath) as! CreateListCell
+                cell.delegate = self
                 return cell
             }
         }

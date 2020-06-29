@@ -12,11 +12,11 @@ class EditImageViewController: UIViewController {
 
     @IBOutlet weak var editedImageView: UIImageView!
     @IBOutlet weak var editedView: UIView!
-    var heightConstraintInitialValure: CGFloat!
+//    var heightConstraintInitialValure: CGFloat!
     
     
     @IBOutlet weak var viewForLayers: UIView!
-    @IBOutlet weak var heightConstraint: NSLayoutConstraint!
+//    @IBOutlet weak var heightConstraint: NSLayoutConstraint!
     
     var panStartPoint = CGPoint(x: 0, y: 0)
     var panEndPoint = CGPoint(x: 0, y: 0)
@@ -31,8 +31,10 @@ class EditImageViewController: UIViewController {
     
     
     override func viewDidLoad() {
-        heightConstraintInitialValure = heightConstraint.constant
+//        heightConstraintInitialValure = heightConstraint.constant
+        
         super.viewDidLoad()
+//        editedView.frame.size.height = 580
         if editedImage == nil {
             shrinkView()
         }
@@ -69,7 +71,7 @@ class EditImageViewController: UIViewController {
     func expandView() {
         setCornerRadius()
         editedImageView.isHidden = false
-        self.heightConstraint.constant = heightConstraintInitialValure
+//        self.heightConstraint.constant = heightConstraintInitialValure
         
         importImage.setTitle("Change Image", for: .normal)
         deleteImage.isHidden = false
@@ -77,17 +79,14 @@ class EditImageViewController: UIViewController {
     }
     
     func shrinkView() {
-        
-        heightConstraint.constant -= editedImageView.frame.size.height
-        
+        setCornerRadius()
+//        heightConstraint.constant -= editedImageView.frame.size.height
+//        editedView.frame.size.height = 200
+        self.editedImageView.isHidden = true
         self.importImage.setTitle("Add Image", for: .normal)
         self.deleteImage.isHidden = true
         self.deleteImage.isEnabled = false
-        self.editedImageView.isHidden = true
         
-        UIView.animate(withDuration: 0.4) {
-            self.view.layoutIfNeeded()
-        }
     }
     
     
@@ -112,6 +111,9 @@ class EditImageViewController: UIViewController {
         parentVC?.viewModel.recipeImage = nil
         editedImage = nil
         shrinkView()
+        UIView.animate(withDuration: 0.4) {
+            self.view.layoutIfNeeded()
+        }
     }
     
     @IBAction func importButtonPressed(_ sender: UIButton) {

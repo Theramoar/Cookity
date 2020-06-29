@@ -54,8 +54,6 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
         
         productsTable.rowHeight = UITableView.automaticDimension
         productsTable.estimatedRowHeight = 100
-        
-//        productsTable.rowHeight = 45
         productsTable.register(UINib(nibName: "ProductCell", bundle: nil), forCellReuseIdentifier: "ProductCell")
         
         tabBarController?.tabBar.isHidden = true
@@ -160,6 +158,7 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
         else { return false }
         let alert = viewModel.checkDataFromTextFields(productName: nameText, productQuantity: quantityText, productMeasure: measureText)
         if let alert = alert {
+            alert.view.tintColor = Colors.textColor
             present(alert, animated: true, completion: nil)
             return false
         }
@@ -203,6 +202,7 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource, UIText
         tableView.reloadData()
 
         let alert = UIAlertController(title: "Add products to the fridge?", message: "", preferredStyle: .actionSheet)
+        alert.view.tintColor = Colors.textColor
         let yesAction = UIAlertAction(title: "Yes", style: .default) { (_) in
             self.viewModel.moveProductsToFridge()
             if let nav = self.navigationController {

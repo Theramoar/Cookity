@@ -12,12 +12,10 @@ import UIKit
 class PopupEditViewModel: DetailViewModelType {
     
     private var product: Product
-    
     var presentedName: String
     var presentedQuantity: String
     var presentedMeasure: String
     var presentedDate: String
-    
     
     init(product: Product) {
         self.product = product
@@ -34,7 +32,6 @@ class PopupEditViewModel: DetailViewModelType {
             self.presentedDate = ""
         }
     }
-    
     func checkDataFromTextFields(productName: String, productQuantity: String, productMeasure: String) -> UIAlertController? {
           let alert = UIAlertController(title: "title", message: "message", preferredStyle: .alert)
           let action = UIAlertAction(title: "OK", style: .default) { (_) in return }
@@ -47,10 +44,6 @@ class PopupEditViewModel: DetailViewModelType {
           }
           return nil
       }
-    
-    
-    
-    
     func changeProduct(newName productName: String, newQuantity productQuantity: String, newMeasure productMeasure: String, newDate: String) {
         
         let measure = Configuration.configMeasure(measure: productMeasure)
@@ -80,4 +73,8 @@ class PopupEditViewModel: DetailViewModelType {
         
         CloudManager.updateChildInCloud(childObject: product)
     }
+}
+
+class RecipeGroupEditViewModel: DetailViewModelType {
+    
 }

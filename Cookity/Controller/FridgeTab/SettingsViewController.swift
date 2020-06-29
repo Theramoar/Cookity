@@ -17,6 +17,8 @@ class SettingsViewController: UIViewController, UpdateVCDelegate {
     }
     
 
+
+    @IBOutlet weak var buyProButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     let sections = ["General", "Contact us"]
     
@@ -26,9 +28,23 @@ class SettingsViewController: UIViewController, UpdateVCDelegate {
         tableView.dataSource = self
         tableView.separatorStyle = .none
         tableView.register(UINib(nibName: "DefaultDatePickerCell", bundle: nil), forCellReuseIdentifier: "DefaultDatePickerCell")
-        
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 300
+        
+
+    }
+    
+    private func setupButton() {
+        if UserPurchases.isProEnabled() {
+            buyProButton.isEnabled = false
+            buyProButton.isHidden = true
+        }
+        else {
+            buyProButton.layer.cornerRadius = buyProButton.frame.size.height / 3
+            buyProButton.layer.shadowOffset = CGSize(width: 0, height: 3.0)
+            buyProButton.layer.shadowOpacity = 0.7
+            buyProButton.layer.shadowRadius = 5.0
+        }
     }
     
     func showMailComposer() {
@@ -47,6 +63,12 @@ class SettingsViewController: UIViewController, UpdateVCDelegate {
         composer.setSubject("App feedback")
 
         present(composer, animated: true)
+    }
+    
+    
+    @IBAction func buyProPressed(_ sender: Any) {
+        let vc = InAppPurchaseViewController()
+        present(vc, animated: true, completion: nil)
     }
 }
 
