@@ -11,7 +11,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="InAppPurchaseViewController" customModule="Cookity" customModuleProvider="target">
             <connections>
                 <outlet property="buyButton" destination="clG-nn-4qg" id="CMW-77-NWY"/>
-                <outlet property="subscribeButton" destination="ZYM-nP-YdA" id="9N4-Kt-9FB"/>
                 <outlet property="view" destination="iN0-l3-epB" id="pnf-C5-epM"/>
                 <outlet property="visibleView" destination="Bif-96-hvZ" id="4AT-Wj-1UN"/>
             </connections>
@@ -22,87 +21,128 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bif-96-hvZ">
-                    <rect key="frame" x="0.0" y="446" width="414" height="450"/>
+                    <rect key="frame" x="0.0" y="314" width="414" height="582"/>
                     <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="62" translatesAutoresizingMaskIntoConstraints="NO" id="N9t-jT-Qwm">
-                            <rect key="frame" x="53.5" y="20" width="307.5" height="390"/>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="N9t-jT-Qwm">
+                            <rect key="frame" x="50" y="20" width="314" height="522"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Go Cookity Premium!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8n4-RQ-6OT">
-                                    <rect key="frame" x="0.0" y="0.0" width="307.5" height="36"/>
-                                    <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="30"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Introducing Cookity+" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8n4-RQ-6OT">
+                                    <rect key="frame" x="27.5" y="0.0" width="259" height="30"/>
+                                    <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="25"/>
                                     <color key="textColor" name="TextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="KbQ-N2-qHo">
-                                    <rect key="frame" x="3.5" y="98" width="300" height="140"/>
+                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="bp7-bL-OYo">
+                                    <rect key="frame" x="0.0" y="60" width="314" height="70"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="- Unlimited number of recipes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xIz-Nr-JYJ">
-                                            <rect key="frame" x="0.0" y="0.0" width="251.5" height="21.5"/>
-                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
-                                            <color key="textColor" name="HighlightColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="- Use the app with no adds" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b38-w0-giq">
-                                            <rect key="frame" x="0.0" y="39.5" width="226" height="21.5"/>
-                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
-                                            <color key="textColor" name="HighlightColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="- Support the developer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3yY-HB-XYN">
-                                            <rect key="frame" x="0.0" y="79" width="202" height="21.5"/>
-                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
-                                            <color key="textColor" name="HighlightColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="- Create recipe groups" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cBh-D9-aNR">
-                                            <rect key="frame" x="0.0" y="118.5" width="190" height="21.5"/>
-                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
-                                            <color key="textColor" name="HighlightColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="300" id="xaX-bO-1FA"/>
-                                    </constraints>
-                                </stackView>
-                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="kTu-ba-La4">
-                                    <rect key="frame" x="22.5" y="300" width="262" height="90"/>
-                                    <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="62" translatesAutoresizingMaskIntoConstraints="NO" id="TpR-oE-cLh">
-                                            <rect key="frame" x="0.0" y="0.0" width="262" height="50"/>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Developer" translatesAutoresizingMaskIntoConstraints="NO" id="RA9-Ik-OL8">
+                                            <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="70" id="MPf-as-ssa"/>
+                                                <constraint firstAttribute="width" constant="70" id="xdi-6x-lPC"/>
+                                            </constraints>
+                                        </imageView>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Wt3-bq-1Og">
+                                            <rect key="frame" x="80" y="2" width="234" height="66.5"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="clG-nn-4qg">
-                                                    <rect key="frame" x="0.0" y="0.0" width="100" height="50"/>
-                                                    <color key="backgroundColor" red="1" green="0.36078431370000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="100" id="dgU-tk-9KB"/>
-                                                        <constraint firstAttribute="height" constant="50" id="wYf-ac-zxr"/>
-                                                    </constraints>
-                                                    <state key="normal" title="$6.99">
-                                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    </state>
-                                                    <connections>
-                                                        <action selector="buyButtonPressed:" destination="-1" eventType="touchUpInside" id="fwB-0y-tbM"/>
-                                                    </connections>
-                                                </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZYM-nP-YdA">
-                                                    <rect key="frame" x="162" y="0.0" width="100" height="50"/>
-                                                    <color key="backgroundColor" red="1" green="0.36078431370000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="50" id="2x9-9a-KQ5"/>
-                                                        <constraint firstAttribute="width" constant="100" id="iCS-d3-5pE"/>
-                                                    </constraints>
-                                                    <state key="normal" title="$1.99">
-                                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    </state>
-                                                    <connections>
-                                                        <action selector="subscribeButtonPressed:" destination="-1" eventType="touchUpInside" id="gUw-VN-bGM"/>
-                                                    </connections>
-                                                </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello! My name is Misha." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v4e-gU-1lW">
+                                                    <rect key="frame" x="0.0" y="0.0" width="234" height="13.5"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="11"/>
+                                                    <color key="textColor" name="TextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y85-hg-ahQ">
+                                                    <rect key="frame" x="0.0" y="13.5" width="234" height="53"/>
+                                                    <string key="text">I am the developer of Cookity. In attempts to create a great kitchen assistant I try to spend as much time as I can. That is why I present you Cookity+</string>
+                                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="11"/>
+                                                    <color key="textColor" name="TextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                         </stackView>
+                                    </subviews>
+                                </stackView>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="KbQ-N2-qHo">
+                                    <rect key="frame" x="0.0" y="160" width="314" height="242"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By acquiring Cookity+ you will:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HLz-64-ATJ">
+                                            <rect key="frame" x="0.0" y="0.0" width="220" height="18"/>
+                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                                            <color key="textColor" name="TextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="a7p-cY-uOf">
+                                            <rect key="frame" x="0.0" y="33" width="314" height="54.5"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create recipe groups" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cBh-D9-aNR">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150.5" height="18"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                                                    <color key="textColor" name="HighlightColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Keep your recipe book clean! Sort your recipes into groups. Make as many groups as your want." textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TqG-8h-Iia">
+                                                    <rect key="frame" x="0.0" y="23" width="314" height="31.5"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="13"/>
+                                                    <color key="textColor" name="HighlightColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </stackView>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="rl8-Op-yzQ">
+                                            <rect key="frame" x="0.0" y="102.5" width="314" height="70"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Support the developer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3yY-HB-XYN">
+                                                    <rect key="frame" x="0.0" y="0.0" width="160.5" height="18"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                                                    <color key="textColor" name="HighlightColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I am doing my best to make a great kitchen assistant. With your support I will be able to reach this goal." textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iV9-qO-O9E">
+                                                    <rect key="frame" x="0.0" y="23" width="314" height="47"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="13"/>
+                                                    <color key="textColor" name="HighlightColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </stackView>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="0Zw-Pe-3L2">
+                                            <rect key="frame" x="0.0" y="187.5" width="314" height="54.5"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Get all future features" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xIz-Nr-JYJ">
+                                                    <rect key="frame" x="0.0" y="0.0" width="156.5" height="18"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                                                    <color key="textColor" name="HighlightColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This pass will gain you a lifetime access to all future Cookity+ features." textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b38-w0-giq">
+                                                    <rect key="frame" x="0.0" y="23" width="314" height="31.5"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="13"/>
+                                                    <color key="textColor" name="HighlightColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                </stackView>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="kTu-ba-La4">
+                                    <rect key="frame" x="57" y="432" width="200" height="90"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="clG-nn-4qg">
+                                            <rect key="frame" x="0.0" y="0.0" width="200" height="50"/>
+                                            <color key="backgroundColor" red="1" green="0.36078431370000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="200" id="dgU-tk-9KB"/>
+                                                <constraint firstAttribute="height" constant="50" id="wYf-ac-zxr"/>
+                                            </constraints>
+                                            <state key="normal" title="$6.99">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="buyButtonPressed:" destination="-1" eventType="touchUpInside" id="fwB-0y-tbM"/>
+                                            </connections>
+                                        </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p0A-uc-iPF">
-                                            <rect key="frame" x="65" y="60" width="132" height="30"/>
+                                            <rect key="frame" x="34" y="60" width="132" height="30"/>
                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                             <state key="normal" title="Restore purchases">
                                                 <color key="titleColor" red="1" green="0.36078431370000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -119,7 +159,9 @@
                     <color key="backgroundColor" name="ViewColor"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="N9t-jT-Qwm" secondAttribute="bottom" constant="40" id="6t7-AJ-ZAS"/>
+                        <constraint firstAttribute="trailing" secondItem="N9t-jT-Qwm" secondAttribute="trailing" constant="50" id="GXJ-xv-VcH"/>
                         <constraint firstItem="N9t-jT-Qwm" firstAttribute="top" secondItem="Bif-96-hvZ" secondAttribute="top" constant="20" id="NOA-JY-Y0W"/>
+                        <constraint firstItem="N9t-jT-Qwm" firstAttribute="leading" secondItem="Bif-96-hvZ" secondAttribute="leading" constant="50" id="VJW-iy-7cd"/>
                         <constraint firstItem="N9t-jT-Qwm" firstAttribute="centerX" secondItem="Bif-96-hvZ" secondAttribute="centerX" id="qNT-6L-m5F"/>
                     </constraints>
                 </view>
@@ -131,10 +173,11 @@
                 <constraint firstItem="Bif-96-hvZ" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="efG-xE-zBg"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
-            <point key="canvasLocation" x="-33" y="169"/>
+            <point key="canvasLocation" x="-346.37681159420293" y="181.47321428571428"/>
         </view>
     </objects>
     <resources>
+        <image name="Developer" width="163" height="162"/>
         <namedColor name="HighlightColor">
             <color red="0.3059999942779541" green="0.58399999141693115" blue="0.14499999582767487" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

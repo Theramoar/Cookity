@@ -22,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             SettingsVariables.isCloudEnabled = true
             SettingsVariables.isIngridientSearchEnabled = true
             firstLaunch.createTutorial()
+            firstLaunch.disableProVersion()
         }
         
         configFridge()

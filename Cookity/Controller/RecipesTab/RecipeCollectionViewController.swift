@@ -76,6 +76,7 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate, Presen
     private func setStandardNavBar() {
         switch viewModel.recipeCollectionType {
         case .recipCollection:
+            navigationController?.navigationBar.tintColor = Colors.textColor
             navigationController?.navigationBar.prefersLargeTitles = true
             searchController = setupSearchBarController()
             navigationItem.searchController = searchController
@@ -101,7 +102,28 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate, Presen
         return searchController
     }
     
-
+    private func animateAddButtonChange() {
+        let buttonImage = recipeGroupCreating ? UIImage(named: "addGroupButton") : UIImage(named: "addButton")
+        
+//        UIView.transition(with: self.addRecipeButton,
+//        duration:0.5,
+//        options: .transitionCrossDissolve,
+//        animations: {
+////            self.addRecipeButton.setImage(buttonImage, for: .normal)
+//            self.addRecipeButton.frame.size = CGSize(width: 0, height: 0)
+//            self.addRecipeButton.frame.size = CGSize(width: 60, height: 60)
+//        },
+//        completion: nil)
+        
+        UIView.animate(withDuration: 0.2) {
+            self.addRecipeButton.frame.size = CGSize(width: 0, height: 0)
+//            self.addRecipeButton.frame.origin = CGPoint(x: 0, y: 0)
+        }
+        UIView.animate(withDuration: 0.2, delay: 0.2, animations: {
+            self.addRecipeButton.setImage(buttonImage, for: .normal)
+            self.addRecipeButton.frame.size = CGSize(width: 60, height: 60)
+        }, completion: nil)
+    }
     
     //MARK:- UpdateVCDelegate Method
     func updateVC() {
@@ -149,12 +171,17 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate, Presen
             present(vc, animated: true, completion: nil)
             return
         }
+        
+        if recipeGroupCreating {
+            viewModel.uncheckRecipes()
+            recipeCollection.reloadData()
+        }
+        
         recipeGroupCreating = !recipeGroupCreating
         navigationItem.rightBarButtonItem?.image = recipeGroupCreating ? nil : UIImage(systemName: "text.badge.plus")?.withTintColor(Colors.textColor!, renderingMode: .alwaysOriginal)
         navigationItem.rightBarButtonItem?.title = recipeGroupCreating ? "Cancel" : nil
         navigationItem.title = recipeGroupCreating ? " \(viewModel.numberOfSelectedRecipes) Recipes selected" : "Recipes"
-        let buttonImage = recipeGroupCreating ? UIImage(named: "addGroupButton") : UIImage(named: "addButton")
-        addRecipeButton.setImage(buttonImage, for: .normal)
+        animateAddButtonChange()
     }
     
     @objc private func editGroup() {

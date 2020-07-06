@@ -87,7 +87,43 @@ extension IAPManager: SKPaymentTransactionObserver {
     private func purchased(_ transaction: SKPaymentTransaction) {
         NotificationCenter.default.post(name: NSNotification.Name(transaction.payment.productIdentifier), object: nil)
         SKPaymentQueue.default().finishTransaction(transaction)
+//        validateRecipe()
     }
+    
+    
+    //Monthly Subscription expiration date validation
+    //https://developer.apple.com/documentation/storekit/in-app_purchase/validating_receipts_with_the_app_store
+    //https://savvyapps.com/blog/how-setup-test-auto-renewable-subscription-ios-app
+//    private func validateRecipe() {
+//        if let receiptURL = Bundle.main.appStoreReceiptURL, FileManager.default.fileExists(atPath: receiptURL.path), let receiptData = NSData(contentsOf: receiptURL) {
+//            let receiptDictionary = ["receipt-data" : receiptData.base64EncodedString(options: []), "password" : "ed45ee0d7fce439488807f3b70d5c01c"]
+//            let requestData = try? JSONSerialization.data(withJSONObject: receiptDictionary)
+//            let storeURL = URL(string: "https://sandbox.itunes.apple.com/verifyReceipt")!  //in production https://buy.itunes.apple.com/verifyReceipt
+//            var storeRequest = URLRequest(url: storeURL)
+//            storeRequest.httpMethod = "POST"
+//            storeRequest.httpBody = requestData
+//
+//            URLSession.shared.dataTask(with: storeRequest) { (data, response, error) in
+//                // Обработатть ответ тут
+//                if let data = data {
+//                    let json = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String : Any]
+//                    print(self.createExpirationDate(json: json))
+//
+//                }
+//            }.resume()
+//        }
+//    }
+    
+//    private func createExpirationDate(json: [String : Any]?) -> Date? {
+//        if let json = json, let receiptInfo: Array = json["latest_receipt_info"] as? Array<Any> {
+//            let lastReceipt = receiptInfo.last as! NSDictionary
+//            let formatter = DateFormatter()
+//            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss VV"
+//            let expirationDate = formatter.date(from: lastReceipt["expires_date"] as! String)
+//            return expirationDate
+//        }
+//        return nil
+//    }
     
     private func restored(_ transaction: SKPaymentTransaction) {
         NotificationCenter.default.post(name: NSNotification.Name("restored_\(transaction.payment.productIdentifier)"), object: nil)

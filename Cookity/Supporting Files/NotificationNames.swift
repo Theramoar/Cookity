@@ -13,4 +13,5 @@ struct NotificationNames {
     static let recipeIsAdded = "RecipeIsAdded"
     static let groupIsUpdated = "GroupIsUpdated"
     static let purchasesAreAvailable = "PurchasesAreAvailable"
+    static let purchaseWasSuccesful = "PurchaseWasSuccesful"
 }

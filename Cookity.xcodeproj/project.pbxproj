@@ -65,7 +65,6 @@
 		BB71E5F42481BFB100A4C9D5 /* InAppPurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB71E5F32481BFB100A4C9D5 /* InAppPurchaseManager.swift */; };
 		BB71E5F62481C01300A4C9D5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB71E5F52481C01300A4C9D5 /* StoreKit.framework */; };
 		BB7B91B92456E94100303085 /* AboutDeveloper.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB7B91B82456E94100303085 /* AboutDeveloper.xib */; };
-		BB7B91C1245A125100303085 /* RecipeGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7B91C0245A125100303085 /* RecipeGroup.swift */; };
 		BB7B91C3245A133200303085 /* RecipeGroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7B91C2245A133200303085 /* RecipeGroupCell.swift */; };
 		BB7B91C5245A134F00303085 /* RecipeGroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB7B91C4245A134F00303085 /* RecipeGroupCell.xib */; };
 		BB7B91C7245A15C300303085 /* RecipeGroupCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7B91C6245A15C300303085 /* RecipeGroupCollectionView.swift */; };
@@ -170,7 +169,6 @@
 		BB71E5F32481BFB100A4C9D5 /* InAppPurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppPurchaseManager.swift; sourceTree = "<group>"; };
 		BB71E5F52481C01300A4C9D5 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		BB7B91B82456E94100303085 /* AboutDeveloper.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AboutDeveloper.xib; sourceTree = "<group>"; };
-		BB7B91C0245A125100303085 /* RecipeGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeGroup.swift; sourceTree = "<group>"; };
 		BB7B91C2245A133200303085 /* RecipeGroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeGroupCell.swift; sourceTree = "<group>"; };
 		BB7B91C4245A134F00303085 /* RecipeGroupCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipeGroupCell.xib; sourceTree = "<group>"; };
 		BB7B91C6245A15C300303085 /* RecipeGroupCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeGroupCollectionView.swift; sourceTree = "<group>"; };
@@ -284,7 +282,6 @@
 				BB592040234A429100692E6C /* DataManagers */,
 				1CAC8312217C72070081F24E /* ShoppingCart.swift */,
 				1C4B1A0721887081007CB9FD /* Recipe.swift */,
-				BB7B91C0245A125100303085 /* RecipeGroup.swift */,
 				BB07766D230933B900A9E5D3 /* Fridge.swift */,
 				1CA007DD216562000072A908 /* Product.swift */,
 				1C3D63572231A66800FC4485 /* RecipeStep.swift */,
@@ -655,7 +652,6 @@
 				BB3C781322B66C6000F556BC /* SettingsViewController.swift in Sources */,
 				BB180B2B244474E5007E7124 /* CookViewModel.swift in Sources */,
 				BBFA65F1227B520800EE3C2A /* CookProcessViewController.swift in Sources */,
-				BB7B91C1245A125100303085 /* RecipeGroup.swift in Sources */,
 				BB1BBB6324477E27008B3431 /* MainTabBarController.swift in Sources */,
 				1CAC8313217C72070081F24E /* ShoppingCart.swift in Sources */,
 				BBDB0E9C247AB4F7001C86CE /* NotificationNames.swift in Sources */,

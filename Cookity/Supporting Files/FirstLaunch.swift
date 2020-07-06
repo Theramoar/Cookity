@@ -48,4 +48,8 @@ final class FirstLaunch {
         RealmDataManager.saveToRealm(parentObject: nil, object: cart)
     }
     
+    func disableProVersion() {
+        UserPurchases.fullPro = false
+    }
+    
 }

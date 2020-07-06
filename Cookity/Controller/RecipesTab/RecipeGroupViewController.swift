@@ -14,9 +14,11 @@ class RecipeGroupViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var addButton: UIButton!
     @IBOutlet weak var nameTextField: UITextField!
+    
     @IBOutlet weak var textFieldConstraint: NSLayoutConstraint!
     @IBOutlet weak var textFieldHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var collectionViewConstraint: NSLayoutConstraint!
+    
     
     var viewModel: RecipeGroupViewModel!
     
@@ -64,12 +66,16 @@ class RecipeGroupViewController: UIViewController {
         }
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        viewModel.uncheckSelectedRecipes()
+    }
+    
     private func setupNameTextField() {
-        nameTextField.isHidden = !viewModel.isGroupEdited
+        self.nameTextField.isHidden = !self.viewModel.isGroupEdited
         collectionViewConstraint.constant = viewModel.isGroupEdited ? 20 : 0
         textFieldConstraint.constant = viewModel.isGroupEdited ? 20 : 0
         textFieldHeightConstraint.constant = viewModel.isGroupEdited ? 32 : 0
-        nameTextField.text = viewModel.isGroupEdited ? viewModel.groupName : ""
+        nameTextField.text = viewModel.isGroupEdited ? viewModel.groupName : "" 
         
     }
     
@@ -77,6 +83,19 @@ class RecipeGroupViewController: UIViewController {
         viewModel.fillRecipeGroup()
         collectionView.reloadData()
     }
+    
+    private func animateAddButtonChange() {
+        let buttonImage = viewModel.isGroupEdited ? UIImage(named: "deleteGroupButton") : UIImage(named: "addButton")
+        
+        UIView.animate(withDuration: 0.2) {
+            self.addButton.frame.size = CGSize(width: 0, height: 0)
+        }
+        UIView.animate(withDuration: 0.2, delay: 0.2, animations: {
+            self.addButton.setImage(buttonImage, for: .normal)
+            self.addButton.frame.size = CGSize(width: 60, height: 60)
+        }, completion: nil)
+    }
+    
     
 //MARK:- Methods for Buttons
     @objc private func editGroup() {
@@ -90,8 +109,7 @@ class RecipeGroupViewController: UIViewController {
         navigationItem.rightBarButtonItem?.title = viewModel.isGroupEdited ? "Done" : nil
         title = viewModel.isGroupEdited ? nil : viewModel.groupName
         navigationController?.navigationBar.prefersLargeTitles = !viewModel.isGroupEdited
-        let buttonImage = viewModel.isGroupEdited ? UIImage(named: "deleteGroupButton") : UIImage(named: "addButton")
-        addButton.setImage(buttonImage, for: .normal)
+        animateAddButtonChange()
     }
     
     @objc func viewTapped(sender: UITapGestureRecognizer) {
@@ -108,6 +126,7 @@ class RecipeGroupViewController: UIViewController {
                 presentDeleteAlert()
             }
             else {
+                guard UserPurchases.isProEnabled() else { return }
                 presentAddAlert()
             }
         case .addRecipeToGroupCollection:

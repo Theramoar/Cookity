@@ -186,12 +186,12 @@
                                 </prototypes>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ugp-Z9-yNX">
-                                <rect key="frame" x="110" y="409" width="100" height="30"/>
+                                <rect key="frame" x="50" y="429" width="220" height="40"/>
                                 <color key="backgroundColor" red="1" green="0.36078431370000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="gIg-tm-5II"/>
+                                    <constraint firstAttribute="height" constant="40" id="mPa-ra-HHR"/>
                                 </constraints>
-                                <state key="normal" title="Buy Cookity+">
+                                <state key="normal" title="Learn about Cookity+">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
@@ -202,9 +202,10 @@
                         <color key="backgroundColor" name="ViewColor"/>
                         <constraints>
                             <constraint firstItem="f1H-sf-fld" firstAttribute="top" secondItem="Gqy-jw-Xkr" secondAttribute="top" id="4mn-Uj-0bR"/>
-                            <constraint firstItem="Ugp-Z9-yNX" firstAttribute="centerX" secondItem="brk-Fw-kPg" secondAttribute="centerX" id="91B-ug-dMV"/>
                             <constraint firstItem="Gqy-jw-Xkr" firstAttribute="bottom" secondItem="f1H-sf-fld" secondAttribute="bottom" id="9ug-7M-dCl"/>
-                            <constraint firstItem="Gqy-jw-Xkr" firstAttribute="bottom" secondItem="Ugp-Z9-yNX" secondAttribute="bottom" constant="80" id="Je4-rl-sn0"/>
+                            <constraint firstItem="Ugp-Z9-yNX" firstAttribute="leading" secondItem="Gqy-jw-Xkr" secondAttribute="leading" constant="50" id="Fve-vk-zjA"/>
+                            <constraint firstItem="Gqy-jw-Xkr" firstAttribute="bottom" secondItem="Ugp-Z9-yNX" secondAttribute="bottom" constant="50" id="Je4-rl-sn0"/>
+                            <constraint firstItem="Gqy-jw-Xkr" firstAttribute="trailing" secondItem="Ugp-Z9-yNX" secondAttribute="trailing" constant="50" id="ZY6-bP-uGD"/>
                             <constraint firstItem="Gqy-jw-Xkr" firstAttribute="trailing" secondItem="f1H-sf-fld" secondAttribute="trailing" id="rdG-dv-F4o"/>
                             <constraint firstItem="f1H-sf-fld" firstAttribute="leading" secondItem="Gqy-jw-Xkr" secondAttribute="leading" id="xeN-RJ-7iO"/>
                         </constraints>

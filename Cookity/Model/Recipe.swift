@@ -27,7 +27,7 @@ class Recipe: Object, ParentObject, Codable {
     @objc dynamic var cloudID: String?
     
     @objc dynamic var checkedForGroup: Bool = false
-    @objc dynamic var recipeGroup: String?
+    @objc dynamic var recipeGroup: String = ""
     
     
     func getImageFromFileManager() -> UIImage? {
@@ -55,8 +55,12 @@ class Recipe: Object, ParentObject, Codable {
             recipeSteps.append(object as! RecipeStep)
         }
     }
+    
     func returnCloudValues() -> [String : Any] {
-        ["name" : name]
+        return
+            ["name" : name,
+             "recipeGroup" : recipeGroup
+            ]
     }
     
     func allChildrenObjects() -> [ChildObject] {
@@ -74,6 +78,8 @@ class Recipe: Object, ParentObject, Codable {
         self.init()
         self.name = record.value(forKey: "name") as! String
         self.cloudID = record.recordID.recordName
+        guard let recipeGroup = record.value(forKey: "recipeGroup") as? String else { return }
+        self.recipeGroup = recipeGroup
     }
     
     

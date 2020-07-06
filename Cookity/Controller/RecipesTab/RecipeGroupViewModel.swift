@@ -44,6 +44,7 @@ class RecipeGroupViewModel : DetailViewModelType, RemoveFromGroupDelegate {
         recipeGroup.name = name
         recipeGroup.recipes.forEach {
             RealmDataManager.changeElementIn(object: $0, keyValue: "recipeGroup", objectParameter: $0.recipeGroup, newParameter: name)
+            CloudManager.updateRecipeInCloud(recipe: $0)
         }
     }
     
@@ -51,12 +52,14 @@ class RecipeGroupViewModel : DetailViewModelType, RemoveFromGroupDelegate {
         let recipes = recipeGroup.recipes
         recipes.forEach({
             RealmDataManager.changeElementIn(object: $0, keyValue: "recipeGroup", objectParameter: $0.recipeGroup, newParameter: "")
+            CloudManager.updateRecipeInCloud(recipe: $0)
         })
     }
     
     func removeRecipeFromGroup(at indexPath: IndexPath) {
         let recipe =  recipeGroup.recipes[indexPath.row]
         RealmDataManager.changeElementIn(object: recipe, keyValue: "recipeGroup", objectParameter: recipe.recipeGroup, newParameter: "")
+        CloudManager.updateRecipeInCloud(recipe: recipe)
         recipeGroup.recipes.remove(at: indexPath.row)
         NotificationCenter.default.post(name: NSNotification.Name(NotificationNames.groupIsUpdated), object: nil)
     }
@@ -70,10 +73,7 @@ class RecipeGroupViewModel : DetailViewModelType, RemoveFromGroupDelegate {
         let recipeList = RealmDataManager.dataLoadedFromRealm(ofType: Recipe.self)
         var noGroupRecipes = [Recipe]()
         recipeList?.forEach({
-            if $0.recipeGroup == nil {
-                noGroupRecipes.append($0)
-            }
-            else if $0.recipeGroup!.isEmpty {
+            if $0.recipeGroup.isEmpty {
                 noGroupRecipes.append($0)
             }
         })
@@ -99,6 +99,13 @@ class RecipeGroupViewModel : DetailViewModelType, RemoveFromGroupDelegate {
         selectedRecipesForGroup.forEach{
             RealmDataManager.changeElementIn(object: $0, keyValue: "checkedForGroup", objectParameter: $0.checkedForGroup, newParameter: false)
             RealmDataManager.changeElementIn(object: $0, keyValue: "recipeGroup", objectParameter: $0.recipeGroup, newParameter: groupName)
+            CloudManager.updateRecipeInCloud(recipe: $0)
+        }
+    }
+    
+    func uncheckSelectedRecipes() {
+        selectedRecipesForGroup.forEach {
+            RealmDataManager.changeElementIn(object: $0, keyValue: "checkedForGroup", objectParameter: $0.checkedForGroup, newParameter: false)
         }
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -12,10 +12,10 @@
             <connections>
                 <outlet property="addButton" destination="ylP-bq-RCp" id="lIb-Pf-3Wf"/>
                 <outlet property="collectionView" destination="6xB-ob-fqh" id="Vvy-PL-l4S"/>
-                <outlet property="collectionViewConstraint" destination="DCh-uB-kWK" id="40D-RM-pU6"/>
+                <outlet property="collectionViewConstraint" destination="nMW-Ku-cd8" id="Rfe-cg-gep"/>
                 <outlet property="nameTextField" destination="apw-iN-OMe" id="6KU-9B-gVj"/>
-                <outlet property="textFieldConstraint" destination="c4J-3F-tvf" id="GUu-cg-iNL"/>
-                <outlet property="textFieldHeightConstraint" destination="5a4-yM-Bw2" id="Zza-Lo-z0V"/>
+                <outlet property="textFieldConstraint" destination="BPI-Qe-pXq" id="Qqr-Rw-ihO"/>
+                <outlet property="textFieldHeightConstraint" destination="cJX-2m-DY3" id="ScV-XA-dpM"/>
                 <outlet property="view" destination="iN0-l3-epB" id="4rA-OJ-SsA"/>
             </connections>
         </placeholder>
@@ -24,7 +24,7 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="6xB-ob-fqh">
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="6xB-ob-fqh">
                     <rect key="frame" x="0.0" y="116" width="414" height="746"/>
                     <color key="backgroundColor" name="ViewColor"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="InV-TP-YeZ">
@@ -48,7 +48,7 @@
                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Group Name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="apw-iN-OMe">
                     <rect key="frame" x="107" y="64" width="200" height="32"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="32" id="5a4-yM-Bw2"/>
+                        <constraint firstAttribute="height" constant="32" id="cJX-2m-DY3"/>
                         <constraint firstAttribute="width" constant="200" id="wYw-mD-WzS"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="25"/>
@@ -57,14 +57,14 @@
             </subviews>
             <color key="backgroundColor" name="ViewColor"/>
             <constraints>
-                <constraint firstItem="6xB-ob-fqh" firstAttribute="top" secondItem="apw-iN-OMe" secondAttribute="bottom" constant="20" id="DCh-uB-kWK"/>
+                <constraint firstItem="apw-iN-OMe" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="20" id="BPI-Qe-pXq"/>
+                <constraint firstItem="apw-iN-OMe" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="CtP-lY-3fP"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="ylP-bq-RCp" secondAttribute="trailing" constant="25" id="G96-bX-7fw"/>
                 <constraint firstItem="6xB-ob-fqh" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="GcS-Xz-bLu"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="ylP-bq-RCp" secondAttribute="bottom" constant="18" id="UIP-gj-EdM"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="6xB-ob-fqh" secondAttribute="trailing" id="Z2A-zf-kin"/>
-                <constraint firstItem="apw-iN-OMe" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Z6T-fc-1P1"/>
-                <constraint firstItem="apw-iN-OMe" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="20" id="c4J-3F-tvf"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="6xB-ob-fqh" secondAttribute="bottom" id="lvX-sO-jOq"/>
+                <constraint firstItem="6xB-ob-fqh" firstAttribute="top" secondItem="apw-iN-OMe" secondAttribute="bottom" constant="20" id="nMW-Ku-cd8"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <point key="canvasLocation" x="140.57971014492756" y="153.34821428571428"/>

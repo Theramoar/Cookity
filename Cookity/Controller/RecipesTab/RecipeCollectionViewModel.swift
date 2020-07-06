@@ -58,7 +58,8 @@ class RecipeCollectionViewModel {
         recipeGroups.removeAll()
         noGroupRecipes.removeAll()
         recipeList?.forEach({
-            if let groupName = $0.recipeGroup, !groupName.isEmpty {
+            if !$0.recipeGroup.isEmpty {
+                let groupName = $0.recipeGroup
                 if let recipeGroup = recipeGroups.first(where: {$0.name == groupName}) {
                     recipeGroup.recipes.append($0)
                 }
@@ -126,12 +127,20 @@ class RecipeCollectionViewModel {
     func createGroupWith(name: String) -> Bool {
         guard !selectedRecipesForGroup.isEmpty else { return false }
         selectedRecipesForGroup.forEach({
-            RealmDataManager.changeElementIn(object: $0, keyValue: "checkedForGroup", objectParameter: $0.checkedForGroup, newParameter: false)
             RealmDataManager.changeElementIn(object: $0, keyValue: "recipeGroup", objectParameter: $0.recipeGroup, newParameter: name)
+//            CloudManager.updateRecipeGroupInCloud(for: $0)
+            CloudManager.updateRecipeInCloud(recipe: $0)
         })
-        selectedRecipesForGroup.removeAll()
+        uncheckRecipes()
         fillRecipeGroups()
         return true
+    }
+    
+    func uncheckRecipes() {
+        selectedRecipesForGroup.forEach({
+            RealmDataManager.changeElementIn(object: $0, keyValue: "checkedForGroup", objectParameter: $0.checkedForGroup, newParameter: false)
+        })
+        selectedRecipesForGroup.removeAll()
     }
     
 }

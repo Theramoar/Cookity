@@ -24,14 +24,26 @@ class SettingsViewController: UIViewController, UpdateVCDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupTable()
+        setupButton()
+        NotificationCenter.default.addObserver(self, selector: #selector(IAPPurchased), name: NSNotification.Name(NotificationNames.purchaseWasSuccesful), object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc private func IAPPurchased() {
+        setupButton()
+    }
+        
+    private func setupTable() {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none
         tableView.register(UINib(nibName: "DefaultDatePickerCell", bundle: nil), forCellReuseIdentifier: "DefaultDatePickerCell")
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 300
-        
-
     }
     
     private func setupButton() {

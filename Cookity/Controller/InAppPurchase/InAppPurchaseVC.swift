@@ -11,12 +11,12 @@ import UIKit
 class InAppPurchaseViewController: UIViewController {
 
     @IBOutlet weak var visibleView: UIView!
-    @IBOutlet weak var subscribeButton: UIButton!
+//    @IBOutlet weak var subscribeButton: UIButton!
     @IBOutlet weak var buyButton: UIButton!
     
     override func viewDidLoad() {
-        setupButton(buyButton, title: "\(IAPManager.shared.priceStringForProduct(withIdentifier: IAPProducts.fullPro.rawValue))\nForever")
-        setupButton(subscribeButton, title: "\(IAPManager.shared.priceStringForProduct(withIdentifier: IAPProducts.monthlyPro.rawValue))\nMonthly")
+        setupButton(buyButton, title: "\(IAPManager.shared.priceStringForProduct(withIdentifier: IAPProducts.fullPro.rawValue))\nLifetime Cookity+")
+//        setupButton(subscribeButton, title: "\(IAPManager.shared.priceStringForProduct(withIdentifier: IAPProducts.monthlyPro.rawValue))\nMonthly")
         
         NotificationCenter.default.addObserver(self, selector: #selector(completeFullPro), name: NSNotification.Name(IAPProducts.fullPro.rawValue), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(completeMonthlyPro), name: NSNotification.Name(IAPProducts.monthlyPro.rawValue), object: nil)
@@ -25,13 +25,20 @@ class InAppPurchaseViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(restoreMonthlyPro), name: NSNotification.Name("restored_\(IAPProducts.monthlyPro.rawValue)"), object: nil)
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     @objc private func completeFullPro() {
         UserPurchases.fullPro = true
+        NotificationCenter.default.post(name: NSNotification.Name(NotificationNames.purchaseWasSuccesful), object: nil)
         self.dismiss(animated: true, completion: nil)
+        
     }
     
     @objc private func completeMonthlyPro() {
         UserPurchases.monthlyPro = true
+        NotificationCenter.default.post(name: NSNotification.Name(NotificationNames.purchaseWasSuccesful), object: nil)
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -47,7 +54,9 @@ class InAppPurchaseViewController: UIViewController {
     
     private func showRestoreAlert() {
         let alert = UIAlertController(title: "All purchases are restored!", message: nil, preferredStyle: .alert)
+        alert.view.tintColor = Colors.textColor
         let ok = UIAlertAction(title: "OK", style: .default) { _ in
+            NotificationCenter.default.post(name: NSNotification.Name(NotificationNames.purchaseWasSuccesful), object: nil)
             self.dismiss(animated: true, completion: nil)
         }
         alert.addAction(ok)

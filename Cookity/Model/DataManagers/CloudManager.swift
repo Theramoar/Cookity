@@ -24,8 +24,9 @@ class CloudManager {
         if let imageFileName = objectImageName {
             saveImageToCloud(to: record, imageFileName: imageFileName)
         }
-        
+        print("SAVING")
         privateCloudDatabase.save(record, completionHandler: { (record, error) in
+            print("SAVED")
             if let error = error { print(error); return }
             guard let record = record else { return }
             DispatchQueue.main.async {
@@ -103,6 +104,23 @@ class CloudManager {
         }
         deleteRecordFromCloud(ofObject: recipe)
     }
+    
+//    static func updateRecipeGroupInCloud(for recipe: Recipe) {
+//        guard SettingsVariables.isCloudEnabled,
+//            let cloudID = recipe.cloudID
+//        else { return }
+//        let recipeGroup = recipe.recipeGroup
+//        let recordID = CKRecord.ID(recordName: cloudID)
+//        print("Group Starts Update - \(cloudID)")
+//        privateCloudDatabase.fetch(withRecordID: recordID) { (record, error) in
+//            print("Group SET NEW VALUE")
+//            guard let record = record, error == nil else { return }
+//            record.setValue(recipeGroup, forKey: "recipeGroup")
+//            privateCloudDatabase.save(record, completionHandler: { (_, error) in
+//                if let error = error { print(error); return }
+//            })
+//        }
+//    }
     
     static func updateChildInCloud<T: ChildObject>(childObject: T) {
         guard SettingsVariables.isCloudEnabled else { return }
