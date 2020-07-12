@@ -76,9 +76,12 @@ class Recipe: Object, ParentObject, Codable {
     
     required convenience init(record: CKRecord) {
         self.init()
+        print(record.allKeys())
+        print(record.recordType)
         self.name = record.value(forKey: "name") as! String
         self.cloudID = record.recordID.recordName
-        guard let recipeGroup = record.value(forKey: "recipeGroup") as? String else { return }
+//        let recipeGroup = record.value(forKey: "recipeGroup") as! String
+        guard let recipeGroup = record.value(forKey: "recipeGroup") as? String else { print("FAILED DOWNLOADING GROUP"); return }
         self.recipeGroup = recipeGroup
     }
     

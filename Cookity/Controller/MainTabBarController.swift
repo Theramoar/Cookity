@@ -41,7 +41,6 @@ extension UIViewController {
     class func loadFromStoryboard<T: UIViewController>() -> T {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let vc = storyboard.instantiateInitialViewController() as? T {
-            print(vc)
             return vc
         }
         else {

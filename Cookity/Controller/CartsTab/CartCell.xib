@@ -22,13 +22,13 @@
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="2fG-qZ-Y0L">
                                 <rect key="frame" x="8" y="0.0" width="211" height="66"/>
-                                <color key="backgroundColor" name="ViewColor"/>
+                                <color key="backgroundColor" name="CellColor"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                                 <color key="textColor" name="TextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" name="ViewColor"/>
+                        <color key="backgroundColor" name="CellColor"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="2fG-qZ-Y0L" secondAttribute="trailing" constant="8" id="WEB-Mk-V3W"/>
                             <constraint firstItem="2fG-qZ-Y0L" firstAttribute="top" secondItem="trI-d4-fEd" secondAttribute="top" id="ZHM-HQ-Bfw"/>
@@ -54,11 +54,11 @@
         </tableViewCell>
     </objects>
     <resources>
+        <namedColor name="CellColor">
+            <color red="0.79316703680203049" green="0.79316703680203049" blue="0.79316703680203049" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="TextColor">
             <color red="0.18000000715255737" green="0.3529999852180481" blue="0.10999999940395355" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="ViewColor">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

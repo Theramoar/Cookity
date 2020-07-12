@@ -126,7 +126,11 @@ class RecipeGroupViewController: UIViewController {
                 presentDeleteAlert()
             }
             else {
-                guard UserPurchases.isProEnabled() else { return }
+                guard UserPurchases.isProEnabled() else {
+                    let vc = InAppPurchaseViewController()
+                    present(vc, animated: true, completion: nil)
+                    return
+                }
                 presentAddAlert()
             }
         case .addRecipeToGroupCollection:

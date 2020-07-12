@@ -105,23 +105,6 @@ class CloudManager {
         deleteRecordFromCloud(ofObject: recipe)
     }
     
-//    static func updateRecipeGroupInCloud(for recipe: Recipe) {
-//        guard SettingsVariables.isCloudEnabled,
-//            let cloudID = recipe.cloudID
-//        else { return }
-//        let recipeGroup = recipe.recipeGroup
-//        let recordID = CKRecord.ID(recordName: cloudID)
-//        print("Group Starts Update - \(cloudID)")
-//        privateCloudDatabase.fetch(withRecordID: recordID) { (record, error) in
-//            print("Group SET NEW VALUE")
-//            guard let record = record, error == nil else { return }
-//            record.setValue(recipeGroup, forKey: "recipeGroup")
-//            privateCloudDatabase.save(record, completionHandler: { (_, error) in
-//                if let error = error { print(error); return }
-//            })
-//        }
-//    }
-    
     static func updateChildInCloud<T: ChildObject>(childObject: T) {
         guard SettingsVariables.isCloudEnabled else { return }
         guard childObject.isInvalidated == false, let cloudID = childObject.cloudID else { return }
@@ -152,7 +135,7 @@ class CloudManager {
         let query = CKQuery(recordType: String(describing: T.self), predicate: NSPredicate(value: true))
         query.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         let queryOperation = CKQueryOperation(query: query)
-        queryOperation.desiredKeys = ["recordID", "name"]
+        queryOperation.desiredKeys = ["recordID", "name", "recipeGroup"]
         //        queryOperation.resultsLimit = 5 - сделать потом
         queryOperation.queuePriority = .veryHigh
         

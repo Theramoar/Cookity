@@ -864,7 +864,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.560;
+				MARKETING_VERSION = 1.580;
 				PRODUCT_BUNDLE_IDENTIFIER = com.michaelk.Cookity;
 				PRODUCT_NAME = Cookity;
 				SWIFT_VERSION = 5.0;
@@ -887,7 +887,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.560;
+				MARKETING_VERSION = 1.580;
 				PRODUCT_BUNDLE_IDENTIFIER = com.michaelk.Cookity;
 				PRODUCT_NAME = Cookity;
 				SWIFT_VERSION = 5.0;

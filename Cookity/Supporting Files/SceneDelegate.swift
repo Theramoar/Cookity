@@ -98,9 +98,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 let navigationController = tabBarViewController.selectedViewController as? UINavigationController,
                 let vc1 = navigationController.viewControllers.first as? RecipeCollectionViewController
                 else { return }
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: String(describing: RecipeViewController.self))
-            guard let vc2 = vc as? RecipeViewController else { return }
+            let vc2 = RecipeViewController()
             vc2.viewModel = RecipeViewModel(recipe: recipe)
             navigationController.viewControllers = [vc1,vc2]
         }

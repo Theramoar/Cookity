@@ -104,20 +104,8 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate, Presen
     
     private func animateAddButtonChange() {
         let buttonImage = recipeGroupCreating ? UIImage(named: "addGroupButton") : UIImage(named: "addButton")
-        
-//        UIView.transition(with: self.addRecipeButton,
-//        duration:0.5,
-//        options: .transitionCrossDissolve,
-//        animations: {
-////            self.addRecipeButton.setImage(buttonImage, for: .normal)
-//            self.addRecipeButton.frame.size = CGSize(width: 0, height: 0)
-//            self.addRecipeButton.frame.size = CGSize(width: 60, height: 60)
-//        },
-//        completion: nil)
-        
         UIView.animate(withDuration: 0.2) {
             self.addRecipeButton.frame.size = CGSize(width: 0, height: 0)
-//            self.addRecipeButton.frame.origin = CGPoint(x: 0, y: 0)
         }
         UIView.animate(withDuration: 0.2, delay: 0.2, animations: {
             self.addRecipeButton.setImage(buttonImage, for: .normal)
