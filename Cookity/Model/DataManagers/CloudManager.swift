@@ -25,61 +25,69 @@ class CloudManager {
             saveImageToCloud(to: record, imageFileName: imageFileName)
         }
         print("SAVING")
-        privateCloudDatabase.save(record, completionHandler: { (record, error) in
+        let saveOperation = CKModifyRecordsOperation(recordsToSave: [record], recordIDsToDelete: nil)
+        saveOperation.queuePriority = .veryHigh
+        saveOperation.perRecordCompletionBlock = { (record, error) in
             print("SAVED")
             if let error = error { print(error); return }
-            guard let record = record else { return }
             DispatchQueue.main.async {
                 if object.isInvalidated {
-                    privateCloudDatabase.delete(withRecordID: record.recordID, completionHandler: { (_, error) in
-                        if let error = error { print(error); return }
-                    })
+                    addDeleteOperation(with: record.recordID)
                     return
                 }
                 RealmDataManager.saveCloudID(parentObject: object, cloudID: record.recordID.recordName)
                 closure(record.recordID.recordName)
                 saveChildrenDataToCloud(objects: object.allChildrenObjects(), to: object)
             }
-        })
+        }
+        
+        saveOperation.modifyRecordsCompletionBlock = { (records, recordIDS, error) in
+            print("ALL RECORDS SAVED")
+        }
+        privateCloudDatabase.add(saveOperation)
     }
 
     static func saveChildrenDataToCloud<T: CloudObject, P: ParentObject>(objects: [T], to parentObject: P) {
         guard SettingsVariables.isCloudEnabled, let parentObjectID = parentObject.cloudID else { print("parentObject.cloudID is invalid") ; return }
+        
         objects.forEach { (object) in
             guard object.isInvalidated == false else { return }
             let record = CKRecord(recordType: String(describing: type(of: object)))
             for value in object.returnCloudValues() {
                 record.setValue(value.value, forKey: value.key)
             }
-
             guard let cloudID = parentObject.cloudID else { return }
             let recordID = CKRecord.ID(recordName: cloudID)
             let parentRecord = CKRecord(recordType: String(describing: P.self), recordID: recordID)
-
             record["parent"] = CKRecord.Reference(record: parentRecord, action: .deleteSelf)
-            privateCloudDatabase.save(record, completionHandler: { (record, error) in
+            
+            print("CHILD STARTS SAVING")
+            let saveOperation = CKModifyRecordsOperation(recordsToSave: [record], recordIDsToDelete: nil)
+            saveOperation.queuePriority = .veryHigh
+            saveOperation.perRecordCompletionBlock = { (record, error) in
+                print("CHILD SAVED")
                 if let error = error { print(error); return }
-                guard let record = record else { return }
                 DispatchQueue.main.async {
-                    
                     if parentObject.isInvalidated {
                         let parentRecordID = CKRecord.ID(recordName: parentObjectID)
-                        privateCloudDatabase.delete(withRecordID: parentRecordID, completionHandler: { (_, error) in
-                            if let error = error { print(error); return }
-                        })
+                        addDeleteOperation(with: parentRecordID)
                         return
                     }
                     else if object.isInvalidated {
-                        privateCloudDatabase.delete(withRecordID: record.recordID, completionHandler: { (_, error) in
-                            if let error = error { print(error); return }
-                        })
+                        addDeleteOperation(with: record.recordID)
                         return
                     }
                     RealmDataManager.changeElementIn(object: object, keyValue: "cloudID", objectParameter: object.cloudID, newParameter: record.recordID.recordName)
                 }
-            })
+            }
+            
+            saveOperation.modifyRecordsCompletionBlock = { (records, recordIDS, error) in
+                print("ALL CHILD RECORDS SAVED")
+            }
+            privateCloudDatabase.add(saveOperation)
         }
     }
+    
     
     private static func saveImageToCloud(to record: CKRecord, imageFileName: String) {
         let imagePath: String = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/\(imageFileName)"
@@ -87,8 +95,6 @@ class CloudManager {
         let imageAsset = prepareImageToSaveToCloud(imagePath: imagePath)
         record.setValue(imageAsset, forKey: "imageAsset")
     }
-    
-    
     
     //MARK:- Update Data
     static func updateRecipeInCloud(recipe: Recipe) {
@@ -109,24 +115,31 @@ class CloudManager {
         guard SettingsVariables.isCloudEnabled else { return }
         guard childObject.isInvalidated == false, let cloudID = childObject.cloudID else { return }
         let recordID = CKRecord.ID(recordName: cloudID)
-        privateCloudDatabase.fetch(withRecordID: recordID) { (record, error) in
+        
+        let fetchOperation = CKFetchRecordsOperation(recordIDs: [recordID])
+        fetchOperation.queuePriority = .veryHigh
+        print("START UPDATING PRODUCT")
+        fetchOperation.perRecordCompletionBlock = { record, _, error in
             guard let record = record, error == nil else { return }
             DispatchQueue.main.async {
                 if childObject.isInvalidated {
                     print("INVALIDATED PRODUCT CATCHED AND DELETED")
-                    privateCloudDatabase.delete(withRecordID: record.recordID, completionHandler: { (_, error) in
-                        if let error = error { print(error); return }
-                    })
+                    addDeleteOperation(with: record.recordID)
                     return
                 }
                 for value in childObject.returnCloudValues() {
                     record.setValue(value.value, forKey: value.key)
                 }
-                privateCloudDatabase.save(record, completionHandler: { (_, error) in
+                let saveOperation = CKModifyRecordsOperation(recordsToSave: [record], recordIDsToDelete: nil)
+                saveOperation.queuePriority = .veryHigh
+                saveOperation.perRecordCompletionBlock = { (_, error) in
+                    print("PRODUCT UPDATED AND SAVED")
                     if let error = error { print(error); return }
-                })
+                }
+                privateCloudDatabase.add(saveOperation)
             }
         }
+        privateCloudDatabase.add(fetchOperation)
     }
     
     //MARK:- Loading Data - 363
@@ -137,7 +150,7 @@ class CloudManager {
         let queryOperation = CKQueryOperation(query: query)
         queryOperation.desiredKeys = ["recordID", "name", "recipeGroup"]
         //        queryOperation.resultsLimit = 5 - сделать потом
-        queryOperation.queuePriority = .veryHigh
+        queryOperation.queuePriority = .high
         
         queryOperation.recordFetchedBlock = { record in
             self.records.append(record)
@@ -183,6 +196,7 @@ class CloudManager {
         }
         let query = CKQuery(recordType: String(describing: T.self), predicate: predicate)
         let queryOperation = CKQueryOperation(query: query)
+        queryOperation.queuePriority = .high
         
         queryOperation.recordFetchedBlock = { record in
             let object = T.init(record: record)
@@ -264,13 +278,17 @@ class CloudManager {
     static func deleteRecordFromCloud<T: CloudObject>(ofObject object: T) {
         guard SettingsVariables.isCloudEnabled, let cloudID = object.cloudID else { return }
         let recordID = CKRecord.ID(recordName: cloudID)
-        privateCloudDatabase.fetch(withRecordID: recordID) { (record, error) in
-            guard let record = record, error == nil else { return }
-            privateCloudDatabase.delete(withRecordID: record.recordID, completionHandler: { (_, error) in
-                if let error = error { print(error); return }
-                print("OBJECT DELETED")
-            })
+        addDeleteOperation(with: recordID)
+    }
+    
+    private static func addDeleteOperation(with recordID: CKRecord.ID) {
+        let deleteOperation = CKModifyRecordsOperation(recordsToSave: nil, recordIDsToDelete: [recordID])
+        deleteOperation.queuePriority = .veryHigh
+        print("RECORDS STARTS DELETING")
+        deleteOperation.modifyRecordsCompletionBlock = { (records, recordIDS, error) in
+            print("RECORDS DElETED")
         }
+        privateCloudDatabase.add(deleteOperation)
     }
     
     
@@ -281,6 +299,7 @@ class CloudManager {
             if object.cloudID == nil {
                 var imageFileName: String?
                 if let recipe = object as? Recipe { imageFileName = recipe.imageFileName }
+                print("START SAVING PARENT OBJECT")
                 saveParentDataToCloud(object: object, objectImageName: imageFileName) { (recordID) in
                     DispatchQueue.main.async {
                         RealmDataManager.changeElementIn(object: object,
@@ -302,9 +321,10 @@ class CloudManager {
         if childObject.cloudID == nil {
             saveChildrenDataToCloud(objects: [childObject], to: object)
         }
-        else {
-            updateChildInCloud(childObject: childObject)
-        }
+//        else {
+            //ВОТ ТУТ ПРОБЛЕМА НУЖНА ЛИ ЭТА ФУНКЦИЯ??
+//            updateChildInCloud(childObject: childObject)
+//        }
     }
     
     

@@ -187,7 +187,6 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource, UIText
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProductCell", for: indexPath) as! ProductTableViewCell
         cell.delegate = self as SwipeTableViewCellDelegate
         cell.viewModel = viewModel.cellViewModel(forIndexPath: indexPath) as? ProductTableCellViewModel
-
         return cell
     }
     

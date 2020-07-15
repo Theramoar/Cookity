@@ -15,6 +15,7 @@ struct Colors {
     static let textColor =  UIColor(named: "TextColor")
     static let viewColor = UIColor(named: "ViewColor")
     static let highlightColor = UIColor(named: "HighlightColor")
+    static let cellColor = UIColor(named: "CellColor")
     static let darkGreen = UIColor(red: 54 / 255, green: 98 / 255, blue: 43 / 255, alpha: 1)
     static let buttonColor: UIColor = #colorLiteral(red: 1, green: 0.3607843137, blue: 0, alpha: 1)
 }

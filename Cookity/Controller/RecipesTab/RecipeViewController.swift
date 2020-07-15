@@ -241,6 +241,7 @@ extension RecipeViewController: UITableViewDelegate, UITableViewDataSource{
         else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "RVRecipeStepCell", for: indexPath) as! RVRecipeStepCell
             cell.viewModel = viewModel.cellViewModel(forIndexPath: indexPath) as? RVRecipeStepCellViewModel
+            cell.backgroundColor = indexPath.row % 2 == 0 ? Colors.cellColor : Colors.viewColor
             cell.selectionStyle = .none
             return cell
         }

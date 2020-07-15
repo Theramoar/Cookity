@@ -299,9 +299,9 @@
 				BB6EF734244E043F00AE2CAC /* PopupEditView.xib */,
 				BB180B2024434399007E7124 /* PopupEditViewModel.swift */,
 				BBFA65EB227A2D2900EE3C2A /* CartsTab */,
-				BBFA6602227F101B00EE3C2A /* CookingProcess */,
-				BBFA65EC227A2D4700EE3C2A /* FridgeTab */,
 				BBFA65ED227A2D5900EE3C2A /* RecipesTab */,
+				BBFA65EC227A2D4700EE3C2A /* FridgeTab */,
+				BBFA6602227F101B00EE3C2A /* CookingProcess */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -864,7 +864,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.580;
+				MARKETING_VERSION = 1.591;
 				PRODUCT_BUNDLE_IDENTIFIER = com.michaelk.Cookity;
 				PRODUCT_NAME = Cookity;
 				SWIFT_VERSION = 5.0;
@@ -887,7 +887,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.580;
+				MARKETING_VERSION = 1.591;
 				PRODUCT_BUNDLE_IDENTIFIER = com.michaelk.Cookity;
 				PRODUCT_NAME = Cookity;
 				SWIFT_VERSION = 5.0;

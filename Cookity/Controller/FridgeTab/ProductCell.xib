@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -43,7 +43,6 @@
                         </subviews>
                     </stackView>
                 </subviews>
-                <color key="backgroundColor" name="ViewColor"/>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="I7A-nd-LgT" secondAttribute="trailing" constant="20" id="1HM-7h-6Vg"/>
                     <constraint firstItem="I7A-nd-LgT" firstAttribute="top" secondItem="OqK-Bf-gta" secondAttribute="top" constant="16" id="647-pb-LBb"/>
@@ -51,6 +50,7 @@
                     <constraint firstItem="9rk-La-UJB" firstAttribute="top" secondItem="OqK-Bf-gta" secondAttribute="top" constant="16" id="wLM-Th-66k"/>
                 </constraints>
             </tableViewCellContentView>
+            <color key="backgroundColor" name="ViewColor"/>
             <connections>
                 <outlet property="expirationDateLabel" destination="HCv-ZU-cx8" id="Bzo-hX-R8x"/>
                 <outlet property="measureLabel" destination="bxv-dD-4cQ" id="1eC-Ux-bkp"/>
@@ -61,10 +61,10 @@
     </objects>
     <resources>
         <namedColor name="HighlightColor">
-            <color red="0.30588235294117649" green="0.58431372549019611" blue="0.14509803921568626" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.3059999942779541" green="0.58399999141693115" blue="0.14499999582767487" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="TextColor">
-            <color red="0.1803921568627451" green="0.3529411764705882" blue="0.10980392156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.18000000715255737" green="0.3529999852180481" blue="0.10999999940395355" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="ViewColor">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
