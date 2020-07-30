@@ -12,12 +12,14 @@ import SwipeCellKit
 class CartCell: SwipeTableViewCell {
 
     @IBOutlet weak var cartName: UILabel!
+    @IBOutlet weak var productsBoughtLabel: UILabel!
     @IBOutlet weak var cellContentView: UIView!
     
     weak var viewModel: CartCellViewModel? {
         willSet(viewModel) {
             guard let viewModel = viewModel else { return }
             cartName.text = viewModel.cartName
+            productsBoughtLabel.text = viewModel.productsBought
         }
     }
     
@@ -37,6 +39,16 @@ class CartCellViewModel: CellViewModelType {
     var cartName: String {
         cart.name
     }
+    var productsBought: String {
+        "\(cart.products.filter { $0.checked }.count) / \(cart.products.count)"
+    }
+    
+//    var allProductsCount: String {
+//        String(cart.products.count)
+//    }
+//    var boughtProductsCount: String {
+//        return String(cart.products.filter { $0.checked }.count)
+//    }
     
     init(cart: ShoppingCart) {
         self.cart = cart

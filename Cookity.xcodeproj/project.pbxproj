@@ -230,13 +230,15 @@
 		1C3D635B2235559A00FC4485 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				BB71E5EE2480581600A4C9D5 /* InAppPurchase */,
+				1C3D635E2238339800FC4485 /* SwipeTableViewController.swift */,
 				1CA007C72165571B0072A908 /* AppDelegate.swift */,
+				BB0F24DE2242D04800A3D8EF /* MeasurePicker.swift */,
 				BB1BBB642447828A008B3431 /* SceneDelegate.swift */,
 				BBB6B07922AD183900E518CC /* FirstLaunch.swift */,
 				1C3D635922354CAE00FC4485 /* AlertExtension.swift */,
 				1CBEB20F21B70CD00036E996 /* Configuration.swift */,
 				BBC6C5AF22F5D40500AF8423 /* SettingsVariables.swift */,
-				BB0F24DE2242D04800A3D8EF /* MeasurePicker.swift */,
 				BBDB0E9B247AB4F7001C86CE /* NotificationNames.swift */,
 				BBFA6600227F0B2700EE3C2A /* DecorationHandler.swift */,
 			);
@@ -267,11 +269,16 @@
 			children = (
 				BB26F7F52303475D00FDD2BB /* Cookity.entitlements */,
 				1CA007D32165571E0072A908 /* Info.plist */,
+				1CA007CB2165571B0072A908 /* Main.storyboard */,
+				1CA007D02165571E0072A908 /* LaunchScreen.storyboard */,
 				BBB6B04622A83F6300E518CC /* UTI Icons */,
 				1C3D635B2235559A00FC4485 /* Supporting Files */,
 				1CA007DF2165628C0072A908 /* Model */,
-				1CA007E02165629D0072A908 /* Controller */,
-				1CA007E1216562D20072A908 /* View */,
+				BB1BBB6224477E27008B3431 /* MainTabBarController.swift */,
+				BB3DEDF124D34ED100B3C0A9 /* PopupEdit */,
+				BBFA65EB227A2D2900EE3C2A /* CartsTab */,
+				BBFA65ED227A2D5900EE3C2A /* RecipesTab */,
+				BBFA65EC227A2D4700EE3C2A /* FridgeTab */,
 			);
 			path = Cookity;
 			sourceTree = "<group>";
@@ -279,6 +286,7 @@
 		1CA007DF2165628C0072A908 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				BB3DEDF024D34E6A00B3C0A9 /* New Group */,
 				BB592040234A429100692E6C /* DataManagers */,
 				1CAC8312217C72070081F24E /* ShoppingCart.swift */,
 				1C4B1A0721887081007CB9FD /* Recipe.swift */,
@@ -287,37 +295,6 @@
 				1C3D63572231A66800FC4485 /* RecipeStep.swift */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		1CA007E02165629D0072A908 /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				1C3D635E2238339800FC4485 /* SwipeTableViewController.swift */,
-				BB71E5EE2480581600A4C9D5 /* InAppPurchase */,
-				BB1BBB6224477E27008B3431 /* MainTabBarController.swift */,
-				1CCC6375219383B40066919E /* PopupEditViewController.swift */,
-				BB6EF734244E043F00AE2CAC /* PopupEditView.xib */,
-				BB180B2024434399007E7124 /* PopupEditViewModel.swift */,
-				BBFA65EB227A2D2900EE3C2A /* CartsTab */,
-				BBFA65ED227A2D5900EE3C2A /* RecipesTab */,
-				BBFA65EC227A2D4700EE3C2A /* FridgeTab */,
-				BBFA6602227F101B00EE3C2A /* CookingProcess */,
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		1CA007E1216562D20072A908 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				BBC6C5B522F7568800AF8423 /* SettingsViewController */,
-				BBFA65E9227A2C9100EE3C2A /* Cart_Fridge_ViewControllers */,
-				BBFA65EA227A2C9F00EE3C2A /* RecipeCollectionViewController */,
-				BBFA65E7227A2C0F00EE3C2A /* RecipeViewController */,
-				BBFA65E8227A2C5D00EE3C2A /* CookViewController */,
-				1CA007CB2165571B0072A908 /* Main.storyboard */,
-				1CA007D02165571E0072A908 /* LaunchScreen.storyboard */,
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		5C2B60D9A07ED442EE17608F /* Pods */ = {
@@ -337,6 +314,39 @@
 				0B8C92B62FE3AF11FE18BB20 /* Pods_Cookity.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BB3DEDF024D34E6A00B3C0A9 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "New Group";
+			sourceTree = "<group>";
+		};
+		BB3DEDF124D34ED100B3C0A9 /* PopupEdit */ = {
+			isa = PBXGroup;
+			children = (
+				1CCC6375219383B40066919E /* PopupEditViewController.swift */,
+				BB6EF734244E043F00AE2CAC /* PopupEditView.xib */,
+				BB180B2024434399007E7124 /* PopupEditViewModel.swift */,
+			);
+			path = PopupEdit;
+			sourceTree = "<group>";
+		};
+		BB3DEDF224D34F7D00B3C0A9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BBFA65F2227C989300EE3C2A /* CheckmarkView.swift */,
+				BBFA65DF2263461900EE3C2A /* RecipeImageViewCell.swift */,
+				BBC12E42234FA43300A6BA32 /* RecipeNameView.swift */,
+				BBFA65E1226659B700EE3C2A /* RecipeProductCell.swift */,
+				BB7B91D4245AE94300303085 /* RecipeProductCell.xib */,
+				BB0F24DA223EC4F700A3D8EF /* CreateListCell.swift */,
+				BB7B91D0245AE4DC00303085 /* CreateListCell.xib */,
+				BBFA65E3226CEF7D00EE3C2A /* RVRecipeStepCell.swift */,
+				BB7B91D2245AE73B00303085 /* RVRecipeStepCell.xib */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		BB592040234A429100692E6C /* DataManagers */ = {
@@ -375,6 +385,7 @@
 		BBC6C5B522F7568800AF8423 /* SettingsViewController */ = {
 			isa = PBXGroup;
 			children = (
+				BB3C781222B66C6000F556BC /* SettingsViewController.swift */,
 				BB18B21822CD3E6D004F2F65 /* CreditsViewCell.swift */,
 				BB7B91B82456E94100303085 /* AboutDeveloper.xib */,
 				BB592032233939C300692E6C /* ContactsCell.swift */,
@@ -385,23 +396,17 @@
 			path = SettingsViewController;
 			sourceTree = "<group>";
 		};
-		BBFA65E7227A2C0F00EE3C2A /* RecipeViewController */ = {
+		BBFA65E7227A2C0F00EE3C2A /* Recipe */ = {
 			isa = PBXGroup;
 			children = (
-				BBFA65F2227C989300EE3C2A /* CheckmarkView.swift */,
-				BBFA65DF2263461900EE3C2A /* RecipeImageViewCell.swift */,
-				BBC12E42234FA43300A6BA32 /* RecipeNameView.swift */,
-				BBFA65E1226659B700EE3C2A /* RecipeProductCell.swift */,
-				BB7B91D4245AE94300303085 /* RecipeProductCell.xib */,
-				BB0F24DA223EC4F700A3D8EF /* CreateListCell.swift */,
-				BB7B91D0245AE4DC00303085 /* CreateListCell.xib */,
-				BBFA65E3226CEF7D00EE3C2A /* RVRecipeStepCell.swift */,
-				BB7B91D2245AE73B00303085 /* RVRecipeStepCell.xib */,
+				1CBEB20D21AAE97B0036E996 /* RecipeViewController.swift */,
+				BB180B2624436238007E7124 /* RecipeViewModel.swift */,
+				BB3DEDF224D34F7D00B3C0A9 /* Views */,
 			);
-			path = RecipeViewController;
+			path = Recipe;
 			sourceTree = "<group>";
 		};
-		BBFA65E8227A2C5D00EE3C2A /* CookViewController */ = {
+		BBFA65E8227A2C5D00EE3C2A /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				1CAECA18216BDAB3002D3B6D /* TextFieldCell.swift */,
@@ -413,34 +418,40 @@
 				BB0F24DC2240313E00A3D8EF /* RecipeStepCell.swift */,
 				BBC34896245C541E00E87A57 /* RecipeStepCell.xib */,
 			);
-			path = CookViewController;
+			path = Views;
 			sourceTree = "<group>";
 		};
-		BBFA65E9227A2C9100EE3C2A /* Cart_Fridge_ViewControllers */ = {
+		BBFA65E9227A2C9100EE3C2A /* Cart_Fridge_Views */ = {
 			isa = PBXGroup;
 			children = (
 				BB0F24E42247872D00A3D8EF /* TextFieldView.swift */,
 				BBB6B008228730CA00E518CC /* EditTextView.swift */,
 				1C3D635C2235851E00FC4485 /* ProductTableViewCell.swift */,
 			);
-			path = Cart_Fridge_ViewControllers;
+			path = Cart_Fridge_Views;
 			sourceTree = "<group>";
 		};
-		BBFA65EA227A2C9F00EE3C2A /* RecipeCollectionViewController */ = {
+		BBFA65EA227A2C9F00EE3C2A /* RecipeCollection */ = {
 			isa = PBXGroup;
 			children = (
+				1CBEB20921AAC9300036E996 /* RecipeCollectionViewController.swift */,
+				BB180B24244356A8007E7124 /* RecipeCollectionViewModel.swift */,
+				BB7B91CC245AD1B300303085 /* RecipeGroupViewController.swift */,
+				BBDB0E99247AB44A001C86CE /* RecipeGroupViewModel.swift */,
 				1CBEB20B21AAD6C30036E996 /* RecipeCell.swift */,
 				BB7B91C2245A133200303085 /* RecipeGroupCell.swift */,
+				BB7B91CA245AD18500303085 /* RecipeGroupView.xib */,
 				BB7B91C4245A134F00303085 /* RecipeGroupCell.xib */,
 				BB7B91C8245A167700303085 /* RecipeCell.xib */,
 				BB7B91C6245A15C300303085 /* RecipeGroupCollectionView.swift */,
 			);
-			path = RecipeCollectionViewController;
+			path = RecipeCollection;
 			sourceTree = "<group>";
 		};
 		BBFA65EB227A2D2900EE3C2A /* CartsTab */ = {
 			isa = PBXGroup;
 			children = (
+				BBFA65E9227A2C9100EE3C2A /* Cart_Fridge_Views */,
 				1CAC8310217C70FA0081F24E /* CartCollectionViewController.swift */,
 				BBBE2E74244A63200092334C /* CartCollectionView.xib */,
 				BB180B1A24433367007E7124 /* CartCollectionViewModel.swift */,
@@ -461,7 +472,7 @@
 				1C4B1A012180EC32007CB9FD /* FridgeViewController.swift */,
 				BB180B2224434BC9007E7124 /* FridgeViewModel.swift */,
 				BB9F5DB6244F75AE00125874 /* ProductCell.xib */,
-				BB3C781222B66C6000F556BC /* SettingsViewController.swift */,
+				BBC6C5B522F7568800AF8423 /* SettingsViewController */,
 				BB18B21622CB0B17004F2F65 /* CreditsViewController.swift */,
 			);
 			path = FridgeTab;
@@ -470,13 +481,9 @@
 		BBFA65ED227A2D5900EE3C2A /* RecipesTab */ = {
 			isa = PBXGroup;
 			children = (
-				1CBEB20921AAC9300036E996 /* RecipeCollectionViewController.swift */,
-				BB180B24244356A8007E7124 /* RecipeCollectionViewModel.swift */,
-				1CBEB20D21AAE97B0036E996 /* RecipeViewController.swift */,
-				BB180B2624436238007E7124 /* RecipeViewModel.swift */,
-				BB7B91CC245AD1B300303085 /* RecipeGroupViewController.swift */,
-				BBDB0E99247AB44A001C86CE /* RecipeGroupViewModel.swift */,
-				BB7B91CA245AD18500303085 /* RecipeGroupView.xib */,
+				BBFA65EA227A2C9F00EE3C2A /* RecipeCollection */,
+				BBFA6602227F101B00EE3C2A /* CreateRecipe */,
+				BBFA65E7227A2C0F00EE3C2A /* Recipe */,
 				BBFA65F0227B520800EE3C2A /* CookProcessViewController.swift */,
 				BB180B2824446D3C007E7124 /* CookProcessViewModel.swift */,
 				BB7C4B8A245D6E1A0097C85F /* CookProcessView.xib */,
@@ -484,7 +491,7 @@
 			path = RecipesTab;
 			sourceTree = "<group>";
 		};
-		BBFA6602227F101B00EE3C2A /* CookingProcess */ = {
+		BBFA6602227F101B00EE3C2A /* CreateRecipe */ = {
 			isa = PBXGroup;
 			children = (
 				1C4B1A0321884EA9007CB9FD /* CookViewController.swift */,
@@ -492,8 +499,9 @@
 				BBC3488E245C3A1A00E87A57 /* CookView.xib */,
 				BBFA65FE227F052900EE3C2A /* EditImageViewController.swift */,
 				BBC34898245C5F5E00E87A57 /* EditImageView.xib */,
+				BBFA65E8227A2C5D00EE3C2A /* Views */,
 			);
-			path = CookingProcess;
+			path = CreateRecipe;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

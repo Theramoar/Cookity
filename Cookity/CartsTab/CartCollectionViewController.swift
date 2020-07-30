@@ -32,8 +32,8 @@ class CartCollectionViewController: SwipeTableViewController, UpdateVCDelegate {
         tableView.dataSource = self
         tableView.separatorStyle = .none
         tableView.register(UINib(nibName: "CartCell", bundle: nil), forCellReuseIdentifier: "CartCell")
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 120.0
+//        tableView.rowHeight = UITableView.automaticDimension
+//        tableView.estimatedRowHeight = 120.0
         
         addCartButton.layer.shadowOffset = CGSize(width: 0, height: 3.0)
         addCartButton.layer.shadowOpacity = 0.7
@@ -101,11 +101,11 @@ extension CartCollectionViewController: UITableViewDelegate, UITableViewDataSour
     //MARK: - TableView DataSource Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-            emptycartImageView.isHidden = !viewModel.cartCollectionIsEmpty
-            emptyCartMainLabel.isHidden = !viewModel.cartCollectionIsEmpty
-            emptyCartSecondLabel.isHidden = !viewModel.cartCollectionIsEmpty
+        emptycartImageView.isHidden = !viewModel.cartCollectionIsEmpty
+        emptyCartMainLabel.isHidden = !viewModel.cartCollectionIsEmpty
+        emptyCartSecondLabel.isHidden = !viewModel.cartCollectionIsEmpty
         
-        tableView.rowHeight = 60
+        tableView.rowHeight = 70
         tableView.separatorInset = .init(top: 0, left: 30, bottom: 0, right: 30)
         return viewModel.numberOfRows
     }
@@ -121,11 +121,6 @@ extension CartCollectionViewController: UITableViewDelegate, UITableViewDataSour
     //MARK: - TableView Delegate Methods
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.selectRow(atIndexPath: indexPath)
-        
-//        let vc = CartViewController()
-//        let vm = viewModel.viewModelForSelectedRow() as! CartViewModel
-//        vc.viewModel = vm
-//        navigationController?.pushViewController(vc, animated: true)
         performSegue(withIdentifier: "goToCart", sender: self)
     }
 }

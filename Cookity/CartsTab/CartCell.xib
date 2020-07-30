@@ -20,20 +20,32 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="trI-d4-fEd">
                         <rect key="frame" x="16" y="8" width="227" height="66"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="2fG-qZ-Y0L">
-                                <rect key="frame" x="8" y="0.0" width="211" height="66"/>
-                                <color key="backgroundColor" name="CellColor"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
-                                <color key="textColor" name="TextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="3Rw-QQ-uFg">
+                                <rect key="frame" x="8" y="11" width="56.5" height="44.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="2fG-qZ-Y0L">
+                                        <rect key="frame" x="0.0" y="0.0" width="56.5" height="26.5"/>
+                                        <color key="backgroundColor" name="CellColor"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                                        <color key="textColor" name="TextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 / 18" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LtN-Dv-yUf">
+                                        <rect key="frame" x="18" y="26.5" width="38.5" height="18"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <color key="textColor" name="HighlightColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="LtN-Dv-yUf" firstAttribute="leading" secondItem="3Rw-QQ-uFg" secondAttribute="leading" constant="2" id="JRj-rx-nKf"/>
+                                </constraints>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" name="CellColor"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="2fG-qZ-Y0L" secondAttribute="trailing" constant="8" id="WEB-Mk-V3W"/>
-                            <constraint firstItem="2fG-qZ-Y0L" firstAttribute="top" secondItem="trI-d4-fEd" secondAttribute="top" id="ZHM-HQ-Bfw"/>
-                            <constraint firstAttribute="bottom" secondItem="2fG-qZ-Y0L" secondAttribute="bottom" id="kKc-GU-deq"/>
-                            <constraint firstItem="2fG-qZ-Y0L" firstAttribute="leading" secondItem="trI-d4-fEd" secondAttribute="leading" constant="8" id="nAS-X3-mbT"/>
+                            <constraint firstItem="3Rw-QQ-uFg" firstAttribute="centerY" secondItem="trI-d4-fEd" secondAttribute="centerY" id="5yh-HX-M1p"/>
+                            <constraint firstItem="3Rw-QQ-uFg" firstAttribute="leading" secondItem="trI-d4-fEd" secondAttribute="leading" constant="8" id="FtV-Ca-tfV"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -49,13 +61,17 @@
             <connections>
                 <outlet property="cartName" destination="2fG-qZ-Y0L" id="DAw-MO-Wdg"/>
                 <outlet property="cellContentView" destination="trI-d4-fEd" id="tux-QK-L4B"/>
+                <outlet property="productsBoughtLabel" destination="LtN-Dv-yUf" id="sFb-HQ-cSz"/>
             </connections>
             <point key="canvasLocation" x="100.72463768115942" y="53.571428571428569"/>
         </tableViewCell>
     </objects>
     <resources>
         <namedColor name="CellColor">
-            <color red="0.79316703680203049" green="0.79316703680203049" blue="0.79316703680203049" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.88700002431869507" green="0.88700002431869507" blue="0.88700002431869507" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="HighlightColor">
+            <color red="0.3059999942779541" green="0.58399999141693115" blue="0.14499999582767487" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="TextColor">
             <color red="0.18000000715255737" green="0.3529999852180481" blue="0.10999999940395355" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

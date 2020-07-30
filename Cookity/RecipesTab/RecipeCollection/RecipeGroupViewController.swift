@@ -87,13 +87,19 @@ class RecipeGroupViewController: UIViewController {
     private func animateAddButtonChange() {
         let buttonImage = viewModel.isGroupEdited ? UIImage(named: "deleteGroupButton") : UIImage(named: "addButton")
         
-        UIView.animate(withDuration: 0.2) {
-            self.addButton.frame.size = CGSize(width: 0, height: 0)
-        }
-        UIView.animate(withDuration: 0.2, delay: 0.2, animations: {
+        let originButtonY = addButton.frame.origin.y
+
+        UIView.animate(withDuration: 0.2, animations: {
+            self.addButton.frame.origin.y = UIScreen.main.bounds.maxY
+        }) { (completed) in
             self.addButton.setImage(buttonImage, for: .normal)
-            self.addButton.frame.size = CGSize(width: 60, height: 60)
+        }
+        
+        UIView.animate(withDuration: 0.2, delay: 0.2, animations: {
+            self.addButton.frame.origin.y = originButtonY
         }, completion: nil)
+        
+
     }
     
     
