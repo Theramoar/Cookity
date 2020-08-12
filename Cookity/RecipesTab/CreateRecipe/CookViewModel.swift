@@ -99,7 +99,8 @@ class CookViewModel: DetailViewModelType {
         }
         
         
-        for recipeStep in recipeSteps {
+        for (index, recipeStep) in recipeSteps.enumerated() {
+            recipeStep.position = index
             RealmDataManager.saveToRealm(parentObject: recipe, object: recipeStep)
         }
         

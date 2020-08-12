@@ -31,8 +31,8 @@ class ProductTableViewCell: SwipeTableViewCell {
             nameLabel.attributedText = attributedName
             measureLabel.attributedText = attributedNumber
             
-            nameLabel.textColor = viewModel.isChecked ? Colors.highlightColor : Colors.textColor
-            measureLabel.textColor = viewModel.isChecked ? Colors.highlightColor : Colors.textColor
+            nameLabel.textColor = viewModel.isChecked ? Colors.appColor : Colors.textColor
+            measureLabel.textColor = viewModel.isChecked ? Colors.appColor : Colors.textColor
             
             if viewModel.isChecked, !isInFridge {
                 attributedName.addAttribute(strikethroughAttribute, value: 2, range: NSMakeRange(0, attributedName.length))

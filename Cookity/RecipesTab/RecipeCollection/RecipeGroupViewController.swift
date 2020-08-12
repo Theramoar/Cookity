@@ -52,14 +52,14 @@ class RecipeGroupViewController: UIViewController {
             return
         case .recipeGroupCollection:
             title = viewModel.groupName
-            navigationController?.navigationBar.tintColor = Colors.textColor
+            navigationController?.navigationBar.tintColor = Colors.appColor
             navigationController?.navigationBar.prefersLargeTitles = true
             navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "edit"), style: .plain, target: self, action: #selector(editGroup))
         case .addRecipeToGroupCollection:
             navigationController?.navigationBar.isTranslucent = true
             navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor : Colors.textColor!]
             navigationController?.navigationBar.titleTextAttributes = [.foregroundColor : Colors.textColor!]
-            navigationController?.navigationBar.tintColor = Colors.textColor
+            navigationController?.navigationBar.tintColor = Colors.appColor
             navigationController?.navigationBar.prefersLargeTitles = true
             navigationItem.title = "Select recipes"
             addButton.isHidden = true

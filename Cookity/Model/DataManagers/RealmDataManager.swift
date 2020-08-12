@@ -12,7 +12,7 @@ import RealmSwift
 class RealmDataManager {
 
     private static var realm: Realm {
-        let schemaVersion: UInt64 = 7
+        let schemaVersion: UInt64 = 8
         let config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
             // version (if you've never set a schema version before, the version is 0).

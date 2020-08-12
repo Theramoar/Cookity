@@ -110,7 +110,7 @@ class RecipeViewController: UIViewController, UpdateVCDelegate, CreateButtonDele
     private func setStandardNavBar() {
         imageView.removeFromSuperview()
         self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-        self.navigationController?.navigationBar.tintColor = Colors.textColor
+        self.navigationController?.navigationBar.tintColor = Colors.appColor
         self.navigationController?.navigationBar.barTintColor = Colors.viewColor
         self.navigationController?.navigationBar.backgroundColor = Colors.viewColor
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)

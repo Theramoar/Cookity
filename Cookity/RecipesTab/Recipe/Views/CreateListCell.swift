@@ -18,7 +18,7 @@ protocol CreateButtonDelegate {
     @IBOutlet weak var createListButton: UIButton! {
         didSet {
             createListButton.layer.cornerRadius = createListButton.frame.size.height / 1.5
-            createListButton.layer.borderColor = Colors.textColor?.cgColor
+            createListButton.layer.borderColor = Colors.appColor?.cgColor
             createListButton.layer.borderWidth = 2
         }
     }

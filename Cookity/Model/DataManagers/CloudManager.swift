@@ -168,7 +168,8 @@ class CloudManager {
             }
             loadChildrenFromCloud(ofType: RecipeStep.self, record: record) { loadedObjects in
                 DispatchQueue.main.async {
-                    for object in loadedObjects {
+                    let sortedObjects = loadedObjects.sorted { $0.position < $1.position }
+                    for object in sortedObjects {
                         RealmDataManager.saveToRealm(parentObject: parentObject, object: object)
                     }
                 }
@@ -340,5 +341,9 @@ class CloudManager {
         let imageUrl = URL(fileURLWithPath: imagePath)
         let imageAsset = CKAsset(fileURL: imageUrl)
         return imageAsset
+    }
+    
+    private static func sortRecipeSteps(_ recipeSteps: [RecipeStep]) -> [RecipeStep] {
+        recipeSteps.sorted { $0.position < $1.position }
     }
 }

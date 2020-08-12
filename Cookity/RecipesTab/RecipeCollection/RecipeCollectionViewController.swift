@@ -72,21 +72,29 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate, Presen
         updateVC()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        recipeGroupCreating = false
+        setupGroupSettings()
+        animateNavigationTitileChange()
+        animateAddButtonChange()
+    }
+    
+    
     
     private func setStandardNavBar() {
         switch viewModel.recipeCollectionType {
         case .recipCollection:
-            navigationController?.navigationBar.tintColor = Colors.textColor
+            navigationController?.navigationBar.tintColor = Colors.appColor
             navigationController?.navigationBar.prefersLargeTitles = true
             searchController = setupSearchBarController()
             navigationItem.searchController = searchController
             searchController.searchBar.placeholder = SettingsVariables.isIngridientSearchEnabled ? "Search for recipe or ingridient" : "Search for recipe"
             navigationItem.hidesSearchBarWhenScrolling = false
-            let image = UIImage(systemName: "text.badge.plus")?.withTintColor(Colors.textColor!, renderingMode: .alwaysOriginal)
+            let image = UIImage(systemName: "text.badge.plus")?.withTintColor(Colors.appColor!, renderingMode: .alwaysOriginal)
             navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(addGroupPressed))
             barButton = navigationItem.rightBarButtonItem
         case .recipeGroupCollection:
-            navigationController?.navigationBar.tintColor = Colors.textColor
+            navigationController?.navigationBar.tintColor = Colors.appColor
             navigationController?.navigationBar.prefersLargeTitles = true
             navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "edit"), style: .plain, target: self, action: #selector(editGroup))
         case .addRecipeToGroupCollection:
@@ -102,6 +110,17 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate, Presen
         return searchController
     }
     
+    private func setupGroupSettings() {
+        if !recipeGroupCreating {
+            viewModel.uncheckRecipes()
+            recipeCollection.reloadData()
+        }
+        navigationItem.rightBarButtonItem?.image = recipeGroupCreating ? nil : UIImage(systemName: "text.badge.plus")?.withTintColor(Colors.appColor!, renderingMode: .alwaysOriginal)
+        navigationItem.rightBarButtonItem?.title = recipeGroupCreating ? "Cancel" : nil
+    }
+
+    
+//MARK:- Animations
     private func animateAddButtonChange() {
         let buttonImage = recipeGroupCreating ? UIImage(named: "addGroupButton") : UIImage(named: "addButton")
         let originButtonY = addRecipeButton.frame.origin.y
@@ -115,6 +134,14 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate, Presen
         UIView.animate(withDuration: 0.2, delay: 0.2, animations: {
             self.addRecipeButton.frame.origin.y = originButtonY
         }, completion: nil)
+    }
+    
+    private func animateNavigationTitileChange() {
+        let fadeTextAnimation = CATransition()
+        fadeTextAnimation.duration = 0.4
+        fadeTextAnimation.type = CATransitionType.fade
+        navigationController?.navigationBar.layer.add(fadeTextAnimation, forKey: "fadeText")
+        navigationItem.title = self.recipeGroupCreating ? " \(self.viewModel.numberOfSelectedRecipes) Recipes selected" : "Recipes"
     }
     
     //MARK:- UpdateVCDelegate Method
@@ -163,16 +190,9 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate, Presen
             present(vc, animated: true, completion: nil)
             return
         }
-        
-        if recipeGroupCreating {
-            viewModel.uncheckRecipes()
-            recipeCollection.reloadData()
-        }
-        
         recipeGroupCreating = !recipeGroupCreating
-        navigationItem.rightBarButtonItem?.image = recipeGroupCreating ? nil : UIImage(systemName: "text.badge.plus")?.withTintColor(Colors.textColor!, renderingMode: .alwaysOriginal)
-        navigationItem.rightBarButtonItem?.title = recipeGroupCreating ? "Cancel" : nil
-        navigationItem.title = recipeGroupCreating ? " \(viewModel.numberOfSelectedRecipes) Recipes selected" : "Recipes"
+        setupGroupSettings()
+        animateNavigationTitileChange()
         animateAddButtonChange()
     }
     

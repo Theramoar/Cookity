@@ -47,9 +47,10 @@ class CookViewController: UIViewController {
         deleteButton.isEnabled = viewModel.isNewRecipe ? false : true
         deleteButton.isHidden = viewModel.isNewRecipe ? true : false
         
-        saveButton.layer.shadowOffset = CGSize(width: 0, height: -3)
+        saveButton.layer.shadowOffset = CGSize(width: 0, height: -1)
         saveButton.layer.shadowOpacity = 0.1
-        saveButton.layer.shadowRadius = 2.5
+        saveButton.layer.shadowRadius = 0.1
+        saveButton.layer.shadowColor = Colors.shadowColor?.cgColor
         
         // tapgesture is used for the keyboard removal
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
@@ -60,7 +61,6 @@ class CookViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
-    
     
     //MARK:- User Interaction Methods
     @objc func keyboardWillAppear(notification: NSNotification){
@@ -106,9 +106,17 @@ class CookViewController: UIViewController {
     
     //MARK: - Methods for Buttons
     @IBAction func deleteButtonPressed(_ sender: UIButton) {
-        viewModel.deleteRecipe()
-        updateVCDelegate?.updateVC()
-        self.dismiss(animated: true, completion: nil)
+        let alert = UIAlertController(title: "Delete recipe?", message: "Recipe will be permanently deleted", preferredStyle: .alert)
+        alert.view.tintColor = Colors.textColor
+        let delete = UIAlertAction(title: "Yes", style: .destructive) { _ in
+            self.viewModel.deleteRecipe()
+            self.updateVCDelegate?.updateVC()
+            self.dismiss(animated: true, completion: nil)
+        }
+        let cancel = UIAlertAction(title: "No", style: .cancel, handler: nil)
+        alert.addAction(delete)
+        alert.addAction(cancel)
+        present(alert, animated: true, completion: nil)
     }
     
     @IBAction func cancelButtonPressed(_ sender: UIButton) {

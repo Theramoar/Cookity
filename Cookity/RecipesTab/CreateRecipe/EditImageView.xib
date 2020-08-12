@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -66,7 +66,7 @@
                                             <rect key="frame" x="140" y="369" width="118" height="33"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                             <state key="normal" title="Change Image">
-                                                <color key="titleColor" name="TextColor"/>
+                                                <color key="titleColor" name="AppColor"/>
                                             </state>
                                             <connections>
                                                 <action selector="importButtonPressed:" destination="-1" eventType="touchUpInside" id="Ubq-2y-l3b"/>
@@ -76,7 +76,7 @@
                                             <rect key="frame" x="145" y="412" width="108" height="33"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                             <state key="normal" title="Delete Image">
-                                                <color key="titleColor" name="TextColor"/>
+                                                <color key="titleColor" name="AppColor"/>
                                             </state>
                                             <connections>
                                                 <action selector="deleteButtonPressed:" destination="-1" eventType="touchUpInside" id="TCG-gL-5dR"/>
@@ -85,7 +85,7 @@
                                     </subviews>
                                 </stackView>
                             </subviews>
-                            <color key="backgroundColor" name="ViewColor"/>
+                            <color key="backgroundColor" name="PopupColor"/>
                             <constraints>
                                 <constraint firstItem="Wfh-dP-Fjt" firstAttribute="leading" secondItem="x2Z-Ld-AlF" secondAttribute="leading" constant="8" id="8vs-nT-xbe"/>
                                 <constraint firstAttribute="bottom" secondItem="5q7-Ir-wVr" secondAttribute="bottom" constant="30" id="Cvf-ca-Hbq"/>
@@ -120,10 +120,10 @@
     <resources>
         <image name="close" width="32" height="32"/>
         <image name="tick" width="32" height="32"/>
-        <namedColor name="TextColor">
-            <color red="0.21199999749660492" green="0.38400000333786011" blue="0.16899999976158142" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="AppColor">
+            <color red="0.3059999942779541" green="0.58399999141693115" blue="0.14499999582767487" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="ViewColor">
+        <namedColor name="PopupColor">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>

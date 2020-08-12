@@ -40,15 +40,8 @@ class CartCellViewModel: CellViewModelType {
         cart.name
     }
     var productsBought: String {
-        "\(cart.products.filter { $0.checked }.count) / \(cart.products.count)"
+        "\(cart.products.filter { $0.checked }.count)/\(cart.products.count) products bought"
     }
-    
-//    var allProductsCount: String {
-//        String(cart.products.count)
-//    }
-//    var boughtProductsCount: String {
-//        return String(cart.products.filter { $0.checked }.count)
-//    }
     
     init(cart: ShoppingCart) {
         self.cart = cart

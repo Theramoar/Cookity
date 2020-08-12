@@ -76,15 +76,19 @@ class Recipe: Object, ParentObject, Codable {
     
     required convenience init(record: CKRecord) {
         self.init()
-        print(record.allKeys())
-        print(record.recordType)
+
         self.name = record.value(forKey: "name") as! String
         self.cloudID = record.recordID.recordName
-//        let recipeGroup = record.value(forKey: "recipeGroup") as! String
         guard let recipeGroup = record.value(forKey: "recipeGroup") as? String else { print("FAILED DOWNLOADING GROUP"); return }
         self.recipeGroup = recipeGroup
     }
     
+    
+    func assignPositionToStep() {
+        for (index, stepInArray) in recipeSteps.enumerated() {
+            stepInArray.position = index
+        }
+    }
     
     
     func encode(to encoder: Encoder) throws {

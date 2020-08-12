@@ -32,9 +32,10 @@ class TextFieldView: UIView {
     override func awakeFromNib() {
         viewHeight = self.frame.height
         
-        self.layer.shadowOffset = CGSize(width: 0, height: -3)
-        self.layer.shadowOpacity = 0.05
-        self.layer.shadowRadius = 2
+        self.layer.shadowOffset = CGSize(width: 0, height: -1)
+        self.layer.shadowOpacity = 0.1
+        self.layer.shadowRadius = 0.1
+        self.layer.shadowColor = Colors.shadowColor?.cgColor
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIResponder.keyboardWillHideNotification, object: nil)
