@@ -29,18 +29,13 @@ class RecipeCell: UICollectionViewCell {
             recipeName.layer.shadowOpacity = 0.6
             recipeName.layer.shadowRadius = 1
             recipeImage.image = viewModel.image
-//            checkImageView.image = setCheckImage()
             checkImageView.isHidden = !viewModel.checkedForGroup
             removeFromGroupButton.isHidden = !viewModel.isCellEdited
         }
     }
     
-    private func setCheckImage() -> UIImage? {
-        return UIImage(systemName: "checkmark.circle.fill")?.withTintColor(Colors.highlightColor!, renderingMode: .alwaysOriginal)
-    }
-    
     private func setImages() {
-        checkImageView.image = UIImage(systemName: "checkmark.circle.fill")?.withTintColor(Colors.highlightColor!, renderingMode: .alwaysOriginal)
+        checkImageView.image = UIImage(systemName: "checkmark.circle.fill")?.withTintColor(Colors.appColor!, renderingMode: .alwaysOriginal)
         removeFromGroupButton.setImage(UIImage(systemName: "minus.circle.fill")?.withTintColor(.red, renderingMode: .alwaysOriginal), for: .normal)
     }
     
@@ -85,7 +80,6 @@ class RecipeCollectionCellViewModel: CellViewModelType {
     
     func removeRecipeFromGroup() {
         guard let indexPath = cellIndexPath else { return }
-        print("ViewModel Worked")
         removeRecipeDelegate?.removeRecipeFromGroup(at: indexPath)
     }
     

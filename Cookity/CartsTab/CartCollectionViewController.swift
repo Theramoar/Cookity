@@ -32,8 +32,6 @@ class CartCollectionViewController: SwipeTableViewController, UpdateVCDelegate {
         tableView.dataSource = self
         tableView.separatorStyle = .none
         tableView.register(UINib(nibName: "CartCell", bundle: nil), forCellReuseIdentifier: "CartCell")
-//        tableView.rowHeight = UITableView.automaticDimension
-//        tableView.estimatedRowHeight = 120.0
         
         addCartButton.layer.shadowOffset = CGSize(width: 0, height: 3.0)
         addCartButton.layer.shadowOpacity = 0.7

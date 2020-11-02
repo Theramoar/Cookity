@@ -10,5 +10,7 @@ target 'Cookity' do
 pod 'RealmSwift'
 pod 'Realm'
 pod 'SwipeCellKit'
+pod 'Firebase/Analytics'
+pod 'Firebase/Crashlytics'
 
 end

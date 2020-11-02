@@ -16,7 +16,6 @@ class InAppPurchaseViewController: UIViewController {
     
     override func viewDidLoad() {
         setupButton(buyButton, title: "\(IAPManager.shared.priceStringForProduct(withIdentifier: IAPProducts.fullPro.rawValue))\nLifetime Cookity+")
-//        setupButton(subscribeButton, title: "\(IAPManager.shared.priceStringForProduct(withIdentifier: IAPProducts.monthlyPro.rawValue))\nMonthly")
         
         NotificationCenter.default.addObserver(self, selector: #selector(completeFullPro), name: NSNotification.Name(IAPProducts.fullPro.rawValue), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(completeMonthlyPro), name: NSNotification.Name(IAPProducts.monthlyPro.rawValue), object: nil)
@@ -31,14 +30,14 @@ class InAppPurchaseViewController: UIViewController {
     
     @objc private func completeFullPro() {
         UserPurchases.fullPro = true
-        NotificationCenter.default.post(name: NSNotification.Name(NotificationNames.purchaseWasSuccesful), object: nil)
+        NotificationCenter.default.post(name: .purchaseWasSuccesful, object: nil)
         self.dismiss(animated: true, completion: nil)
         
     }
     
     @objc private func completeMonthlyPro() {
         UserPurchases.monthlyPro = true
-        NotificationCenter.default.post(name: NSNotification.Name(NotificationNames.purchaseWasSuccesful), object: nil)
+        NotificationCenter.default.post(name: .purchaseWasSuccesful, object: nil)
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -56,7 +55,7 @@ class InAppPurchaseViewController: UIViewController {
         let alert = UIAlertController(title: "All purchases are restored!", message: nil, preferredStyle: .alert)
         alert.view.tintColor = Colors.textColor
         let ok = UIAlertAction(title: "OK", style: .default) { _ in
-            NotificationCenter.default.post(name: NSNotification.Name(NotificationNames.purchaseWasSuccesful), object: nil)
+            NotificationCenter.default.post(name: .purchaseWasSuccesful, object: nil)
             self.dismiss(animated: true, completion: nil)
         }
         alert.addAction(ok)

@@ -10,23 +10,17 @@ import UIKit
 import MessageUI
 
 
-class SettingsViewController: UIViewController, UpdateVCDelegate {
-    
-    func updateVC() {
-        tableView.reloadData()
-    }
-    
-
-
+class SettingsViewController: UIViewController {
     @IBOutlet weak var buyProButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     let sections = ["General", "Contact us"]
+    private var canAnimate = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTable()
         setupButton()
-        NotificationCenter.default.addObserver(self, selector: #selector(IAPPurchased), name: NSNotification.Name(NotificationNames.purchaseWasSuccesful), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(IAPPurchased), name: .purchaseWasSuccesful, object: nil)
     }
     
     deinit {
@@ -177,6 +171,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
             case 3:
                 let defCell = tableView.dequeueReusableCell(withIdentifier: "DefaultDatePickerCell", for: indexPath) as! DefaultDatePickerCell
                 defCell.delegate = self
+                defCell.animator = self
                 return defCell
                 
             default:
@@ -211,7 +206,27 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         default:
             break
         }
-        
+    }
+}
+
+extension SettingsViewController: UpdateVCDelegate, DatePickerAnimator {
+    func updateVC() {
+        tableView.reloadData()
+    }
+    
+    func rotateArrow() {
+        self.tableView.beginUpdates()
+        self.tableView.endUpdates()
+        guard let cell = tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as? DefaultDatePickerCell else { return }
+        if !cell.defaultDatePicker.isHidden {
+            UIView.animate(withDuration: 0.3, animations: {
+                cell.arrowImageView.transform = CGAffineTransform(rotationAngle: -.pi/2)
+            })
+        } else {
+            UIView.animate(withDuration: 0.3, animations: {
+                cell.arrowImageView.transform = CGAffineTransform(rotationAngle: 0)
+            })
+        }
     }
 }
 

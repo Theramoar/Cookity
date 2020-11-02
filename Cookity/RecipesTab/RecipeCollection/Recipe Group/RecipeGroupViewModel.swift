@@ -57,11 +57,11 @@ class RecipeGroupViewModel : DetailViewModelType, RemoveFromGroupDelegate {
     }
     
     func removeRecipeFromGroup(at indexPath: IndexPath) {
-        let recipe =  recipeGroup.recipes[indexPath.row]
+        let recipe =  recipeGroup.recipes[indexPath.row - 1]
         RealmDataManager.changeElementIn(object: recipe, keyValue: "recipeGroup", objectParameter: recipe.recipeGroup, newParameter: "")
         CloudManager.updateRecipeInCloud(recipe: recipe)
-        recipeGroup.recipes.remove(at: indexPath.row)
-        NotificationCenter.default.post(name: NSNotification.Name(NotificationNames.groupIsUpdated), object: nil)
+        recipeGroup.recipes.remove(at: indexPath.row - 1)
+        NotificationCenter.default.post(name: .groupIsUpdated, object: nil)
     }
     
     
@@ -84,7 +84,7 @@ class RecipeGroupViewModel : DetailViewModelType, RemoveFromGroupDelegate {
 //MARK:- Methods to addRecipeToGroupCollection Type
     func selectRecipeForGroup(atIndexPath indexPath: IndexPath, completion: @escaping () -> ()) {
         //Добавить filtered recipe??
-        let recipe = recipeGroup.recipes[indexPath.row]
+        let recipe = recipeGroup.recipes[indexPath.row - 1]
         RealmDataManager.changeElementIn(object: recipe, keyValue: "checkedForGroup", objectParameter: recipe.checkedForGroup, newParameter: !recipe.checkedForGroup)
         if recipe.checkedForGroup {
             selectedRecipesForGroup.append(recipe)
@@ -114,7 +114,8 @@ class RecipeGroupViewModel : DetailViewModelType, RemoveFromGroupDelegate {
 //MARK: - TableViewModelType Methods
 extension RecipeGroupViewModel: TableViewModelType {
     var numberOfRows: Int {
-        recipeGroup.recipes.count
+        recipeGroup.recipes.count + 1
+        
     }
     
     var numberOfSections: Int {
@@ -122,7 +123,8 @@ extension RecipeGroupViewModel: TableViewModelType {
     }
     
     func cellViewModel(forIndexPath indexPath: IndexPath) -> CellViewModelType? {
-        let vm = RecipeCollectionCellViewModel(recipe: recipeGroup.recipes[indexPath.row], cellIndexPath: indexPath)
+        let row = indexPath.row - 1
+        let vm = RecipeCollectionCellViewModel(recipe: recipeGroup.recipes[row], cellIndexPath: indexPath)
         vm.isCellEdited = isGroupEdited
         vm.removeRecipeDelegate = self
         return vm
@@ -130,7 +132,7 @@ extension RecipeGroupViewModel: TableViewModelType {
     
     func viewModelForSelectedRow() -> DetailViewModelType? {
         guard let row = selectedIndexPath?.row else { return nil }
-        return RecipeViewModel(recipe: recipeGroup.recipes[row])
+        return RecipeViewModel(recipe: recipeGroup.recipes[row - 1])
     }
     
     func selectRow(atIndexPath indexPath: IndexPath) {

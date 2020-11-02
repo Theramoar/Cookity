@@ -13,12 +13,6 @@ class RecipeGroupViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var addButton: UIButton!
-    @IBOutlet weak var nameTextField: UITextField!
-    
-    @IBOutlet weak var textFieldConstraint: NSLayoutConstraint!
-    @IBOutlet weak var textFieldHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var collectionViewConstraint: NSLayoutConstraint!
-    
     
     var viewModel: RecipeGroupViewModel!
     
@@ -27,12 +21,13 @@ class RecipeGroupViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(UINib(nibName: "RecipeCell", bundle: nil), forCellWithReuseIdentifier: "RecipeCell")
+        collectionView.register(UINib(nibName: "ChangeGroupNameCell", bundle: nil), forCellWithReuseIdentifier: "ChangeGroupNameCell")
         
         switch viewModel.recipeCollectionType {
         case .recipCollection:
             return
         case .recipeGroupCollection:
-            NotificationCenter.default.addObserver(self, selector: #selector(reload), name: NSNotification.Name(NotificationNames.groupIsUpdated), object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(reload), name: .groupIsUpdated, object: nil)
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
             tapGesture.cancelsTouchesInView = false
             self.view.addGestureRecognizer(tapGesture)
@@ -46,7 +41,6 @@ class RecipeGroupViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        setupNameTextField()
         switch viewModel.recipeCollectionType {
         case .recipCollection:
             return
@@ -70,13 +64,10 @@ class RecipeGroupViewController: UIViewController {
         viewModel.uncheckSelectedRecipes()
     }
     
-    private func setupNameTextField() {
-        self.nameTextField.isHidden = !self.viewModel.isGroupEdited
-        collectionViewConstraint.constant = viewModel.isGroupEdited ? 20 : 0
-        textFieldConstraint.constant = viewModel.isGroupEdited ? 20 : 0
-        textFieldHeightConstraint.constant = viewModel.isGroupEdited ? 32 : 0
-        nameTextField.text = viewModel.isGroupEdited ? viewModel.groupName : "" 
-        
+    private func setupNavigationViewForChangeName() {
+        navigationItem.rightBarButtonItem?.image = viewModel.isGroupEdited ? nil : UIImage(named: "edit")
+        navigationItem.rightBarButtonItem?.title = viewModel.isGroupEdited ? "Done" : nil
+        title = viewModel.isGroupEdited ? "Edit group" : viewModel.groupName
     }
     
     @objc private func reload() {
@@ -106,15 +97,14 @@ class RecipeGroupViewController: UIViewController {
 //MARK:- Methods for Buttons
     @objc private func editGroup() {
         viewModel.isGroupEdited = !viewModel.isGroupEdited
-        collectionView.reloadData()
-        if !viewModel.isGroupEdited, let name = nameTextField.text, !name.isEmpty {
+        collectionView.performBatchUpdates(nil) { _ in 
+            self.collectionView.reloadData()
+        }
+        let cell = collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? ChangeGroupNameCell
+        if !viewModel.isGroupEdited, let name = cell?.nameTextField.text, !name.isEmpty {
             viewModel.saveGroupName(name)
         }
-        setupNameTextField()
-        navigationItem.rightBarButtonItem?.image = viewModel.isGroupEdited ? nil : UIImage(named: "edit")
-        navigationItem.rightBarButtonItem?.title = viewModel.isGroupEdited ? "Done" : nil
-        title = viewModel.isGroupEdited ? nil : viewModel.groupName
-        navigationController?.navigationBar.prefersLargeTitles = !viewModel.isGroupEdited
+        setupNavigationViewForChangeName()
         animateAddButtonChange()
     }
     
@@ -141,7 +131,7 @@ class RecipeGroupViewController: UIViewController {
             }
         case .addRecipeToGroupCollection:
             viewModel.appendExistingRecipesToGroup()
-            NotificationCenter.default.post(name: NSNotification.Name(NotificationNames.groupIsUpdated), object: nil)
+            NotificationCenter.default.post(name: .groupIsUpdated, object: nil)
             self.dismiss(animated: true, completion: nil)
         }
     }
@@ -183,7 +173,6 @@ class RecipeGroupViewController: UIViewController {
         alert.addAction(cancel)
         present(alert, animated: true, completion: nil)
     }
-    
 }
 
 
@@ -194,12 +183,21 @@ extension RecipeGroupViewController: UICollectionViewDelegate, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecipeCell", for: indexPath) as! RecipeCell
-        cell.viewModel = viewModel.cellViewModel(forIndexPath: indexPath)  as? RecipeCollectionCellViewModel
-        return cell
+        if indexPath.row == 0 {
+            let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: "ChangeGroupNameCell", for: indexPath) as! ChangeGroupNameCell
+            cell.nameTextField.text = viewModel.groupName
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecipeCell", for: indexPath) as! RecipeCell
+            cell.viewModel = viewModel.cellViewModel(forIndexPath: indexPath)  as? RecipeCollectionCellViewModel
+            return cell
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if indexPath.row == 0 {
+            return viewModel.isGroupEdited ? CGSize(width: 302, height: 52) : CGSize(width: 302, height: 0)
+        }
         return CGSize(width: 302, height: 152)
     }
     

@@ -8,10 +8,17 @@
 
 import UIKit
 
+protocol DatePickerAnimator {
+    func rotateArrow()
+}
+
 class DefaultDatePickerCell: UITableViewCell {
 
+    @IBOutlet weak var datePickerHeight: NSLayoutConstraint!
     @IBOutlet weak var defaultDateButton: UIButton!
+    @IBOutlet weak var arrowImageView: UIImageView!
     var delegate: UpdateVCDelegate?
+    var animator: DatePickerAnimator?
     
     @IBOutlet weak var defaultDatePicker: UIPickerView! {
         didSet {
@@ -28,19 +35,24 @@ class DefaultDatePickerCell: UITableViewCell {
         return pickerDates
     }
     
+    var datePickerShown = false
+    
     override func awakeFromNib() {
         super.awakeFromNib()
+        arrowImageView.image = UIImage(systemName: "chevron.left")?.withTintColor(Colors.appColor!)
         selectionStyle = .none
         defaultDatePicker.isHidden = true
+        datePickerHeight.constant = 0
         defaultDateButton.setTitle("\(SettingsVariables.defaultExpirationDate) days since product purchase", for: .normal)
     }
     
     @IBAction func defaultButtonPressed(_ sender: Any) {
-        defaultDatePicker.isHidden = !defaultDatePicker.isHidden
-        delegate?.updateVC()
+        defaultDatePicker.isHidden.toggle()
+        datePickerHeight.constant = defaultDatePicker.isHidden ? 0 : 150
+        animator?.rotateArrow()
+//        delegate?.updateVC()
+//        NotificationCenter.default.post(name: .datePickerWasToggled, object: nil)
     }
-    
-    
 }
 
 extension DefaultDatePickerCell: UIPickerViewDataSource, UIPickerViewDelegate {

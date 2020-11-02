@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -12,15 +13,22 @@
         <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DefaultDatePickerCell" rowHeight="250" id="onR-C7-iKx" customClass="DefaultDatePickerCell" customModule="Cookity" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="410" height="194"/>
             <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="onR-C7-iKx" id="c5u-U6-koS">
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="onR-C7-iKx" id="c5u-U6-koS">
                 <rect key="frame" x="0.0" y="0.0" width="410" height="194"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="7wq-KB-vbF">
-                        <rect key="frame" x="20" y="0.0" width="390" height="194"/>
+                    <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LD5-iP-N8u">
+                        <rect key="frame" x="20" y="38" width="370" height="146"/>
+                        <color key="backgroundColor" name="ViewColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="146" id="cao-jI-eQP"/>
+                        </constraints>
+                    </pickerView>
+                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="LPT-fk-UOW">
+                        <rect key="frame" x="20" y="0.0" width="67" height="30"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GJr-nz-YK8">
-                                <rect key="frame" x="23" y="0.0" width="46" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GJr-nz-YK8">
+                                <rect key="frame" x="0.0" y="0.0" width="46" height="30"/>
                                 <state key="normal" title="Button">
                                     <color key="titleColor" name="AppColor"/>
                                 </state>
@@ -28,28 +36,29 @@
                                     <action selector="defaultButtonPressed:" destination="onR-C7-iKx" eventType="touchUpInside" id="VJD-WM-NEc"/>
                                 </connections>
                             </button>
-                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LD5-iP-N8u">
-                                <rect key="frame" x="23" y="30" width="367" height="164"/>
-                                <color key="backgroundColor" name="ViewColor"/>
-                            </pickerView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uA0-XR-ojZ">
+                                <rect key="frame" x="51" y="7" width="16" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="Xww-F9-EV7"/>
+                                    <constraint firstAttribute="width" constant="16" id="a0M-kq-wi4"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="LD5-iP-N8u" secondAttribute="trailing" id="FFJ-hi-faJ"/>
-                            <constraint firstItem="GJr-nz-YK8" firstAttribute="leading" secondItem="7wq-KB-vbF" secondAttribute="leading" constant="23" id="J8X-eS-xaZ"/>
-                            <constraint firstItem="LD5-iP-N8u" firstAttribute="leading" secondItem="7wq-KB-vbF" secondAttribute="leading" id="TxL-TX-GJH"/>
-                            <constraint firstAttribute="bottom" secondItem="LD5-iP-N8u" secondAttribute="bottom" id="dsK-XD-v6p"/>
-                        </constraints>
                     </stackView>
                 </subviews>
                 <color key="backgroundColor" name="ViewColor"/>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="7wq-KB-vbF" secondAttribute="trailing" id="BHV-7b-cJ1"/>
-                    <constraint firstItem="7wq-KB-vbF" firstAttribute="top" secondItem="c5u-U6-koS" secondAttribute="top" id="Qgo-69-JFo"/>
-                    <constraint firstItem="7wq-KB-vbF" firstAttribute="leading" secondItem="c5u-U6-koS" secondAttribute="leading" constant="20" id="VHc-Zd-JdZ"/>
-                    <constraint firstAttribute="bottom" secondItem="7wq-KB-vbF" secondAttribute="bottom" id="kw0-E9-FbL"/>
+                    <constraint firstAttribute="bottom" secondItem="LD5-iP-N8u" secondAttribute="bottom" id="Ggn-mv-vkO"/>
+                    <constraint firstItem="LPT-fk-UOW" firstAttribute="leading" secondItem="c5u-U6-koS" secondAttribute="leading" constant="20" symbolic="YES" id="Ivw-em-BIR"/>
+                    <constraint firstItem="LD5-iP-N8u" firstAttribute="leading" secondItem="c5u-U6-koS" secondAttribute="leading" constant="20" symbolic="YES" id="S3d-be-HHL"/>
+                    <constraint firstItem="LPT-fk-UOW" firstAttribute="top" secondItem="c5u-U6-koS" secondAttribute="top" id="YPt-nE-Cc0"/>
+                    <constraint firstItem="LD5-iP-N8u" firstAttribute="top" secondItem="c5u-U6-koS" secondAttribute="top" constant="38" id="ZD6-CH-N9x"/>
+                    <constraint firstAttribute="trailing" secondItem="LD5-iP-N8u" secondAttribute="trailing" constant="20" symbolic="YES" id="ete-W9-Y8b"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="arrowImageView" destination="uA0-XR-ojZ" id="89C-pb-mUc"/>
+                <outlet property="datePickerHeight" destination="cao-jI-eQP" id="K5u-Sw-CYP"/>
                 <outlet property="defaultDateButton" destination="GJr-nz-YK8" id="dRM-B3-zsj"/>
                 <outlet property="defaultDatePicker" destination="LD5-iP-N8u" id="fL5-3z-j8t"/>
             </connections>
@@ -58,7 +67,7 @@
     </objects>
     <resources>
         <namedColor name="AppColor">
-            <color red="0.30588235294117649" green="0.58431372549019611" blue="0.14509803921568626" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.3059999942779541" green="0.58399999141693115" blue="0.14499999582767487" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="ViewColor">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

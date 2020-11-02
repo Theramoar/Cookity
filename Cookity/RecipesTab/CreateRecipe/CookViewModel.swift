@@ -176,11 +176,11 @@ class CookViewModel: DetailViewModelType {
     private func updateRecipeGroup(with recipe: Recipe) {
         guard let name = recipeGroup?.name else { return }
         RealmDataManager.changeElementIn(object: recipe, keyValue: "recipeGroup", objectParameter: recipe.recipeGroup, newParameter: name)
-        NotificationCenter.default.post(name: NSNotification.Name(NotificationNames.groupIsUpdated), object: nil)
+        NotificationCenter.default.post(name: .groupIsUpdated, object: nil)
     }
     private func deleteRecipeFromGroup(_ recipe: Recipe) {
         RealmDataManager.changeElementIn(object: recipe, keyValue: "recipeGroup", objectParameter: recipe.recipeGroup, newParameter: "")
-        NotificationCenter.default.post(name: NSNotification.Name(NotificationNames.groupIsUpdated), object: nil)
+        NotificationCenter.default.post(name: .groupIsUpdated, object: nil)
     }
     
     private func configureNumbers() {

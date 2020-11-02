@@ -8,10 +8,10 @@
 
 import Foundation
 
-
-struct NotificationNames {
-    static let recipeIsAdded = "RecipeIsAdded"
-    static let groupIsUpdated = "GroupIsUpdated"
-    static let purchasesAreAvailable = "PurchasesAreAvailable"
-    static let purchaseWasSuccesful = "PurchaseWasSuccesful"
+extension Notification.Name {
+    static let recipeIsAdded = NSNotification.Name("RecipeIsAdded")
+    static let groupIsUpdated = NSNotification.Name("GroupIsUpdated")
+    static let purchasesAreAvailable = NSNotification.Name("PurchasesAreAvailable")
+    static let purchaseWasSuccesful = NSNotification.Name("PurchaseWasSuccesful")
+    static let datePickerWasToggled = NSNotification.Name("DatePickerWasToggled")
 }

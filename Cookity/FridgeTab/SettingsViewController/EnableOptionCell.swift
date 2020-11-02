@@ -37,7 +37,7 @@ class EnableOptionCell: UITableViewCell {
                 }
             case .enableCloud:
                 ingridientSwitch.isOn = SettingsVariables.isCloudEnabled == true ? true : false
-                cellLabel.text = "Enable iCloud synchronization"
+                cellLabel.text = "Enable iCloud"
                 if #available(iOS 13.0, *) {
                     cellImageView.image = #imageLiteral(resourceName: "cloud_40").withTintColor(Colors.textColor!)
                 }

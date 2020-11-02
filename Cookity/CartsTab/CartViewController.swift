@@ -81,6 +81,10 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
         self.view.addGestureRecognizer(longPressRecognizer)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = true
+    }
+    
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         UIView.setAnimationsEnabled(true)

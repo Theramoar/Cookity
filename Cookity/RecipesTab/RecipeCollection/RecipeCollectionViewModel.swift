@@ -217,7 +217,9 @@ extension RecipeCollectionViewModel: TableViewModelType {
     
     func selectRecipeForGroup(atIndexPath indexPath: IndexPath, completion: @escaping () -> ()) {
         //Добавить filtered recipe??
-        let recipe = noGroupRecipes[indexPath.row]
+        let recipe = isFiltering ? filteredRecipeList[indexPath.row] : noGroupRecipes[indexPath.row]
+        
+        guard recipe.recipeGroup.isEmpty else { return }
         RealmDataManager.changeElementIn(object: recipe, keyValue: "checkedForGroup", objectParameter: recipe.checkedForGroup, newParameter: !recipe.checkedForGroup)
         if recipe.checkedForGroup {
             selectedRecipesForGroup.append(recipe)

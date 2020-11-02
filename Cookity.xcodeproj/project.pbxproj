@@ -76,6 +76,9 @@
 		BB7B91D5245AE94300303085 /* RecipeProductCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB7B91D4245AE94300303085 /* RecipeProductCell.xib */; };
 		BB7C4B8B245D6E1A0097C85F /* CookProcessView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB7C4B8A245D6E1A0097C85F /* CookProcessView.xib */; };
 		BB9F5DB7244F75AE00125874 /* ProductCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB9F5DB6244F75AE00125874 /* ProductCell.xib */; };
+		BBAE322F254EFDF6005649A5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BBAE322E254EFDF6005649A5 /* GoogleService-Info.plist */; };
+		BBAE324925508783005649A5 /* ChangeGroupNameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBAE324825508783005649A5 /* ChangeGroupNameCell.swift */; };
+		BBAE324C255087AC005649A5 /* ChangeGroupNameCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBAE324B255087AC005649A5 /* ChangeGroupNameCell.xib */; };
 		BBB6B009228730CA00E518CC /* EditTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB6B008228730CA00E518CC /* EditTextView.swift */; };
 		BBB6B07522A8F29700E518CC /* icon_320.png in Resources */ = {isa = PBXBuildFile; fileRef = BBB6B07122A8F29700E518CC /* icon_320.png */; };
 		BBB6B07622A8F29700E518CC /* icon_22.png in Resources */ = {isa = PBXBuildFile; fileRef = BBB6B07222A8F29700E518CC /* icon_22.png */; };
@@ -180,6 +183,9 @@
 		BB7B91D4245AE94300303085 /* RecipeProductCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipeProductCell.xib; sourceTree = "<group>"; };
 		BB7C4B8A245D6E1A0097C85F /* CookProcessView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CookProcessView.xib; sourceTree = "<group>"; };
 		BB9F5DB6244F75AE00125874 /* ProductCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProductCell.xib; sourceTree = "<group>"; };
+		BBAE322E254EFDF6005649A5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		BBAE324825508783005649A5 /* ChangeGroupNameCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeGroupNameCell.swift; sourceTree = "<group>"; };
+		BBAE324B255087AC005649A5 /* ChangeGroupNameCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChangeGroupNameCell.xib; sourceTree = "<group>"; };
 		BBB6B008228730CA00E518CC /* EditTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTextView.swift; sourceTree = "<group>"; };
 		BBB6B07122A8F29700E518CC /* icon_320.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_320.png; sourceTree = "<group>"; };
 		BBB6B07222A8F29700E518CC /* icon_22.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_22.png; sourceTree = "<group>"; };
@@ -268,6 +274,7 @@
 			isa = PBXGroup;
 			children = (
 				BB26F7F52303475D00FDD2BB /* Cookity.entitlements */,
+				BBAE322E254EFDF6005649A5 /* GoogleService-Info.plist */,
 				1CA007D32165571E0072A908 /* Info.plist */,
 				1CA007CB2165571B0072A908 /* Main.storyboard */,
 				1CA007D02165571E0072A908 /* LaunchScreen.storyboard */,
@@ -370,6 +377,28 @@
 			path = InAppPurchase;
 			sourceTree = "<group>";
 		};
+		BBAE324F25509620005649A5 /* Recipe Group */ = {
+			isa = PBXGroup;
+			children = (
+				BB7B91CC245AD1B300303085 /* RecipeGroupViewController.swift */,
+				BBDB0E99247AB44A001C86CE /* RecipeGroupViewModel.swift */,
+				BB7B91CA245AD18500303085 /* RecipeGroupView.xib */,
+				BBAE324825508783005649A5 /* ChangeGroupNameCell.swift */,
+				BBAE324B255087AC005649A5 /* ChangeGroupNameCell.xib */,
+			);
+			path = "Recipe Group";
+			sourceTree = "<group>";
+		};
+		BBAE325825509764005649A5 /* Collection Group Cell */ = {
+			isa = PBXGroup;
+			children = (
+				BB7B91C2245A133200303085 /* RecipeGroupCell.swift */,
+				BB7B91C6245A15C300303085 /* RecipeGroupCollectionView.swift */,
+				BB7B91C4245A134F00303085 /* RecipeGroupCell.xib */,
+			);
+			path = "Collection Group Cell";
+			sourceTree = "<group>";
+		};
 		BBB6B04622A83F6300E518CC /* UTI Icons */ = {
 			isa = PBXGroup;
 			children = (
@@ -436,14 +465,10 @@
 			children = (
 				1CBEB20921AAC9300036E996 /* RecipeCollectionViewController.swift */,
 				BB180B24244356A8007E7124 /* RecipeCollectionViewModel.swift */,
-				BB7B91CC245AD1B300303085 /* RecipeGroupViewController.swift */,
-				BBDB0E99247AB44A001C86CE /* RecipeGroupViewModel.swift */,
+				BBAE325825509764005649A5 /* Collection Group Cell */,
+				BBAE324F25509620005649A5 /* Recipe Group */,
 				1CBEB20B21AAD6C30036E996 /* RecipeCell.swift */,
-				BB7B91C2245A133200303085 /* RecipeGroupCell.swift */,
-				BB7B91CA245AD18500303085 /* RecipeGroupView.xib */,
-				BB7B91C4245A134F00303085 /* RecipeGroupCell.xib */,
 				BB7B91C8245A167700303085 /* RecipeCell.xib */,
-				BB7B91C6245A15C300303085 /* RecipeGroupCollectionView.swift */,
 			);
 			path = RecipeCollection;
 			sourceTree = "<group>";
@@ -516,6 +541,7 @@
 				1CA007C12165571B0072A908 /* Frameworks */,
 				1CA007C22165571B0072A908 /* Resources */,
 				74103279251C5BA1A963FD6F /* [CP] Embed Pods Frameworks */,
+				BBAE3241254F00AB005649A5 /* Crashlytic */,
 			);
 			buildRules = (
 			);
@@ -579,6 +605,7 @@
 				BBC34899245C5F5E00E87A57 /* EditImageView.xib in Resources */,
 				BB7B91D1245AE4DC00303085 /* CreateListCell.xib in Resources */,
 				BBC3488F245C3A1A00E87A57 /* CookView.xib in Resources */,
+				BBAE324C255087AC005649A5 /* ChangeGroupNameCell.xib in Resources */,
 				BBC34893245C540000E87A57 /* CookTableViewCell.xib in Resources */,
 				1CA007D22165571E0072A908 /* LaunchScreen.storyboard in Resources */,
 				BB9F5DB7244F75AE00125874 /* ProductCell.xib in Resources */,
@@ -590,6 +617,7 @@
 				BB6EF735244E043F00AE2CAC /* PopupEditView.xib in Resources */,
 				BB7B91C5245A134F00303085 /* RecipeGroupCell.xib in Resources */,
 				BBB6B07622A8F29700E518CC /* icon_22.png in Resources */,
+				BBAE322F254EFDF6005649A5 /* GoogleService-Info.plist in Resources */,
 				BBBE2E75244A63200092334C /* CartCollectionView.xib in Resources */,
 				BB71E5F02480597E00A4C9D5 /* InAppPurchaseView.xib in Resources */,
 				BB7C4B8B245D6E1A0097C85F /* CookProcessView.xib in Resources */,
@@ -625,6 +653,26 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Cookity/Pods-Cookity-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		BBAE3241254F00AB005649A5 /* Crashlytic */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			name = Crashlytic;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
+		};
 		C3D02A010AEC4DBA62685D65 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -658,6 +706,7 @@
 				BB0F24DB223EC4F700A3D8EF /* CreateListCell.swift in Sources */,
 				BBFA65E4226CEF7D00EE3C2A /* RVRecipeStepCell.swift in Sources */,
 				BB3C781322B66C6000F556BC /* SettingsViewController.swift in Sources */,
+				BBAE324925508783005649A5 /* ChangeGroupNameCell.swift in Sources */,
 				BB180B2B244474E5007E7124 /* CookViewModel.swift in Sources */,
 				BBFA65F1227B520800EE3C2A /* CookProcessViewController.swift in Sources */,
 				BB1BBB6324477E27008B3431 /* MainTabBarController.swift in Sources */,
@@ -865,6 +914,7 @@
 				CODE_SIGN_ENTITLEMENTS = Cookity/Cookity.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 7367KKMU64;
 				INFOPLIST_FILE = "$(SRCROOT)/Cookity/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -872,7 +922,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.591;
+				MARKETING_VERSION = 1.600;
 				PRODUCT_BUNDLE_IDENTIFIER = com.michaelk.Cookity;
 				PRODUCT_NAME = Cookity;
 				SWIFT_VERSION = 5.0;
@@ -888,6 +938,7 @@
 				CODE_SIGN_ENTITLEMENTS = Cookity/Cookity.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 7367KKMU64;
 				INFOPLIST_FILE = "$(SRCROOT)/Cookity/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -895,7 +946,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.591;
+				MARKETING_VERSION = 1.600;
 				PRODUCT_BUNDLE_IDENTIFIER = com.michaelk.Cookity;
 				PRODUCT_NAME = Cookity;
 				SWIFT_VERSION = 5.0;

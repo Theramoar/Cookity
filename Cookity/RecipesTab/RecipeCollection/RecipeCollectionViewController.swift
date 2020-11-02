@@ -72,10 +72,14 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate, Presen
         updateVC()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        navigationController?.navigationBar.backgroundColor = Colors.viewColor
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         recipeGroupCreating = false
         setupGroupSettings()
-        animateNavigationTitileChange()
+        changeNavigationTitle()
         animateAddButtonChange()
     }
     
@@ -100,7 +104,6 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate, Presen
         case .addRecipeToGroupCollection:
             return
         }
-
     }
     
     private func setupSearchBarController() -> UISearchController {
@@ -141,6 +144,10 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate, Presen
         fadeTextAnimation.duration = 0.4
         fadeTextAnimation.type = CATransitionType.fade
         navigationController?.navigationBar.layer.add(fadeTextAnimation, forKey: "fadeText")
+        changeNavigationTitle()
+    }
+    
+    private func changeNavigationTitle() {
         navigationItem.title = self.recipeGroupCreating ? " \(self.viewModel.numberOfSelectedRecipes) Recipes selected" : "Recipes"
     }
     
