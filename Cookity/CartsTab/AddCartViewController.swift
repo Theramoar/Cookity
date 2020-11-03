@@ -30,7 +30,7 @@ class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, Meas
     @IBOutlet var backgroundView: UIView!
     @IBOutlet weak var tfView: TextFieldView!
     @IBOutlet weak var tfHeight: NSLayoutConstraint!
-    
+    @IBOutlet weak var addButton: UIButton!
     
     var pickedMeasure: String? {
         didSet {
@@ -67,6 +67,9 @@ class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, Meas
         cartNameTextField.delegate = self
         productTextField.autocapitalizationType = .sentences
         cartNameTextField.autocapitalizationType = .sentences
+        
+        let image = UIImage(systemName: "plus.circle")?.withTintColor(Colors.appColor!, renderingMode: .alwaysOriginal)
+        addButton.setImage(image, for: .normal)
         
         let measurePicker = MeasurePicker()
         measurePicker.mpDelegate = self

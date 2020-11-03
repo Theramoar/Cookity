@@ -18,6 +18,7 @@ class TextFieldCell: UITableViewCell, MeasurePickerDelegate{
     @IBOutlet weak var insertProduct: UITextField!
     @IBOutlet weak var insertQuantity: UITextField!
     @IBOutlet weak var insertMeasure: UITextField!
+    @IBOutlet weak var addButton: UIButton!
     var delegate: TextFieldDelegate?
     
     var pickedMeasure: String? {
@@ -36,6 +37,9 @@ class TextFieldCell: UITableViewCell, MeasurePickerDelegate{
         insertProduct.autocapitalizationType = .sentences
         insertQuantity.autocapitalizationType = .sentences
         insertMeasure.autocapitalizationType = .sentences
+        
+        let image = UIImage(systemName: "plus.circle")?.withTintColor(Colors.appColor!, renderingMode: .alwaysOriginal)
+        addButton.setImage(image, for: .normal)
     }
     
     

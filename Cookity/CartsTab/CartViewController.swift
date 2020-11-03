@@ -64,6 +64,7 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
         productTextField.delegate = self
         quantityTextField.delegate = self
         measureTextField.delegate = self
+        
 
         measurePicker = MeasurePicker()
         measurePicker.mpDelegate = self
@@ -71,6 +72,9 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
         
         quantityTextField.keyboardType = .decimalPad
         productTextField.autocapitalizationType = .sentences
+        
+        let image = UIImage(systemName: "plus.circle")?.withTintColor(Colors.appColor!, renderingMode: .alwaysOriginal)
+        addButton.setImage(image, for: .normal)
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
         tapGesture.cancelsTouchesInView = false

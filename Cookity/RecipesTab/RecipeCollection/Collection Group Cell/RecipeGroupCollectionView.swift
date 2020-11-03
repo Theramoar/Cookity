@@ -61,7 +61,7 @@ class RecipeGroupCollectionViewModel: TableViewModelType {
     }
     
     var numberOfRows: Int {
-        recipes.count //> 4 ? 4 : recipes.count
+        recipes.count
     }
     
     private var selectedIndexPath: IndexPath?

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,16 +17,19 @@
                 <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="IQd-l5-Fq1">
+                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="IQd-l5-Fq1">
                         <rect key="frame" x="20" y="5" width="394" height="34"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Ingridient" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YG8-ZR-h6N">
-                                <rect key="frame" x="0.0" y="0.0" width="161" height="34"/>
+                                <rect key="frame" x="0.0" y="0.0" width="164" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="34" id="C6V-SP-fVO"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="How much?" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9db-T5-aFe">
-                                <rect key="frame" x="163" y="0.0" width="100" height="34"/>
+                                <rect key="frame" x="165" y="0.0" width="100" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="100" id="Cib-kP-djl"/>
                                 </constraints>
@@ -33,20 +37,19 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Pieces" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HUD-sA-EYd">
-                                <rect key="frame" x="265" y="0.0" width="80" height="34"/>
+                                <rect key="frame" x="266" y="0.0" width="80" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="80" id="HWw-eP-d0p"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sgS-HX-En8">
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sgS-HX-En8">
                                 <rect key="frame" x="347" y="0.0" width="47" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="47" id="p0c-SP-VXo"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="38"/>
-                                <state key="normal" title="+">
+                                <state key="normal" image="addButton_50">
                                     <color key="titleColor" name="AppColor"/>
                                 </state>
                                 <connections>
@@ -65,6 +68,7 @@
             </tableViewCellContentView>
             <color key="backgroundColor" name="ViewColor"/>
             <connections>
+                <outlet property="addButton" destination="sgS-HX-En8" id="nb5-JV-wzy"/>
                 <outlet property="insertMeasure" destination="HUD-sA-EYd" id="nGw-aV-rR4"/>
                 <outlet property="insertProduct" destination="YG8-ZR-h6N" id="UOV-JV-FJt"/>
                 <outlet property="insertQuantity" destination="9db-T5-aFe" id="peM-eW-kag"/>
@@ -73,6 +77,7 @@
         </tableViewCell>
     </objects>
     <resources>
+        <image name="addButton_50" width="25" height="25"/>
         <namedColor name="AppColor">
             <color red="0.3059999942779541" green="0.58399999141693115" blue="0.14499999582767487" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

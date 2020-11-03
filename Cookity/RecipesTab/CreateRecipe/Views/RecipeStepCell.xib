@@ -5,6 +5,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,22 +18,24 @@
                 <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EfC-Gc-Vtm">
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="dYj-b5-kDl">
                         <rect key="frame" x="20" y="5" width="374" height="34"/>
+                        <color key="backgroundColor" name="ViewColor"/>
+                        <color key="textColor" systemColor="labelColor"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <textInputTraits key="textInputTraits"/>
-                    </textField>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    </textView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="EfC-Gc-Vtm" firstAttribute="top" secondItem="jGZ-cN-Ysh" secondAttribute="top" constant="5" id="IUz-1W-x36"/>
-                    <constraint firstAttribute="bottom" secondItem="EfC-Gc-Vtm" secondAttribute="bottom" constant="5" id="SUf-tp-M8U"/>
-                    <constraint firstItem="EfC-Gc-Vtm" firstAttribute="leading" secondItem="jGZ-cN-Ysh" secondAttribute="leading" constant="20" id="cUf-Sn-SyI"/>
-                    <constraint firstAttribute="trailing" secondItem="EfC-Gc-Vtm" secondAttribute="trailing" constant="20" id="zWP-4x-Uli"/>
+                    <constraint firstAttribute="trailing" secondItem="dYj-b5-kDl" secondAttribute="trailing" constant="20" id="NS2-v2-7EL"/>
+                    <constraint firstAttribute="bottom" secondItem="dYj-b5-kDl" secondAttribute="bottom" constant="5" id="Qxi-8W-v9k"/>
+                    <constraint firstItem="dYj-b5-kDl" firstAttribute="top" secondItem="jGZ-cN-Ysh" secondAttribute="top" constant="5" id="Tee-ON-qRT"/>
+                    <constraint firstItem="dYj-b5-kDl" firstAttribute="leading" secondItem="jGZ-cN-Ysh" secondAttribute="leading" constant="20" id="pDh-ZY-sJq"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" name="ViewColor"/>
             <connections>
-                <outlet property="recipeStepCell" destination="EfC-Gc-Vtm" id="hfH-kn-dTS"/>
+                <outlet property="recipeStepTextView" destination="dYj-b5-kDl" id="W8D-51-9TH"/>
             </connections>
             <point key="canvasLocation" x="159" y="169"/>
         </tableViewCell>
@@ -41,5 +44,8 @@
         <namedColor name="ViewColor">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

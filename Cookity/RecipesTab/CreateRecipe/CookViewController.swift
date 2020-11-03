@@ -14,7 +14,11 @@ protocol UpdateVCDelegate {
     func updateVC()
 }
 
-class CookViewController: UIViewController {
+class CookViewController: UIViewController, UpdateVCDelegate {
+    func updateVC() {
+        productsTable.performBatchUpdates(nil, completion: nil)
+    }
+    
 
     var isEdited: Bool = false // used for to disable touches while textfield are edited.
     
@@ -42,6 +46,8 @@ class CookViewController: UIViewController {
         productsTable.dataSource = self
         productsTable.isEditing = true
         productsTable.keyboardDismissMode = .onDrag
+        productsTable.rowHeight = UITableView.automaticDimension
+        productsTable.estimatedRowHeight = 100
         recipeName.text = viewModel.recipeName
         
         deleteButton.isEnabled = viewModel.isNewRecipe ? false : true
@@ -158,7 +164,6 @@ extension CookViewController: UITableViewDelegate, UITableViewDataSource, UIText
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel.currentSection(section)
-        tableView.rowHeight = section == 0 ? 60 : 40
         return viewModel.numberOfRows
     }
     
@@ -180,12 +185,14 @@ extension CookViewController: UITableViewDelegate, UITableViewDataSource, UIText
             if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "EnterRecipeStepCell", for: indexPath) as! RecipeStepTableViewCell
                 cell.delegate = self
+                cell.updateVCDelegate = self
                 cell.isEditing = false
                 return cell
             }
             else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeStepCell", for: indexPath) as! RecipeStepCell
                 cell.viewModel = viewModel.cellViewModel(forIndexPath: indexPath) as? RecipeStepCellViewModel
+                cell.delegate = self
                 return cell
             }
         }

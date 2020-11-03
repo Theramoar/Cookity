@@ -498,10 +498,10 @@
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yGB-hT-AN4">
-                                        <rect key="frame" x="268" y="0.0" width="52" height="48"/>
+                                        <rect key="frame" x="268" y="5" width="52" height="45"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="52" id="AQJ-O9-6w5"/>
-                                            <constraint firstAttribute="height" constant="48" id="Le0-7C-30p"/>
+                                            <constraint firstAttribute="height" constant="45" id="Le0-7C-30p"/>
                                         </constraints>
                                         <state key="normal" image="addButton_50"/>
                                         <connections>
@@ -514,7 +514,7 @@
                                 <color key="backgroundColor" name="PopupColor"/>
                                 <constraints>
                                     <constraint firstItem="jwH-Uo-Ahf" firstAttribute="top" secondItem="Bn7-pc-NZs" secondAttribute="top" constant="10" id="CA3-5P-D2L"/>
-                                    <constraint firstItem="yGB-hT-AN4" firstAttribute="top" secondItem="Bn7-pc-NZs" secondAttribute="top" id="CHA-4x-ipk"/>
+                                    <constraint firstItem="yGB-hT-AN4" firstAttribute="top" secondItem="Bn7-pc-NZs" secondAttribute="top" constant="5" id="CHA-4x-ipk"/>
                                     <constraint firstItem="yGB-hT-AN4" firstAttribute="leading" secondItem="Oi6-Tr-qvD" secondAttribute="trailing" id="Ed8-al-5wz"/>
                                     <constraint firstItem="Oi6-Tr-qvD" firstAttribute="top" secondItem="Bn7-pc-NZs" secondAttribute="top" constant="10" id="G6e-QK-PH6"/>
                                     <constraint firstAttribute="trailing" secondItem="yGB-hT-AN4" secondAttribute="trailing" id="Jza-Tw-d0u"/>
@@ -540,6 +540,7 @@
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <connections>
+                        <outlet property="addButton" destination="yGB-hT-AN4" id="pY2-Xz-BRd"/>
                         <outlet property="backgroundView" destination="6G8-ZB-tR0" id="Y0p-Ga-vrL"/>
                         <outlet property="cartNameTextField" destination="PgR-o1-AmX" id="M0P-3m-jPp"/>
                         <outlet property="measureTextField" destination="Oi6-Tr-qvD" id="GgK-p8-Sgn"/>
@@ -628,9 +629,9 @@
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XaR-MY-r3l">
-                                        <rect key="frame" x="268" y="0.0" width="52" height="50"/>
+                                        <rect key="frame" x="268" y="5" width="52" height="45"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="7Ld-tD-Gqk"/>
+                                            <constraint firstAttribute="height" constant="45" id="7Ld-tD-Gqk"/>
                                             <constraint firstAttribute="width" constant="52" id="FRH-N8-Mog"/>
                                         </constraints>
                                         <state key="normal" image="addButton_50"/>
@@ -656,7 +657,7 @@
                                     <constraint firstItem="XaR-MY-r3l" firstAttribute="trailing" secondItem="GvE-M1-yCP" secondAttribute="trailing" id="CcG-By-1Pf"/>
                                     <constraint firstItem="A6N-zj-3CA" firstAttribute="top" secondItem="GvE-M1-yCP" secondAttribute="top" constant="10" id="FHY-T7-uzx"/>
                                     <constraint firstItem="3fU-Z6-VCO" firstAttribute="leading" secondItem="A6N-zj-3CA" secondAttribute="trailing" constant="3" id="T4N-2q-AeJ"/>
-                                    <constraint firstItem="XaR-MY-r3l" firstAttribute="top" secondItem="GvE-M1-yCP" secondAttribute="top" id="UIK-t2-9fH"/>
+                                    <constraint firstItem="XaR-MY-r3l" firstAttribute="top" secondItem="GvE-M1-yCP" secondAttribute="top" constant="5" id="UIK-t2-9fH"/>
                                     <constraint firstItem="Ei4-wP-KjT" firstAttribute="top" secondItem="GvE-M1-yCP" secondAttribute="top" constant="10" id="YpX-Ts-de4"/>
                                     <constraint firstItem="XaR-MY-r3l" firstAttribute="leading" secondItem="Ei4-wP-KjT" secondAttribute="trailing" id="a6Q-0J-XnX"/>
                                     <constraint firstItem="Ei4-wP-KjT" firstAttribute="leading" secondItem="3fU-Z6-VCO" secondAttribute="trailing" constant="3" id="gEA-ym-CRM"/>

@@ -9,28 +9,50 @@
 import UIKit
 import SwipeCellKit
 
-class RecipeStepCell: UITableViewCell, UITextFieldDelegate {
+class RecipeStepCell: UITableViewCell, UITextViewDelegate {
     
 
-    @IBOutlet weak var recipeStepCell: UITextField!
+    @IBOutlet weak var recipeStepTextView: UITextView!
     var viewModel: RecipeStepCellViewModel? {
         willSet(viewModel) {
             guard let viewModel = viewModel else { return }
-            recipeStepCell.text = viewModel.recipeStepText
-            recipeStepCell.delegate = self
+            recipeStepTextView.text = viewModel.recipeStepText
+            recipeStepTextView.delegate = self
         }
     }
+    var delegate: UpdateVCDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .none
-        recipeStepCell.autocapitalizationType = .sentences
+        recipeStepTextView.autocapitalizationType = .sentences
     }
-        
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        guard let viewModel = viewModel, let text = textField.text else { return }
+    
+//    private func setTextView() {
+//        recipeStepTextView.translatesAutoresizingMaskIntoConstraints = false
+//        
+//        recipeStepTextView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor).isActive = true
+//        recipeStepTextView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+//        recipeStepTextView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+//        recipeStepTextView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+//    }
+
+    func textViewDidEndEditing(_ textView: UITextView) {
+        guard let viewModel = viewModel, let text = textView.text else { return }
         viewModel.userEnteredString = text.isEmpty ? viewModel.userEnteredString : text
-        textField.text = viewModel.userEnteredString
+        textView.text = viewModel.userEnteredString
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        let size = CGSize(width: contentView.frame.width, height: .infinity)
+        let estimatedSize = recipeStepTextView.sizeThatFits(size)
+        
+        recipeStepTextView.constraints.forEach { constraint in
+            if constraint.firstAttribute == .height {
+                constraint.constant = estimatedSize.height
+                delegate?.updateVC()
+            }
+        }
     }
 }
 
