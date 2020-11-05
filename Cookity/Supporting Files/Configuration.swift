@@ -13,8 +13,7 @@ class Configuration {
     
     
     static func configNumbers(quantity: String, measure: String) -> (Int, String) {
-        
-        let quantity = quantity.replacingOccurrences(of: ",", with: ".")
+        let quantity = quantity.isEmpty ? "1" : quantity.replacingOccurrences(of: ",", with: ".")
         var newQuantity: Int = 0
         var newMeasure = measure
         

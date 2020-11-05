@@ -123,6 +123,13 @@ class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, Meas
         }
     }
     
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        if textField == productTextField, let text = textField.text {
+            quantityTextField.placeholder = text.isEmpty ? "How much?" : "1"
+            measureTextField.placeholder = text.isEmpty ? "Measure?" : "Piece"
+        }
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         UIView.setAnimationsEnabled(true)
         self.view.endEditing(true)

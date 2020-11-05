@@ -96,6 +96,13 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
         return true
     }
     
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        if textField == productTextField, let text = textField.text {
+            quantityTextField.placeholder = text.isEmpty ? "How much?" : "1"
+            measureTextField.placeholder = text.isEmpty ? "Measure?" : "Piece"
+        }
+    }
+    
     
     @objc func viewTapped(sender: UITapGestureRecognizer) {
         //wait for isEdited to change its value

@@ -20,13 +20,13 @@ enum AlertMessage: String, CaseIterable {
 extension UIAlertController {
 
     func check(data: String, dataName: AlertMessage) -> Bool {
-        guard data != "" else {
+        if dataName == .name, data.isEmpty {
             self.title = "\(dataName) is not entered!"
             self.message = "Enter the \(dataName)"
             return false
         }
         if dataName == .quantity {
-            let quantity = data.replacingOccurrences(of: ",", with: ".")
+            let quantity = data.isEmpty ? "1" : data.replacingOccurrences(of: ",", with: ".")
             guard Float(quantity) != nil else {
                 self.title = "Incorrect \(dataName.rawValue)"
                 self.message = "Please enter the \(dataName.rawValue) in numbers"

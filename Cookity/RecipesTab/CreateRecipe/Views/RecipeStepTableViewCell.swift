@@ -47,7 +47,7 @@ class RecipeStepTableViewCell: UITableViewCell, UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         if isNewText {
             textView.text = ""
-            textView.textColor = .darkText
+            textView.textColor = .label
             isNewText = false
         }
     }
@@ -65,6 +65,7 @@ class RecipeStepTableViewCell: UITableViewCell, UITextViewDelegate {
     private func updateTextViewHeight() {
         let size = CGSize(width: contentView.frame.width, height: .infinity)
         let estimatedSize = textView.sizeThatFits(size)
+        
         textView.constraints.forEach { constraint in
             if constraint.firstAttribute == .height {
                 constraint.constant = estimatedSize.height

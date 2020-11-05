@@ -610,7 +610,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N2W-gC-oJX" customClass="TextFieldView" customModule="Cookity" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="469" width="320" height="50"/>
                                 <subviews>
-                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="What to buy?" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="A6N-zj-3CA">
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="What to buy?" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="A6N-zj-3CA">
                                         <rect key="frame" x="8" y="10" width="100" height="34"/>
                                         <color key="backgroundColor" name="ViewColor"/>
                                         <constraints>
@@ -619,7 +619,7 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Pieces" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ei4-wP-KjT">
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Measure?" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ei4-wP-KjT">
                                         <rect key="frame" x="204" y="10" width="64" height="34"/>
                                         <color key="backgroundColor" name="ViewColor"/>
                                         <constraints>
@@ -639,7 +639,7 @@
                                             <action selector="addButtonPressed:" destination="8yl-t6-nQI" eventType="touchUpInside" id="WJS-p5-rXL"/>
                                         </connections>
                                     </button>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="How much?" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3fU-Z6-VCO">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="How much?" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3fU-Z6-VCO">
                                         <rect key="frame" x="111" y="10" width="90" height="34"/>
                                         <color key="backgroundColor" name="ViewColor"/>
                                         <constraints>

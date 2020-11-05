@@ -50,7 +50,7 @@ class CartViewModel: DetailViewModelType {
         alert.addAction(action)
         
         guard alert.check(data: productName, dataName: AlertMessage.name),
-        alert.check(data: productQuantity, dataName: AlertMessage.quantity)
+              alert.check(data: productQuantity, dataName: AlertMessage.quantity)
         else {
             return (alert)
         }

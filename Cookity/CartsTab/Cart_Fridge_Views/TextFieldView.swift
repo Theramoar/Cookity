@@ -16,8 +16,6 @@ class TextFieldView: UIView {
 
     var delegate: IsEditedDelegate?
     var viewHeight: CGFloat!
-//    var bottonConstraint: NSLayoutConstraint!
-    
     var heightConstraint: NSLayoutConstraint!
     var initialHeight: CGFloat!
     
