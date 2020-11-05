@@ -9,6 +9,11 @@
 import UIKit
 import SwipeCellKit
 
+enum ProductTableType {
+    case fridge
+    case cart
+    case addCart
+}
 
 
 class ProductTableViewCell: SwipeTableViewCell {
@@ -19,6 +24,8 @@ class ProductTableViewCell: SwipeTableViewCell {
     var attributedName: NSMutableAttributedString!
     var attributedNumber: NSMutableAttributedString!
     let strikethroughAttribute = NSAttributedString.Key.strikethroughStyle
+
+    
     
     weak var viewModel: ProductTableCellViewModel? {
         willSet(viewModel) {
@@ -44,6 +51,15 @@ class ProductTableViewCell: SwipeTableViewCell {
             
             nameLabel.attributedText = attributedName
             measureLabel.attributedText = attributedNumber
+            
+            switch viewModel.productTableType {
+            case .fridge:
+                backgroundColor = Colors.viewColor
+            case .cart:
+                backgroundColor = Colors.viewColor
+            case .addCart:
+                backgroundColor = Colors.popupColor
+            }
         }
     }
     
@@ -71,8 +87,11 @@ class ProductTableCellViewModel: CellViewModelType {
     var productMeasure: String
     var productQuantity: String
     
-    init(product: Product) {
+    var productTableType: ProductTableType
+    
+    init(product: Product, forTable productTableType: ProductTableType) {
         self.product = product
         (self.productQuantity, self.productMeasure) = Configuration.presentNumbers(quantity: product.quantity, measure: product.measure)
+        self.productTableType = productTableType
     }
 }

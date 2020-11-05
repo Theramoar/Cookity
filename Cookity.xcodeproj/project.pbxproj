@@ -456,6 +456,7 @@
 				BB0F24E42247872D00A3D8EF /* TextFieldView.swift */,
 				BBB6B008228730CA00E518CC /* EditTextView.swift */,
 				1C3D635C2235851E00FC4485 /* ProductTableViewCell.swift */,
+				BB9F5DB6244F75AE00125874 /* ProductCell.xib */,
 			);
 			path = Cart_Fridge_Views;
 			sourceTree = "<group>";
@@ -496,7 +497,6 @@
 			children = (
 				1C4B1A012180EC32007CB9FD /* FridgeViewController.swift */,
 				BB180B2224434BC9007E7124 /* FridgeViewModel.swift */,
-				BB9F5DB6244F75AE00125874 /* ProductCell.xib */,
 				BBC6C5B522F7568800AF8423 /* SettingsViewController */,
 				BB18B21622CB0B17004F2F65 /* CreditsViewController.swift */,
 			);

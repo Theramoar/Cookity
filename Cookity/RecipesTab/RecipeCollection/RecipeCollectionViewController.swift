@@ -88,8 +88,10 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate, Presen
     private func setStandardNavBar() {
         switch viewModel.recipeCollectionType {
         case .recipCollection:
+            self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
             navigationController?.navigationBar.tintColor = Colors.appColor
             navigationController?.navigationBar.prefersLargeTitles = true
+            
             searchController = setupSearchBarController()
             navigationItem.searchController = searchController
             searchController.searchBar.placeholder = SettingsVariables.isIngridientSearchEnabled ? "Search for recipe or ingridient" : "Search for recipe"
@@ -98,8 +100,10 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate, Presen
             navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(addGroupPressed))
             barButton = navigationItem.rightBarButtonItem
         case .recipeGroupCollection:
+            self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
             navigationController?.navigationBar.tintColor = Colors.appColor
             navigationController?.navigationBar.prefersLargeTitles = true
+            
             navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "edit"), style: .plain, target: self, action: #selector(editGroup))
         case .addRecipeToGroupCollection:
             return

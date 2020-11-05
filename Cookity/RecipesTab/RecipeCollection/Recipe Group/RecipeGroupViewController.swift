@@ -47,6 +47,7 @@ class RecipeGroupViewController: UIViewController {
         case .recipeGroupCollection:
             title = viewModel.groupName
             navigationController?.navigationBar.tintColor = Colors.appColor
+            self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
             navigationController?.navigationBar.prefersLargeTitles = true
             navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "edit"), style: .plain, target: self, action: #selector(editGroup))
         case .addRecipeToGroupCollection:

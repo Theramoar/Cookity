@@ -353,7 +353,7 @@
                             <constraint firstItem="gvr-5H-Dfk" firstAttribute="top" secondItem="c2e-qo-8I7" secondAttribute="bottom" constant="24" id="x1z-3t-kvf"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Carts" id="Wmb-Xm-998"/>
+                    <navigationItem key="navigationItem" title="Carts" largeTitleDisplayMode="always" id="Wmb-Xm-998"/>
                     <connections>
                         <outlet property="addCartButton" destination="s0L-cN-QzS" id="U3z-fb-TUL"/>
                         <outlet property="emptyCartMainLabel" destination="5fN-Wb-KCK" id="WDB-ky-UUp"/>
@@ -405,6 +405,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
+                                                    <color key="backgroundColor" name="PopupColor"/>
                                                     <constraints>
                                                         <constraint firstItem="NS9-og-lIT" firstAttribute="leading" secondItem="KMJ-TJ-BZ0" secondAttribute="leadingMargin" id="2DL-of-nOI"/>
                                                         <constraint firstItem="u1x-Fn-AQv" firstAttribute="leading" secondItem="NS9-og-lIT" secondAttribute="trailing" constant="15" id="IFh-HN-Z2p"/>
@@ -868,7 +869,6 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" name="ViewColor"/>
                         <color key="tintColor" name="AppColor"/>
-                        <color key="barTintColor" name="ViewColor"/>
                         <textAttributes key="titleTextAttributes">
                             <color key="textColor" systemColor="labelColor"/>
                         </textAttributes>

@@ -118,7 +118,7 @@ extension FridgeViewModel: TableViewModelType {
     }
     
     func cellViewModel(forIndexPath indexPath: IndexPath) -> CellViewModelType? {
-        ProductTableCellViewModel(product: productAtIndexPath(indexPath))
+        ProductTableCellViewModel(product: productAtIndexPath(indexPath), forTable: .fridge)
     }
     
     func viewModelForSelectedRow() -> DetailViewModelType? {

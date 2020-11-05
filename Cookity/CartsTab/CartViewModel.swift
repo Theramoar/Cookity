@@ -167,7 +167,7 @@ extension CartViewModel: TableViewModelType {
     }
     
     func cellViewModel(forIndexPath indexPath: IndexPath) -> CellViewModelType? {
-        ProductTableCellViewModel(product: products[indexPath.row])
+        ProductTableCellViewModel(product: products[indexPath.row], forTable: .cart)
     }
     
     func viewModelForSelectedRow() -> DetailViewModelType? {
