@@ -12,7 +12,7 @@ import SwipeCellKit
 class RecipeGroupViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var addButton: UIButton!
+    @IBOutlet weak var addButton: AppGreenButton!
     
     var viewModel: RecipeGroupViewModel!
     
@@ -22,6 +22,8 @@ class RecipeGroupViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.register(UINib(nibName: "RecipeCell", bundle: nil), forCellWithReuseIdentifier: "RecipeCell")
         collectionView.register(UINib(nibName: "ChangeGroupNameCell", bundle: nil), forCellWithReuseIdentifier: "ChangeGroupNameCell")
+        
+        addButton.setupSFSymbol(name: "plus", size: 30)
         
         switch viewModel.recipeCollectionType {
         case .recipCollection:
@@ -77,14 +79,18 @@ class RecipeGroupViewController: UIViewController {
     }
     
     private func animateAddButtonChange() {
-        let buttonImage = viewModel.isGroupEdited ? UIImage(named: "deleteGroupButton") : UIImage(named: "addButton")
+        let imageName = viewModel.isGroupEdited ? "trash" : "plus"
+        let imageSize: CGFloat = viewModel.isGroupEdited ? 25 : 30
+        
+//        let buttonImage = viewModel.isGroupEdited ? UIImage(named: "deleteGroupButton") : UIImage(named: "addButton")
         
         let originButtonY = addButton.frame.origin.y
 
         UIView.animate(withDuration: 0.2, animations: {
             self.addButton.frame.origin.y = UIScreen.main.bounds.maxY
         }) { (completed) in
-            self.addButton.setImage(buttonImage, for: .normal)
+            self.addButton.setupSFSymbol(name: imageName, size: imageSize)
+//            self.addButton.setImage(buttonImage, for: .normal)
         }
         
         UIView.animate(withDuration: 0.2, delay: 0.2, animations: {

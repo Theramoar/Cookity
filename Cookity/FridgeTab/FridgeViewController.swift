@@ -22,7 +22,7 @@ class FridgeViewController: SwipeTableViewController, UpdateVCDelegate {
     
     var viewModel = FridgeViewModel()
     @IBOutlet weak var fridgeTableView: UITableView!
-    @IBOutlet weak var addButton: UIButton!
+    @IBOutlet weak var addButton: AppGreenButton!
     @IBOutlet weak var emptyFridgeImageView: UIImageView!
     @IBOutlet weak var emptyFridgeLabel: UILabel!
     @IBOutlet weak var emptyFridgeDescriptionLabel: UILabel!
@@ -38,9 +38,7 @@ class FridgeViewController: SwipeTableViewController, UpdateVCDelegate {
         fridgeTableView.register(UINib(nibName: "ProductCell", bundle: nil), forCellReuseIdentifier: "ProductCell")
         fridgeTableView.rowHeight = 50
         
-        addButton.layer.shadowOffset = CGSize(width: 0, height: 3.0)
-        addButton.layer.shadowOpacity = 0.7
-        addButton.layer.shadowRadius = 5.0
+        addButton.setupSFSymbol(name: "plus", size: 30)
         
         //add long gesture recognizer
         let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.longPressed))

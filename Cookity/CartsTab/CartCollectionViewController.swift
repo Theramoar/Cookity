@@ -13,9 +13,7 @@ import SwipeCellKit
 class CartCollectionViewController: SwipeTableViewController, UpdateVCDelegate {
     
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var addCartButton: UIButton!
-    @IBOutlet weak var plusButton: UIButton!
-    @IBOutlet weak var cartTableView: UITableView!
+    @IBOutlet weak var addCartButton: AppGreenButton!
     
     
     @IBOutlet weak var emptycartImageView: UIImageView!
@@ -33,12 +31,10 @@ class CartCollectionViewController: SwipeTableViewController, UpdateVCDelegate {
         tableView.separatorStyle = .none
         tableView.register(UINib(nibName: "CartCell", bundle: nil), forCellReuseIdentifier: "CartCell")
         
-        addCartButton.layer.shadowOffset = CGSize(width: 0, height: 3.0)
-        addCartButton.layer.shadowOpacity = 0.7
-        addCartButton.layer.shadowRadius = 5.0
-        
+        addCartButton.setupSFSymbol(name: "cart.badge.plus", size: 20)
+    
         viewModel.loadCartsFromCloud {
-            self.cartTableView.reloadData()
+            self.tableView.reloadData()
         }
     }
     
@@ -84,7 +80,7 @@ class CartCollectionViewController: SwipeTableViewController, UpdateVCDelegate {
             tableView.reloadData()
         }
         appendAction.image = UIImage(named: "AddToFridge")
-        appendAction.backgroundColor = Colors.darkGreen
+        appendAction.backgroundColor = Colors.appColor
         
         guard let actionArray = super.tableView(tableView, editActionsForRowAt: indexPath, for: orientation), let deleteAction = actionArray.first else { return [appendAction] }
         

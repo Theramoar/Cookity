@@ -44,13 +44,13 @@
                                     <constraint firstAttribute="width" constant="240" id="IbO-fO-Lky"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h5i-Z8-1ur">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h5i-Z8-1ur" customClass="AppGreenButton" customModule="Cookity" customModuleProvider="target">
                                 <rect key="frame" x="235" y="441" width="60" height="60"/>
+                                <color key="backgroundColor" name="AppColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="Txg-Gz-UEx"/>
                                     <constraint firstAttribute="width" constant="60" id="eDO-6Z-bBA"/>
                                 </constraints>
-                                <state key="normal" backgroundImage="addButton"/>
                                 <connections>
                                     <action selector="addButtonPressed:" destination="JvL-yH-0bo" eventType="touchUpInside" id="qZC-X5-KjP"/>
                                 </connections>
@@ -324,13 +324,13 @@
                                 <color key="textColor" name="TextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s0L-cN-QzS">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s0L-cN-QzS" customClass="AppGreenButton" customModule="Cookity" customModuleProvider="target">
                                 <rect key="frame" x="235" y="441" width="60" height="60"/>
+                                <color key="backgroundColor" name="AppColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="CC0-KP-2PR"/>
                                     <constraint firstAttribute="width" constant="60" id="Rbm-Ud-MFf"/>
                                 </constraints>
-                                <state key="normal" backgroundImage="addShoppingCartButton"/>
                                 <connections>
                                     <action selector="addCartPressed:" destination="MDp-NT-fJ7" eventType="touchUpInside" id="4dY-D0-y0H"/>
                                 </connections>
@@ -739,13 +739,13 @@
                                 <color key="textColor" name="HighlightColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9co-0O-ajj">
+                            <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9co-0O-ajj" customClass="AppGreenButton" customModule="Cookity" customModuleProvider="target">
                                 <rect key="frame" x="235" y="441" width="60" height="60"/>
+                                <color key="backgroundColor" name="AppColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="NvL-oD-q6Z"/>
                                     <constraint firstAttribute="height" constant="60" id="fNs-p5-IOo"/>
                                 </constraints>
-                                <state key="normal" backgroundImage="addButton"/>
                                 <connections>
                                     <action selector="addButtonPressed:" destination="Kdh-eP-rYo" eventType="touchUpInside" id="de6-Jm-mdr"/>
                                 </connections>
@@ -888,9 +888,7 @@
     </scenes>
     <color key="tintColor" red="0.21176470589999999" green="0.38431372549999998" blue="0.16862745100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
     <resources>
-        <image name="addButton" width="64" height="64"/>
         <image name="addButton_50" width="25" height="25"/>
-        <image name="addShoppingCartButton" width="128" height="128"/>
         <image name="close" width="32" height="32"/>
         <image name="cookbook" width="25" height="25"/>
         <image name="empty_book" width="256" height="256"/>

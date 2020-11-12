@@ -64,6 +64,7 @@
 		BB71E5F224805AC700A4C9D5 /* InAppPurchaseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB71E5F124805AC700A4C9D5 /* InAppPurchaseVC.swift */; };
 		BB71E5F42481BFB100A4C9D5 /* InAppPurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB71E5F32481BFB100A4C9D5 /* InAppPurchaseManager.swift */; };
 		BB71E5F62481C01300A4C9D5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB71E5F52481C01300A4C9D5 /* StoreKit.framework */; };
+		BB751E71255DB70E007B6B93 /* AppGreenButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB751E70255DB70E007B6B93 /* AppGreenButton.swift */; };
 		BB7B91B92456E94100303085 /* AboutDeveloper.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB7B91B82456E94100303085 /* AboutDeveloper.xib */; };
 		BB7B91C3245A133200303085 /* RecipeGroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7B91C2245A133200303085 /* RecipeGroupCell.swift */; };
 		BB7B91C5245A134F00303085 /* RecipeGroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB7B91C4245A134F00303085 /* RecipeGroupCell.xib */; };
@@ -171,6 +172,7 @@
 		BB71E5F124805AC700A4C9D5 /* InAppPurchaseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppPurchaseVC.swift; sourceTree = "<group>"; };
 		BB71E5F32481BFB100A4C9D5 /* InAppPurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppPurchaseManager.swift; sourceTree = "<group>"; };
 		BB71E5F52481C01300A4C9D5 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		BB751E70255DB70E007B6B93 /* AppGreenButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGreenButton.swift; sourceTree = "<group>"; };
 		BB7B91B82456E94100303085 /* AboutDeveloper.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AboutDeveloper.xib; sourceTree = "<group>"; };
 		BB7B91C2245A133200303085 /* RecipeGroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeGroupCell.swift; sourceTree = "<group>"; };
 		BB7B91C4245A134F00303085 /* RecipeGroupCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipeGroupCell.xib; sourceTree = "<group>"; };
@@ -238,6 +240,7 @@
 			children = (
 				BB71E5EE2480581600A4C9D5 /* InAppPurchase */,
 				1C3D635E2238339800FC4485 /* SwipeTableViewController.swift */,
+				BB751E70255DB70E007B6B93 /* AppGreenButton.swift */,
 				1CA007C72165571B0072A908 /* AppDelegate.swift */,
 				BB0F24DE2242D04800A3D8EF /* MeasurePicker.swift */,
 				BB1BBB642447828A008B3431 /* SceneDelegate.swift */,
@@ -559,7 +562,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1000;
-				LastUpgradeCheck = 1000;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Mihails Kuznecovs";
 				TargetAttributes = {
 					1CA007C32165571B0072A908 = {
@@ -755,6 +758,7 @@
 				1CA007DC216559360072A908 /* CartViewController.swift in Sources */,
 				1C4B1A0821887081007CB9FD /* Recipe.swift in Sources */,
 				BBB6B07A22AD183A00E518CC /* FirstLaunch.swift in Sources */,
+				BB751E71255DB70E007B6B93 /* AppGreenButton.swift in Sources */,
 				BB18B21922CD3E6D004F2F65 /* CreditsViewCell.swift in Sources */,
 				BBC12E43234FA43300A6BA32 /* RecipeNameView.swift in Sources */,
 				1CAECA19216BDAB3002D3B6D /* TextFieldCell.swift in Sources */,
@@ -816,6 +820,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -877,6 +882,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -922,7 +928,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.600;
+				MARKETING_VERSION = 1.610;
 				PRODUCT_BUNDLE_IDENTIFIER = com.michaelk.Cookity;
 				PRODUCT_NAME = Cookity;
 				SWIFT_VERSION = 5.0;
@@ -946,7 +952,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.600;
+				MARKETING_VERSION = 1.610;
 				PRODUCT_BUNDLE_IDENTIFIER = com.michaelk.Cookity;
 				PRODUCT_NAME = Cookity;
 				SWIFT_VERSION = 5.0;

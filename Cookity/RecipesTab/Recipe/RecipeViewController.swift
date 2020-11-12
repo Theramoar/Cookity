@@ -75,17 +75,11 @@ class RecipeViewController: UIViewController, UpdateVCDelegate, CreateButtonDele
     }
     
     private func setCookButton() {
-        let cookButton = UIButton()
-        cookButton.frame.size = CGSize(width: 60, height: 60)
-        let image = UIImage(named: "cookButton")
-        cookButton.setImage(image, for: .normal)
         let x = view.frame.maxX - 85
         let y = view.frame.maxY - 127
-        cookButton.frame.origin = CGPoint(x: x, y: y)
-        
-        cookButton.layer.shadowOffset = CGSize(width: 0, height: 3.0)
-        cookButton.layer.shadowOpacity = 0.7
-        cookButton.layer.shadowRadius = 5.0
+        let cookButton = AppGreenButton(frame: CGRect(x: x, y: y, width: 60, height: 60))
+        cookButton.setupAssetImage(name: "chef", edgeInset: 13)
+
         cookButton.addTarget(self, action: #selector(cookButtonPressed), for: .touchUpInside)
         view.addSubview(cookButton)
     }

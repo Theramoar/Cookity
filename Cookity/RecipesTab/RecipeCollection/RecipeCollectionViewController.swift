@@ -24,7 +24,7 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate, Presen
     
     
     @IBOutlet weak var recipeCollection: UICollectionView!
-    @IBOutlet weak var addRecipeButton: UIButton!
+    @IBOutlet weak var addRecipeButton: AppGreenButton!
     
     @IBOutlet weak var bookImageView: UIImageView!
     @IBOutlet weak var bookMainLabel: UILabel!
@@ -48,10 +48,8 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate, Presen
         recipeCollection.delegate = self
         recipeCollection.dataSource = self
         recipeCollection.register(UINib(nibName: "RecipeCell", bundle: nil), forCellWithReuseIdentifier: "RecipeCell")
+        addRecipeButton.setupSFSymbol(name: "plus", size: 30)
         
-        addRecipeButton.layer.shadowOffset = CGSize(width: 0, height: 3.0)
-        addRecipeButton.layer.shadowOpacity = 0.7
-        addRecipeButton.layer.shadowRadius = 5.0
         
         switch viewModel.recipeCollectionType {
             
@@ -66,7 +64,7 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate, Presen
             return
         }
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         setStandardNavBar()
         updateVC()
@@ -129,13 +127,16 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate, Presen
     
 //MARK:- Animations
     private func animateAddButtonChange() {
-        let buttonImage = recipeGroupCreating ? UIImage(named: "addGroupButton") : UIImage(named: "addButton")
+//        let buttonImage = recipeGroupCreating ? UIImage(named: "addGroupButton") : UIImage(named: "addButton")
+        let imageName = recipeGroupCreating ? "text.badge.plus" : "plus"
+        let imageSize: CGFloat = recipeGroupCreating ? 25 : 30
         let originButtonY = addRecipeButton.frame.origin.y
 
         UIView.animate(withDuration: 0.2, animations: {
             self.addRecipeButton.frame.origin.y = UIScreen.main.bounds.maxY
         }) { (completed) in
-            self.addRecipeButton.setImage(buttonImage, for: .normal)
+            self.addRecipeButton.setupSFSymbol(name: imageName, size: imageSize)
+//            addRecipeButton.setImage(buttonImage, for: .normal)
         }
         
         UIView.animate(withDuration: 0.2, delay: 0.2, animations: {
