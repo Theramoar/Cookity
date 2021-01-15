@@ -35,6 +35,8 @@ class RecipeGroupViewController: UIViewController {
             self.view.addGestureRecognizer(tapGesture)
         case .addRecipeToGroupCollection:
             return
+        case .filteredRecipeSearch:
+            return
         }
     }
     
@@ -60,6 +62,11 @@ class RecipeGroupViewController: UIViewController {
             navigationController?.navigationBar.prefersLargeTitles = true
             navigationItem.title = "Select recipes"
             addButton.isHidden = true
+        case .filteredRecipeSearch:
+            title = "Recipes with ingridients"
+            navigationController?.navigationBar.tintColor = Colors.appColor
+            navigationController?.navigationBar.prefersLargeTitles = true
+            addButton.isHidden = true
         }
     }
     
@@ -81,23 +88,17 @@ class RecipeGroupViewController: UIViewController {
     private func animateAddButtonChange() {
         let imageName = viewModel.isGroupEdited ? "trash" : "plus"
         let imageSize: CGFloat = viewModel.isGroupEdited ? 25 : 30
-        
-//        let buttonImage = viewModel.isGroupEdited ? UIImage(named: "deleteGroupButton") : UIImage(named: "addButton")
-        
         let originButtonY = addButton.frame.origin.y
 
         UIView.animate(withDuration: 0.2, animations: {
             self.addButton.frame.origin.y = UIScreen.main.bounds.maxY
         }) { (completed) in
             self.addButton.setupSFSymbol(name: imageName, size: imageSize)
-//            self.addButton.setImage(buttonImage, for: .normal)
         }
         
         UIView.animate(withDuration: 0.2, delay: 0.2, animations: {
             self.addButton.frame.origin.y = originButtonY
         }, completion: nil)
-        
-
     }
     
     
@@ -140,6 +141,8 @@ class RecipeGroupViewController: UIViewController {
             viewModel.appendExistingRecipesToGroup()
             NotificationCenter.default.post(name: .groupIsUpdated, object: nil)
             self.dismiss(animated: true, completion: nil)
+        case .filteredRecipeSearch:
+            return
         }
     }
     
@@ -223,6 +226,11 @@ extension RecipeGroupViewController: UICollectionViewDelegate, UICollectionViewD
                 self.collectionView.reloadData()
                 self.addButton.isHidden = self.viewModel.numberOfSelectedRecipes == 0
             }
+        case .filteredRecipeSearch:
+            viewModel.selectRow(atIndexPath: indexPath)
+            let vc = RecipeViewController()
+            vc.viewModel = viewModel.viewModelForSelectedRow() as? RecipeViewModel
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
 }

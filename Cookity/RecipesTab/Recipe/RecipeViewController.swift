@@ -75,13 +75,22 @@ class RecipeViewController: UIViewController, UpdateVCDelegate, CreateButtonDele
     }
     
     private func setCookButton() {
-        let x = view.frame.maxX - 85
-        let y = view.frame.maxY - 127
-        let cookButton = AppGreenButton(frame: CGRect(x: x, y: y, width: 60, height: 60))
-        cookButton.setupAssetImage(name: "chef", edgeInset: 13)
+        let cookButton = AppGreenButton()
 
+        
+    
         cookButton.addTarget(self, action: #selector(cookButtonPressed), for: .touchUpInside)
         view.addSubview(cookButton)
+        cookButton.translatesAutoresizingMaskIntoConstraints = false
+        cookButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        cookButton.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        cookButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100).isActive = true
+        cookButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25).isActive = true
+        cookButton.frame.size = CGSize(width: 60, height: 60)
+        cookButton.setupAppearance()
+        print(cookButton.frame.size.width)
+        cookButton.setupAssetImage(name: "chef", edgeInset: 13)
+        
     }
     
     private func addImageView(image: UIImage) {

@@ -14,6 +14,7 @@ enum RecipeCollectionType {
     case recipCollection
     case recipeGroupCollection
     case addRecipeToGroupCollection
+    case filteredRecipeSearch
 }
 
 
@@ -62,6 +63,8 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate, Presen
             return
         case .addRecipeToGroupCollection:
             return
+        case .filteredRecipeSearch:
+            return
         }
     }
 
@@ -101,9 +104,10 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate, Presen
             self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
             navigationController?.navigationBar.tintColor = Colors.appColor
             navigationController?.navigationBar.prefersLargeTitles = true
-            
             navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "edit"), style: .plain, target: self, action: #selector(editGroup))
         case .addRecipeToGroupCollection:
+            return
+        case .filteredRecipeSearch:
             return
         }
     }
@@ -127,7 +131,6 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate, Presen
     
 //MARK:- Animations
     private func animateAddButtonChange() {
-//        let buttonImage = recipeGroupCreating ? UIImage(named: "addGroupButton") : UIImage(named: "addButton")
         let imageName = recipeGroupCreating ? "text.badge.plus" : "plus"
         let imageSize: CGFloat = recipeGroupCreating ? 25 : 30
         let originButtonY = addRecipeButton.frame.origin.y
@@ -136,7 +139,6 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate, Presen
             self.addRecipeButton.frame.origin.y = UIScreen.main.bounds.maxY
         }) { (completed) in
             self.addRecipeButton.setupSFSymbol(name: imageName, size: imageSize)
-//            addRecipeButton.setImage(buttonImage, for: .normal)
         }
         
         UIView.animate(withDuration: 0.2, delay: 0.2, animations: {

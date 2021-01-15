@@ -57,20 +57,20 @@ class FridgeViewModel {
         RealmDataManager.deleteFromRealm(object: product)
     }
     
-    
-    func moveProductsToCookArea() -> List<Product> {
-        let copiedProducts = List<Product>()
-        for product in productsInFridge {
-            if product.checked {
-                //creates the separate product in the Realm which can be used and edited in the recipe, not touching the existing product in the fridge
-                let copiedProduct = Product()
-                copiedProduct.name = product.name
-                copiedProduct.quantity = product.quantity
-                copiedProduct.measure = product.measure
-                copiedProducts.append(copiedProduct)
-            }
+    func filteredRecipes() -> [Recipe] {
+        let checkedProducts = productsInFridge.filter { $0.checked }
+        guard let recipeList = RealmDataManager.dataLoadedFromRealm(ofType: Recipe.self) else { return [] }
+        
+        var recipeArray = [Recipe]()
+        recipeArray.append(contentsOf: recipeList)
+        
+        for product in checkedProducts {
+            recipeArray = recipeArray.filter({
+                $0.products.filter("name CONTAINS[cd] %@", product.name).count > 0
+            })
         }
-        return copiedProducts
+        
+        return recipeArray
     }
     
     func uncheckProducts() {
@@ -131,11 +131,11 @@ extension FridgeViewModel: TableViewModelType {
     func longTapRow(atIndexPath indexPath: IndexPath) {
         selectedIndexPath = indexPath
     }
-    
-    func viewModelForCookdArea() -> CookViewModel {
-        CookViewModel(products: moveProductsToCookArea())
+
+    func viewModelForFilteredRecipes() -> RecipeGroupViewModel {
+        let recipeGroup = RecipeGroup(name: "Filtered recipes", recipes: filteredRecipes())
+        return RecipeGroupViewModel(recipeGroup: recipeGroup, collectionType: .filteredRecipeSearch)
     }
-    
     
     private func setExpirationFrame(for product: Product) -> ExpirationFrame {
         guard let date = product.expirationDate else { return .other }

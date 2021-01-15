@@ -20,7 +20,7 @@ class AppGreenButton: UIButton {
         setupAppearance()
     }
     
-    private func setupAppearance() {
+    func setupAppearance() {
         layer.cornerRadius = frame.width / 2
         layer.shadowOffset = CGSize(width: 0, height: 3.0)
         layer.shadowOpacity = 0.7

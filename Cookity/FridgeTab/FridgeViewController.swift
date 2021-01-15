@@ -38,7 +38,7 @@ class FridgeViewController: SwipeTableViewController, UpdateVCDelegate {
         fridgeTableView.register(UINib(nibName: "ProductCell", bundle: nil), forCellReuseIdentifier: "ProductCell")
         fridgeTableView.rowHeight = 50
         
-        addButton.setupSFSymbol(name: "plus", size: 30)
+        addButton.setupSFSymbol(name: "magnifyingglass", size: 23)
         
         //add long gesture recognizer
         let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.longPressed))
@@ -76,14 +76,18 @@ class FridgeViewController: SwipeTableViewController, UpdateVCDelegate {
     
     
     @IBAction func addButtonPressed(_ sender: UIButton) {
-        let vc = CookViewController()
-        vc.viewModel = viewModel.viewModelForCookdArea()
-        vc.updateVCDelegate = self
-        present(vc, animated: true, completion: nil)
+        let vc = RecipeGroupViewController()
+        if viewModel.checkedProducts == 0 {
+            let alert = UIAlertController(title: "Select at least 1 product", message: "You can find recipes that contain selected products", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok", style: .default)
+            alert.addAction(okAction)
+            present(alert, animated: true)
+        }
+        vc.viewModel = viewModel.viewModelForFilteredRecipes()
+        navigationController?.pushViewController(vc, animated: true)
     }
 
     //MARK:- Data Manipulation Methods
-    
     override func deleteObject(at indexPath: IndexPath) {
         viewModel.deleteProductFromFridge(at: indexPath)
         fridgeTableView.reloadData()
@@ -91,18 +95,6 @@ class FridgeViewController: SwipeTableViewController, UpdateVCDelegate {
     
     func uncheck() {
         viewModel.uncheckProducts()
-        configButton()
-    }
-    
-    func configButton() {
-        if viewModel.checkedProducts > 0 {
-            addButton.isEnabled = true
-            addButton.isHidden = false
-        }
-        else {
-            addButton.isEnabled = false
-            addButton.isHidden = true
-        }
     }
 }
 
@@ -148,7 +140,6 @@ extension FridgeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.checkProduct(at: indexPath)
-        configButton()
         tableView.reloadData()
     }
 }
