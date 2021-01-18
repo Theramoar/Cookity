@@ -80,6 +80,7 @@
 		BBAE322F254EFDF6005649A5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BBAE322E254EFDF6005649A5 /* GoogleService-Info.plist */; };
 		BBAE324925508783005649A5 /* ChangeGroupNameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBAE324825508783005649A5 /* ChangeGroupNameCell.swift */; };
 		BBAE324C255087AC005649A5 /* ChangeGroupNameCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBAE324B255087AC005649A5 /* ChangeGroupNameCell.xib */; };
+		BBB557EA25B1B83B007CF27B /* Cookity Dev-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BBB557E925B1B83A007CF27B /* Cookity Dev-Info.plist */; };
 		BBB6B009228730CA00E518CC /* EditTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB6B008228730CA00E518CC /* EditTextView.swift */; };
 		BBB6B07522A8F29700E518CC /* icon_320.png in Resources */ = {isa = PBXBuildFile; fileRef = BBB6B07122A8F29700E518CC /* icon_320.png */; };
 		BBB6B07622A8F29700E518CC /* icon_22.png in Resources */ = {isa = PBXBuildFile; fileRef = BBB6B07222A8F29700E518CC /* icon_22.png */; };
@@ -290,6 +291,7 @@
 		BBAE322E254EFDF6005649A5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BBAE324825508783005649A5 /* ChangeGroupNameCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeGroupNameCell.swift; sourceTree = "<group>"; };
 		BBAE324B255087AC005649A5 /* ChangeGroupNameCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChangeGroupNameCell.xib; sourceTree = "<group>"; };
+		BBB557E925B1B83A007CF27B /* Cookity Dev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Cookity Dev-Info.plist"; sourceTree = SOURCE_ROOT; };
 		BBB6B008228730CA00E518CC /* EditTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTextView.swift; sourceTree = "<group>"; };
 		BBB6B07122A8F29700E518CC /* icon_320.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_320.png; sourceTree = "<group>"; };
 		BBB6B07222A8F29700E518CC /* icon_22.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_22.png; sourceTree = "<group>"; };
@@ -321,7 +323,6 @@
 		BBFA6600227F0B2700EE3C2A /* DecorationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecorationHandler.swift; sourceTree = "<group>"; };
 		BE061007BD97220A92EF05D9 /* Pods-Cookity.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cookity.release.xcconfig"; path = "Pods/Target Support Files/Pods-Cookity/Pods-Cookity.release.xcconfig"; sourceTree = "<group>"; };
 		D24BB13E2561C0C40096DBEE /* Cookity Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cookity Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D24BB1412561C0C70096DBEE /* Cookity Dev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Cookity Dev-Info.plist"; path = "/Users/mishak/Documents/Projects/Cookity/Cookity Dev-Info.plist"; sourceTree = "<absolute>"; };
 		DEDE6A691C1DBBA1F1CA80EC /* Pods-Cookity.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cookity.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Cookity/Pods-Cookity.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -394,7 +395,7 @@
 				BB26F7F52303475D00FDD2BB /* Cookity.entitlements */,
 				BBAE322E254EFDF6005649A5 /* GoogleService-Info.plist */,
 				1CA007D32165571E0072A908 /* Info.plist */,
-				D24BB1412561C0C70096DBEE /* Cookity Dev-Info.plist */,
+				BBB557E925B1B83A007CF27B /* Cookity Dev-Info.plist */,
 				1CA007CB2165571B0072A908 /* Main.storyboard */,
 				1CA007D02165571E0072A908 /* LaunchScreen.storyboard */,
 				BBB6B04622A83F6300E518CC /* UTI Icons */,
@@ -787,6 +788,7 @@
 				D24BB1212561C0C40096DBEE /* CookTableViewCell.xib in Resources */,
 				D24BB1222561C0C40096DBEE /* LaunchScreen.storyboard in Resources */,
 				D24BB1232561C0C40096DBEE /* ProductCell.xib in Resources */,
+				BBB557EA25B1B83B007CF27B /* Cookity Dev-Info.plist in Resources */,
 				D24BB1242561C0C40096DBEE /* TextFieldCell.xib in Resources */,
 				D24BB1252561C0C40096DBEE /* launchIcon_500.png in Resources */,
 				D24BB1262561C0C40096DBEE /* Assets.xcassets in Resources */,
