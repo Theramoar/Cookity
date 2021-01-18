@@ -107,10 +107,12 @@ extension FridgeViewController: UITableViewDelegate, UITableViewDataSource {
             emptyFridgeImageView.isHidden = false
             emptyFridgeLabel.isHidden = false
             emptyFridgeDescriptionLabel.isHidden = false
+            addButton.isHidden = true
         } else {
             emptyFridgeImageView.isHidden = true
             emptyFridgeLabel.isHidden = true
             emptyFridgeDescriptionLabel.isHidden = true
+            addButton.isHidden = false
         }
         return viewModel.numberOfRowsForCurrentSection(section)
     }
