@@ -87,6 +87,8 @@
 		BBB6B07722A8F29700E518CC /* icon_64.png in Resources */ = {isa = PBXBuildFile; fileRef = BBB6B07322A8F29700E518CC /* icon_64.png */; };
 		BBB6B07822A8F29700E518CC /* icon_44.png in Resources */ = {isa = PBXBuildFile; fileRef = BBB6B07422A8F29700E518CC /* icon_44.png */; };
 		BBB6B07A22AD183A00E518CC /* FirstLaunch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB6B07922AD183900E518CC /* FirstLaunch.swift */; };
+		BBBC318C25B72C24005D7769 /* UIImage Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBC318B25B72C24005D7769 /* UIImage Extension.swift */; };
+		BBBC318F25B72D4C005D7769 /* UIImage Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBC318B25B72C24005D7769 /* UIImage Extension.swift */; };
 		BBBE2E73244A60EC0092334C /* CartView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBBE2E72244A60EC0092334C /* CartView.xib */; };
 		BBBE2E75244A63200092334C /* CartCollectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBBE2E74244A63200092334C /* CartCollectionView.xib */; };
 		BBC12E43234FA43300A6BA32 /* RecipeNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC12E42234FA43300A6BA32 /* RecipeNameView.swift */; };
@@ -298,6 +300,7 @@
 		BBB6B07322A8F29700E518CC /* icon_64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_64.png; sourceTree = "<group>"; };
 		BBB6B07422A8F29700E518CC /* icon_44.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_44.png; sourceTree = "<group>"; };
 		BBB6B07922AD183900E518CC /* FirstLaunch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstLaunch.swift; sourceTree = "<group>"; };
+		BBBC318B25B72C24005D7769 /* UIImage Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage Extension.swift"; sourceTree = "<group>"; };
 		BBBE2E72244A60EC0092334C /* CartView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CartView.xib; sourceTree = "<group>"; };
 		BBBE2E74244A63200092334C /* CartCollectionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CartCollectionView.xib; sourceTree = "<group>"; };
 		BBC12E42234FA43300A6BA32 /* RecipeNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeNameView.swift; sourceTree = "<group>"; };
@@ -365,6 +368,7 @@
 				BBC6C5AF22F5D40500AF8423 /* SettingsVariables.swift */,
 				BBDB0E9B247AB4F7001C86CE /* NotificationNames.swift */,
 				BBFA6600227F0B2700EE3C2A /* DecorationHandler.swift */,
+				BBBC318B25B72C24005D7769 /* UIImage Extension.swift */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -413,7 +417,6 @@
 		1CA007DF2165628C0072A908 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				BB3DEDF024D34E6A00B3C0A9 /* New Group */,
 				BB592040234A429100692E6C /* DataManagers */,
 				1CAC8312217C72070081F24E /* ShoppingCart.swift */,
 				1C4B1A0721887081007CB9FD /* Recipe.swift */,
@@ -441,13 +444,6 @@
 				0B8C92B62FE3AF11FE18BB20 /* Pods_Cookity.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		BB3DEDF024D34E6A00B3C0A9 /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "New Group";
 			sourceTree = "<group>";
 		};
 		BB3DEDF124D34ED100B3C0A9 /* PopupEdit */ = {
@@ -946,6 +942,7 @@
 				BBFA65F1227B520800EE3C2A /* CookProcessViewController.swift in Sources */,
 				BB1BBB6324477E27008B3431 /* MainTabBarController.swift in Sources */,
 				1CAC8313217C72070081F24E /* ShoppingCart.swift in Sources */,
+				BBBC318C25B72C24005D7769 /* UIImage Extension.swift in Sources */,
 				BBDB0E9C247AB4F7001C86CE /* NotificationNames.swift in Sources */,
 				BBFA6601227F0B2700EE3C2A /* DecorationHandler.swift in Sources */,
 				BB7B91C3245A133200303085 /* RecipeGroupCell.swift in Sources */,
@@ -1021,6 +1018,7 @@
 				D24BB0DB2561C0C40096DBEE /* CookProcessViewController.swift in Sources */,
 				D24BB0DC2561C0C40096DBEE /* MainTabBarController.swift in Sources */,
 				D24BB0DD2561C0C40096DBEE /* ShoppingCart.swift in Sources */,
+				BBBC318F25B72D4C005D7769 /* UIImage Extension.swift in Sources */,
 				D24BB0DE2561C0C40096DBEE /* NotificationNames.swift in Sources */,
 				D24BB0DF2561C0C40096DBEE /* DecorationHandler.swift in Sources */,
 				D24BB0E02561C0C40096DBEE /* RecipeGroupCell.swift in Sources */,
@@ -1235,7 +1233,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.610;
+				MARKETING_VERSION = 1.620;
 				PRODUCT_BUNDLE_IDENTIFIER = com.michaelk.Cookity;
 				PRODUCT_NAME = Cookity;
 				SWIFT_VERSION = 5.0;
@@ -1259,7 +1257,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.610;
+				MARKETING_VERSION = 1.620;
 				PRODUCT_BUNDLE_IDENTIFIER = com.michaelk.Cookity;
 				PRODUCT_NAME = Cookity;
 				SWIFT_VERSION = 5.0;

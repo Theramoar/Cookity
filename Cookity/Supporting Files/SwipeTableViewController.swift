@@ -18,8 +18,16 @@ class SwipeTableViewController: UIViewController, SwipeTableViewCellDelegate {
         let deleteAction = SwipeAction(style: .destructive, title: nil) { action, indexPath in
             self.deleteObject(at: indexPath)
         }
+        
+        var size: CGFloat
+        if tableView.rowHeight >= 50 {
+            size = 25
+        } else {
+            size = 20
+        }
+        
+        deleteAction.image = UIImage.setupSFSymbol(name: "trash", size: size)
         deleteAction.backgroundColor = UIColor(red: 211/255, green: 68/255, blue: 53/255, alpha: 1)
-        deleteAction.image = UIImage(named: "delete")
         
         return [deleteAction]
     }

@@ -89,13 +89,14 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate, Presen
     private func setStandardNavBar() {
         switch viewModel.recipeCollectionType {
         case .recipCollection:
-            self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+            self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
             navigationController?.navigationBar.tintColor = Colors.appColor
             navigationController?.navigationBar.prefersLargeTitles = true
             
             searchController = setupSearchBarController()
             navigationItem.searchController = searchController
             searchController.searchBar.placeholder = SettingsVariables.isIngridientSearchEnabled ? "Search for recipe or ingridient" : "Search for recipe"
+            
             navigationItem.hidesSearchBarWhenScrolling = false
             let image = UIImage(systemName: "text.badge.plus")?.withTintColor(Colors.appColor!, renderingMode: .alwaysOriginal)
             navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(addGroupPressed))

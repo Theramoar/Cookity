@@ -66,6 +66,9 @@ class PopupEditViewController: UIViewController, UITextFieldDelegate, MeasurePic
         
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
+        if #available(iOS 13.4, *) {
+            datePicker.preferredDatePickerStyle = .wheels
+        }
         datePicker.addTarget(self, action: #selector(datePickerChangedValue), for: .valueChanged)
         expirationDateText.inputView = datePicker
         
