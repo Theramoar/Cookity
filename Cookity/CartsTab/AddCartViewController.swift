@@ -189,14 +189,14 @@ class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, Meas
         }
         
         viewModel.createNewProduct(productName: nameText, productQuantity: quantityText, productMeasure: measureText)
-        tableView.reloadData()
+        tableView.insertRows(at: [IndexPath(row: viewModel.numberOfRows-1, section: 0)], with: .right)
         return true
     }
     
     //MARK:- Data Manipulation Products
     override func deleteObject(at indexPath: IndexPath) {
         viewModel.deleteProductFromCart(at: indexPath.row)
-        tableView.reloadData()
+        tableView.deleteRows(at: [indexPath], with: .right)
     }
 }
 

@@ -68,7 +68,7 @@ class CartCollectionViewController: SwipeTableViewController, UpdateVCDelegate {
     //MARK: - Data Manipulation Methods
     override func deleteObject(at indexPath: IndexPath) {
         viewModel.deleteCart(at: indexPath.row)
-        tableView.reloadData()
+        tableView.deleteRows(at: [indexPath], with: .right)
     }
     
     
@@ -77,7 +77,7 @@ class CartCollectionViewController: SwipeTableViewController, UpdateVCDelegate {
         
         let appendAction = SwipeAction(style: .default, title: nil) { (action, indexPath) in
             self.viewModel.moveProductsToFridge(fromCartAtIndexPath: indexPath)
-            tableView.reloadData()
+            tableView.deleteRows(at: [indexPath], with: .right)
         }
         appendAction.image = UIImage(named: "AddToFridge")
         appendAction.backgroundColor = Colors.appColor

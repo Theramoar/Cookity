@@ -91,7 +91,7 @@ class FridgeViewController: SwipeTableViewController, UpdateVCDelegate {
     //MARK:- Data Manipulation Methods
     override func deleteObject(at indexPath: IndexPath) {
         viewModel.deleteProductFromFridge(at: indexPath)
-        fridgeTableView.reloadData()
+        fridgeTableView.deleteRows(at: [indexPath], with: .right)
     }
     
     func uncheck() {

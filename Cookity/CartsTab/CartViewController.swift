@@ -27,6 +27,8 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
     var measurePicker: MeasurePicker!
     var selectedIndexPath: IndexPath? //variable is used to store the IndexPath selected by LongTap Gesture
     
+    // Variable used to stop the table scrolling till the final row, when view is appeared
+    var productAdded: Bool = false
     // used for to disable touches while textfield are edited.
     var isEdited: Bool = false {
         didSet {
@@ -132,9 +134,10 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        guard viewModel.numberOfRows > 0 else { return }
+        guard productAdded, viewModel.numberOfRows > 0 else { return }
         let indexPath = IndexPath(row: viewModel.numberOfRows - 1, section: 0)
         productsTable.scrollToRow(at: indexPath, at: .bottom, animated: true)
+        productAdded = false
     }
     
     @IBAction func shareButtonPressed(_ sender: UIBarButtonItem) {
@@ -183,14 +186,15 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
         }
         let newProduct = viewModel.createNewProduct(productName: nameText, productQuantity: quantityText, productMeasure: measureText)
         viewModel.saveProductToCart(product: newProduct)
-        productsTable.reloadData()
+        productAdded = true
+        productsTable.insertRows(at: [IndexPath(row: viewModel.numberOfRows-1, section: 0)], with: .right)
         return true
     }
 
     
     override func deleteObject(at indexPath: IndexPath) {
         viewModel.deleteProductFromCart(at: indexPath.row)
-        productsTable.reloadData()
+        productsTable.deleteRows(at: [indexPath], with: .right)
     }
     
 }
