@@ -168,28 +168,11 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate, Presen
     //MARK:- Methods for Buttons
     @IBAction func addButtonPressed(_ sender: UIButton) {
         if recipeGroupCreating {
-            let alert = UIAlertController(title: "What is the group name?", message: nil, preferredStyle: .alert)
-            alert.view.tintColor = Colors.appColor
-            let create = UIAlertAction(title: "Create group", style: .default) { _ in
-                //Create group Here
-                guard let textField = alert.textFields?.first,
-                    let name = textField.text,
-                    !name.isEmpty
-                else { return }
-                
-                if self.viewModel.createGroupWith(name: name)  {
-                    self.recipeCollection.reloadData()
-                    self.addGroupPressed()
-                }
+            if viewModel.numberOfSelectedRecipes == 0 {
+                presentNoRecipesSelectedAlert()
+            } else {
+                presentEnterNameAlert()
             }
-            let cancel = UIAlertAction(title: "Cancel", style: .cancel) { _ in
-                self.addGroupPressed()
-            }
-            alert.addAction(cancel)
-            alert.addAction(create)
-            alert.addTextField()
-                        
-            present(alert, animated: true, completion: nil)
         }
         else {
             let vc = CookViewController()
@@ -200,11 +183,14 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate, Presen
     }
     
     @objc private func addGroupPressed() {
+        #if !DEBUG
         guard UserPurchases.isProEnabled() else {
             let vc = InAppPurchaseViewController()
             present(vc, animated: true, completion: nil)
             return
         }
+        #endif
+        
         recipeGroupCreating = !recipeGroupCreating
         setupGroupSettings()
         animateNavigationTitileChange()
@@ -215,6 +201,40 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate, Presen
         if let nav = self.navigationController {
             nav.popToRootViewController(animated: true)
         }
+    }
+
+    // MARK: - Private Methods
+    private func presentEnterNameAlert() {
+        let alert = UIAlertController(title: "What is the group name?", message: nil, preferredStyle: .alert)
+        alert.view.tintColor = Colors.appColor
+        let create = UIAlertAction(title: "Create group", style: .default) { _ in
+            //Create group Here
+            guard let textField = alert.textFields?.first,
+                let name = textField.text,
+                !name.isEmpty
+            else { return }
+            
+            if self.viewModel.createGroupWith(name: name)  {
+                self.recipeCollection.reloadData()
+                self.addGroupPressed()
+            }
+        }
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            self.addGroupPressed()
+        }
+        alert.addAction(cancel)
+        alert.addAction(create)
+        alert.addTextField()
+                    
+        present(alert, animated: true)
+    }
+    
+    private func presentNoRecipesSelectedAlert() {
+        let alert = UIAlertController(title: "No recipes selected", message: "Select at least one recipe for the group", preferredStyle: .alert)
+        alert.view.tintColor = Colors.appColor
+        let cancel = UIAlertAction(title: "OK", style: .cancel)
+        alert.addAction(cancel)
+        present(alert, animated: true)
     }
 }
 
