@@ -137,7 +137,7 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
         var activityController: UIActivityViewController?
         
         let alert = UIAlertController(title: "How would you like to share this cart?", message: nil, preferredStyle: .actionSheet)
-        alert.view.tintColor = Colors.textColor
+        alert.view.tintColor = Colors.appColor
         let textAction = UIAlertAction(title: "Send as text", style: .default) { (_) in
             activityController = self.viewModel.shareCart(as: .text)
             guard let activity = activityController else { return }
@@ -173,7 +173,7 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
         else { return false }
         let alert = viewModel.checkDataFromTextFields(productName: nameText, productQuantity: quantityText, productMeasure: measureText)
         if let alert = alert {
-            alert.view.tintColor = Colors.textColor
+            alert.view.tintColor = Colors.appColor
             present(alert, animated: true, completion: nil)
             return false
         }
@@ -216,7 +216,7 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource, UIText
         tableView.reloadData()
 
         let alert = UIAlertController(title: "Add products to the fridge?", message: "", preferredStyle: .actionSheet)
-        alert.view.tintColor = Colors.textColor
+        alert.view.tintColor = Colors.appColor
         let yesAction = UIAlertAction(title: "Yes", style: .default) { (_) in
             self.viewModel.moveProductsToFridge()
             if let nav = self.navigationController {

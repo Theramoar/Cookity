@@ -113,7 +113,7 @@ class CookViewController: UIViewController, UpdateVCDelegate {
     //MARK: - Methods for Buttons
     @IBAction func deleteButtonPressed(_ sender: UIButton) {
         let alert = UIAlertController(title: "Delete recipe?", message: "Recipe will be permanently deleted", preferredStyle: .alert)
-        alert.view.tintColor = Colors.textColor
+        alert.view.tintColor = Colors.appColor
         let delete = UIAlertAction(title: "Yes", style: .destructive) { _ in
             self.viewModel.deleteRecipe()
             self.updateVCDelegate?.updateVC()

@@ -169,7 +169,7 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate, Presen
     @IBAction func addButtonPressed(_ sender: UIButton) {
         if recipeGroupCreating {
             let alert = UIAlertController(title: "What is the group name?", message: nil, preferredStyle: .alert)
-            alert.view.tintColor = Colors.textColor
+            alert.view.tintColor = Colors.appColor
             let create = UIAlertAction(title: "Create group", style: .default) { _ in
                 //Create group Here
                 guard let textField = alert.textFields?.first,

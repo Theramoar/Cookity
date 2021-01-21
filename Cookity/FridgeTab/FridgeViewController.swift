@@ -79,8 +79,9 @@ class FridgeViewController: SwipeTableViewController, UpdateVCDelegate {
         let vc = RecipeGroupViewController()
         if viewModel.checkedProducts == 0 {
             let alert = UIAlertController(title: "Select at least 1 product", message: "You can find recipes that contain selected products", preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "Ok", style: .default)
+            let okAction = UIAlertAction(title: "OK", style: .default)
             alert.addAction(okAction)
+            alert.view.tintColor = Colors.appColor
             present(alert, animated: true)
         }
         vc.viewModel = viewModel.viewModelForFilteredRecipes()

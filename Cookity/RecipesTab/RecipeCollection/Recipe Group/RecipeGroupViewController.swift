@@ -150,7 +150,7 @@ class RecipeGroupViewController: UIViewController {
 //MARK:- Alert Presentation
     private func presentAddAlert() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alert.view.tintColor = Colors.textColor
+        alert.view.tintColor = Colors.appColor
         let addNew = UIAlertAction(title: "Add new recipe to group", style: .default) { (_) in
             let vc = CookViewController()
             vc.viewModel = self.viewModel.viewModelForNewRecipe()
@@ -171,7 +171,7 @@ class RecipeGroupViewController: UIViewController {
     
     private func presentDeleteAlert() {
         let alert = UIAlertController(title: "Do you want to dismiss group?", message: "The group will be dissmissed. All recipes won't be deleted", preferredStyle: .alert)
-        alert.view.tintColor = Colors.textColor
+        alert.view.tintColor = Colors.appColor
         let dismiss = UIAlertAction(title: "Dismiss group", style: .default) { (_) in
             self.viewModel.deleteGroup()
             if let nav = self.navigationController {

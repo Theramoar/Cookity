@@ -53,7 +53,7 @@ class InAppPurchaseViewController: UIViewController {
     
     private func showRestoreAlert() {
         let alert = UIAlertController(title: "All purchases are restored!", message: nil, preferredStyle: .alert)
-        alert.view.tintColor = Colors.textColor
+        alert.view.tintColor = Colors.appColor
         let ok = UIAlertAction(title: "OK", style: .default) { _ in
             NotificationCenter.default.post(name: .purchaseWasSuccesful, object: nil)
             self.dismiss(animated: true, completion: nil)
