@@ -28,7 +28,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         configFridge()
         configPayments()
+        
+        #if !DEBUG
         FirebaseApp.configure()
+        #endif
         
         return true
     }

@@ -31,6 +31,7 @@ class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, Meas
     @IBOutlet weak var tfView: TextFieldView!
     @IBOutlet weak var tfHeight: NSLayoutConstraint!
     @IBOutlet weak var addButton: UIButton!
+    @IBOutlet weak var tfViewBottomConstraint: NSLayoutConstraint!
     
     var pickedMeasure: String? {
         didSet {
@@ -53,7 +54,6 @@ class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, Meas
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.keyboardDismissMode = .onDrag
         tableView.separatorStyle = .none
         tableView.rowHeight = 45
         tableView.register(UINib(nibName: "ProductCell", bundle: nil), forCellReuseIdentifier: "ProductCell")
@@ -84,15 +84,29 @@ class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, Meas
         let dismissTapGesture = UIPanGestureRecognizer(target: self, action: #selector(backgroundViewDragged))
         dismissTapGesture.cancelsTouchesInView = false
         self.backgroundView.addGestureRecognizer(dismissTapGesture)
+        
+        setupTextFieldBottomConstraint()
     }
     
     
+    private func setupTextFieldBottomConstraint() {
+        //Add to TF bottomConstraint lower safe area height, so it looks the same on iPhone 8 and iPhone X models
+        let window = UIApplication.shared.windows[0]
+        let bottomPadding = window.safeAreaInsets.bottom
+        tfViewBottomConstraint.constant = bottomPadding
+    }
     
     override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
         let size = CGSize(width: 20, height: 20)
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = UIBezierPath(roundedRect: visibleView.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: size).cgPath
         visibleView.layer.mask = shapeLayer
+
+        guard viewModel.numberOfRows > 0 else { return }
+        let indexPath = IndexPath(row: viewModel.numberOfRows - 1, section: 0)
+        tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
     }
     
     

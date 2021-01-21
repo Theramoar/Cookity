@@ -56,7 +56,6 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
         productsTable.estimatedRowHeight = 100
         productsTable.register(UINib(nibName: "ProductCell", bundle: nil), forCellReuseIdentifier: "ProductCell")
         
-        tabBarController?.tabBar.isHidden = true
         tfView.delegate = self
         tfView.heightConstraint = tfHeightConstraint
         tfView.initialHeight = tfHeightConstraint.constant
@@ -78,7 +77,7 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
         tapGesture.cancelsTouchesInView = false
-        self.view.addGestureRecognizer(tapGesture)
+        self.productsTable.addGestureRecognizer(tapGesture)
 
         //add long gesture recognizer
         let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.longPressed))
@@ -131,7 +130,12 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
         }
     }
 
-    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        guard viewModel.numberOfRows > 0 else { return }
+        let indexPath = IndexPath(row: viewModel.numberOfRows - 1, section: 0)
+        productsTable.scrollToRow(at: indexPath, at: .bottom, animated: true)
+    }
     
     @IBAction func shareButtonPressed(_ sender: UIBarButtonItem) {
         var activityController: UIActivityViewController?
@@ -142,15 +146,15 @@ class CartViewController: SwipeTableViewController, MeasurePickerDelegate, IsEdi
             activityController = self.viewModel.shareCart(as: .text)
             guard let activity = activityController else { return }
             activity.popoverPresentationController?.barButtonItem = sender
-            self.present(activity, animated: true, completion: nil)
+            self.present(activity, animated: true)
         }
         let fileAction = UIAlertAction(title: "Send as Cookity file", style: .default) { (_) in
             activityController = self.viewModel.shareCart(as: .file)
             guard let activity = activityController else { return }
             activity.popoverPresentationController?.barButtonItem = sender
-            self.present(activity, animated: true, completion: nil)
+            self.present(activity, animated: true)
         }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         alert.addAction(textAction)
         alert.addAction(fileAction)
         alert.addAction(cancelAction)

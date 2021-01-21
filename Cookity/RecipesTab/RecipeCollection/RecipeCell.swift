@@ -46,9 +46,9 @@ class RecipeCell: UICollectionViewCell {
     override func awakeFromNib() {
         self.layer.cornerRadius = self.frame.size.height / 14
         recipeImage.layer.cornerRadius = self.frame.size.height / 14
-        self.layer.shadowOffset = CGSize(width: 0, height: 0)
-        self.layer.shadowOpacity = 0.4
-        self.layer.shadowRadius = 3
+        self.layer.shadowOffset = CGSize(width: 0, height: 3)
+        self.layer.shadowOpacity = 0.1
+        self.layer.shadowRadius = 2
         self.layer.masksToBounds = false
     }
 }
