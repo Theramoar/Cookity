@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -27,7 +28,7 @@
                             <rect key="frame" x="50" y="20" width="314" height="522"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Introducing Cookity+" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8n4-RQ-6OT">
-                                    <rect key="frame" x="27.5" y="0.0" width="259" height="30"/>
+                                    <rect key="frame" x="28.5" y="0.0" width="257.5" height="30"/>
                                     <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="25"/>
                                     <color key="textColor" name="TextColor"/>
                                     <nil key="highlightedColor"/>
@@ -66,7 +67,7 @@
                                     <rect key="frame" x="0.0" y="160" width="314" height="242"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By acquiring Cookity+ you will:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HLz-64-ATJ">
-                                            <rect key="frame" x="0.0" y="0.0" width="220" height="18"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="219.5" height="18"/>
                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                             <color key="textColor" name="TextColor"/>
                                             <nil key="highlightedColor"/>
@@ -92,7 +93,7 @@
                                             <rect key="frame" x="0.0" y="102.5" width="314" height="70"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Support the developer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3yY-HB-XYN">
-                                                    <rect key="frame" x="0.0" y="0.0" width="160.5" height="18"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="160" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                                     <color key="textColor" name="HighlightColor"/>
                                                     <nil key="highlightedColor"/>
@@ -109,7 +110,7 @@
                                             <rect key="frame" x="0.0" y="187.5" width="314" height="54.5"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Get all future features" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xIz-Nr-JYJ">
-                                                    <rect key="frame" x="0.0" y="0.0" width="156.5" height="18"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="156" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                                     <color key="textColor" name="HighlightColor"/>
                                                     <nil key="highlightedColor"/>
@@ -127,7 +128,7 @@
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="kTu-ba-La4">
                                     <rect key="frame" x="57" y="432" width="200" height="90"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="clG-nn-4qg">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="clG-nn-4qg">
                                             <rect key="frame" x="0.0" y="0.0" width="200" height="50"/>
                                             <color key="backgroundColor" name="AppColor"/>
                                             <constraints>
@@ -141,7 +142,7 @@
                                                 <action selector="buyButtonPressed:" destination="-1" eventType="touchUpInside" id="fwB-0y-tbM"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p0A-uc-iPF">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p0A-uc-iPF">
                                             <rect key="frame" x="34" y="60" width="132" height="30"/>
                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                             <state key="normal" title="Restore purchases">
@@ -166,20 +167,20 @@
                     </constraints>
                 </view>
             </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="Bif-96-hvZ" secondAttribute="bottom" id="4AJ-Jg-E6r"/>
                 <constraint firstItem="Bif-96-hvZ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="F74-IA-rab"/>
                 <constraint firstItem="Bif-96-hvZ" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="efG-xE-zBg"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <point key="canvasLocation" x="-346.37681159420293" y="181.47321428571428"/>
         </view>
     </objects>
     <resources>
         <image name="Developer" width="163" height="162"/>
         <namedColor name="AppColor">
-            <color red="0.30588235294117649" green="0.58431372549019611" blue="0.14509803921568626" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.3059999942779541" green="0.58399999141693115" blue="0.14499999582767487" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="HighlightColor">
             <color red="0.23499999940395355" green="0.23499999940395355" blue="0.2630000114440918" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
