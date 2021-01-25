@@ -386,20 +386,20 @@
                                         <color key="sectionIndexBackgroundColor" name="PopupColor"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProductCell" id="q7d-EL-wjS" customClass="ProductTableViewCell" customModule="Cookity" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="28" width="414" height="43.333332061767578"/>
+                                                <rect key="frame" x="0.0" y="28" width="414" height="43"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="q7d-EL-wjS" id="KMJ-TJ-BZ0">
-                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.333332061767578"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="NS9-og-lIT">
-                                                            <rect key="frame" x="20" y="10.999999999999998" width="49" height="21.333333333333329"/>
+                                                            <rect key="frame" x="20" y="11" width="49" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="17"/>
                                                             <color key="textColor" name="TextColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="100 l" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="u1x-Fn-AQv">
-                                                            <rect key="frame" x="84" y="10.999999999999998" width="310" height="21.333333333333329"/>
+                                                            <rect key="frame" x="84" y="11" width="310" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                                             <color key="textColor" name="TextColor"/>
                                                             <nil key="highlightedColor"/>
@@ -431,7 +431,6 @@
                                             <constraint firstAttribute="height" constant="26" id="MjS-NL-6dm"/>
                                         </constraints>
                                         <color key="tintColor" name="TextColor"/>
-                                        <state key="normal" backgroundImage="tick"/>
                                         <connections>
                                             <action selector="doneButtonPresed:" destination="bA4-na-29q" eventType="touchUpInside" id="jxm-Ew-bjc"/>
                                         </connections>
@@ -544,7 +543,9 @@
                     <connections>
                         <outlet property="addButton" destination="yGB-hT-AN4" id="pY2-Xz-BRd"/>
                         <outlet property="backgroundView" destination="6G8-ZB-tR0" id="Y0p-Ga-vrL"/>
+                        <outlet property="cancelButton" destination="yRD-JB-Kzg" id="frV-UN-wNd"/>
                         <outlet property="cartNameTextField" destination="PgR-o1-AmX" id="M0P-3m-jPp"/>
+                        <outlet property="doneButton" destination="OmS-gK-hS8" id="lTp-vK-5UW"/>
                         <outlet property="measureTextField" destination="Oi6-Tr-qvD" id="GgK-p8-Sgn"/>
                         <outlet property="productTextField" destination="jwH-Uo-Ahf" id="IZb-cX-Vcg"/>
                         <outlet property="quantityTextField" destination="mwu-DL-mKi" id="piY-cp-Rh2"/>
@@ -573,20 +574,20 @@
                                 <color key="sectionIndexBackgroundColor" name="ViewColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProductCell2" id="aMO-Sz-Nep" customClass="ProductTableViewCell" customModule="Cookity" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="41"/>
+                                        <rect key="frame" x="0.0" y="28" width="414" height="41.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="aMO-Sz-Nep" id="iui-ZH-rtL">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="41"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="41.666667938232422"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="Xf9-oo-0ow">
-                                                    <rect key="frame" x="15" y="10" width="49" height="21"/>
+                                                    <rect key="frame" x="15" y="10.000000000000002" width="49" height="21.666666666666671"/>
                                                     <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="17"/>
                                                     <color key="textColor" red="0.21176470589999999" green="0.38431372549999998" blue="0.16862745100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="100 l" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="E7C-OG-Fqz">
-                                                    <rect key="frame" x="79" y="10" width="315" height="21"/>
+                                                    <rect key="frame" x="79" y="10.000000000000002" width="315" height="21.666666666666671"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                                     <color key="textColor" red="0.21176470589999999" green="0.38431372549999998" blue="0.16862745100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -902,7 +903,6 @@
         <image name="settings" width="25" height="25"/>
         <image name="share" width="25" height="25"/>
         <image name="shopping-cart" width="25" height="25"/>
-        <image name="tick" width="32" height="32"/>
         <namedColor name="AppColor">
             <color red="0.3059999942779541" green="0.58399999141693115" blue="0.14499999582767487" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

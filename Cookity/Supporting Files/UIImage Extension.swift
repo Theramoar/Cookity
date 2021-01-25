@@ -10,7 +10,7 @@ import UIKit
 
 extension UIImage {
     #warning("Remove this function from AppGreenButton Class")
-    static func setupSFSymbol(name: String, size: CGFloat) -> UIImage? {
-        UIImage(systemName: name, withConfiguration: UIImage.SymbolConfiguration(pointSize: size, weight: .regular, scale: .large))?.withTintColor(.white, renderingMode: .alwaysOriginal)
+    static func setupSFSymbol(name: String, size: CGFloat, color: UIColor = .white) -> UIImage? {
+        UIImage(systemName: name, withConfiguration: UIImage.SymbolConfiguration(pointSize: size, weight: .regular, scale: .large))?.withTintColor(color, renderingMode: .alwaysOriginal)
     }
 }

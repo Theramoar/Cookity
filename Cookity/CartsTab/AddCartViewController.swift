@@ -31,6 +31,10 @@ class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, Meas
     @IBOutlet weak var tfView: TextFieldView!
     @IBOutlet weak var tfHeight: NSLayoutConstraint!
     @IBOutlet weak var addButton: UIButton!
+    @IBOutlet weak var doneButton: UIButton!
+    @IBOutlet weak var cancelButton: UIButton!
+    
+    
     @IBOutlet weak var tfViewBottomConstraint: NSLayoutConstraint!
     
     var pickedMeasure: String? {
@@ -68,8 +72,15 @@ class AddCartViewController: SwipeTableViewController, UITextFieldDelegate, Meas
         productTextField.autocapitalizationType = .sentences
         cartNameTextField.autocapitalizationType = .sentences
         
+        #warning("Replace it for setupSFSymbol")
         let image = UIImage(systemName: "plus.circle")?.withTintColor(Colors.appColor!, renderingMode: .alwaysOriginal)
         addButton.setImage(image, for: .normal)
+        
+        let doneImage = UIImage.setupSFSymbol(name: "checkmark.circle", size: 20, color: Colors.appColor!)
+        doneButton.setImage(doneImage, for: .normal)
+        
+        let cancelImage = UIImage.setupSFSymbol(name: "multiply.circle", size: 20, color: Colors.appColor!)
+        cancelButton.setImage(cancelImage, for: .normal)
         
         let measurePicker = MeasurePicker()
         measurePicker.mpDelegate = self

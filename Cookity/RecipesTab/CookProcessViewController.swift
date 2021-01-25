@@ -11,8 +11,10 @@ import UIKit
 class CookProcessViewController: UIViewController {
     
     
-    @IBOutlet weak var recipeStepLabel: UILabel!
-    @IBOutlet weak var progressView: UIProgressView!
+    @IBOutlet private var recipeStepLabel: UILabel!
+    @IBOutlet private var progressView: UIProgressView!
+    @IBOutlet private var cancelButton: UIButton!
+    
     var viewModel: CookProcessViewModel!
     
     override func viewDidLoad() {
@@ -20,7 +22,10 @@ class CookProcessViewController: UIViewController {
         recipeStepLabel.text = viewModel.currentStepText
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
         self.view.addGestureRecognizer(tapGesture)
+        
         progressView.progressViewStyle = UIProgressView.Style.bar
+        let cancelImage = UIImage.setupSFSymbol(name: "multiply.circle", size: 20, color: Colors.appColor!)
+        cancelButton.setImage(cancelImage, for: .normal)
     }
     
     
