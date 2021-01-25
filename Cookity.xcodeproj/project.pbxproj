@@ -54,6 +54,8 @@
 		BB1BBB652447828A008B3431 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1BBB642447828A008B3431 /* SceneDelegate.swift */; };
 		BB26F7F4230345FC00FDD2BB /* CloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB26F7F3230345FC00FDD2BB /* CloudManager.swift */; };
 		BB26F7F72303476000FDD2BB /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB26F7F62303476000FDD2BB /* CloudKit.framework */; };
+		BB397AC425BF15CC001B4A20 /* CreateRecipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB397AC325BF15CC001B4A20 /* CreateRecipeView.swift */; };
+		BB397AC725BF186F001B4A20 /* CreateRecipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB397AC325BF15CC001B4A20 /* CreateRecipeView.swift */; };
 		BB3C781322B66C6000F556BC /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3C781222B66C6000F556BC /* SettingsViewController.swift */; };
 		BB592033233939C300692E6C /* ContactsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB592032233939C300692E6C /* ContactsCell.swift */; };
 		BB592039234141A300692E6C /* launchIcon_500.png in Resources */ = {isa = PBXBuildFile; fileRef = BB592038234141A300692E6C /* launchIcon_500.png */; };
@@ -267,6 +269,7 @@
 		BB26F7F3230345FC00FDD2BB /* CloudManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudManager.swift; sourceTree = "<group>"; };
 		BB26F7F52303475D00FDD2BB /* Cookity.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Cookity.entitlements; sourceTree = "<group>"; };
 		BB26F7F62303476000FDD2BB /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		BB397AC325BF15CC001B4A20 /* CreateRecipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRecipeView.swift; sourceTree = "<group>"; };
 		BB3C781222B66C6000F556BC /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		BB592032233939C300692E6C /* ContactsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsCell.swift; sourceTree = "<group>"; };
 		BB592038234141A300692E6C /* launchIcon_500.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launchIcon_500.png; sourceTree = "<group>"; };
@@ -636,6 +639,7 @@
 			isa = PBXGroup;
 			children = (
 				1C4B1A0321884EA9007CB9FD /* CookViewController.swift */,
+				BB397AC325BF15CC001B4A20 /* CreateRecipeView.swift */,
 				BB180B2A244474E5007E7124 /* CookViewModel.swift */,
 				BBC3488E245C3A1A00E87A57 /* CookView.xib */,
 				BBFA65FE227F052900EE3C2A /* EditImageViewController.swift */,
@@ -989,6 +993,7 @@
 				BBB6B07A22AD183A00E518CC /* FirstLaunch.swift in Sources */,
 				BB751E71255DB70E007B6B93 /* AppGreenButton.swift in Sources */,
 				BB18B21922CD3E6D004F2F65 /* CreditsViewCell.swift in Sources */,
+				BB397AC425BF15CC001B4A20 /* CreateRecipeView.swift in Sources */,
 				BBC12E43234FA43300A6BA32 /* RecipeNameView.swift in Sources */,
 				1CAECA19216BDAB3002D3B6D /* TextFieldCell.swift in Sources */,
 				BB180B1F24434340007E7124 /* AddCartViewModel.swift in Sources */,
@@ -1065,6 +1070,7 @@
 				D24BB1092561C0C40096DBEE /* FirstLaunch.swift in Sources */,
 				D24BB10A2561C0C40096DBEE /* AppGreenButton.swift in Sources */,
 				D24BB10B2561C0C40096DBEE /* CreditsViewCell.swift in Sources */,
+				BB397AC725BF186F001B4A20 /* CreateRecipeView.swift in Sources */,
 				D24BB10C2561C0C40096DBEE /* RecipeNameView.swift in Sources */,
 				D24BB10D2561C0C40096DBEE /* TextFieldCell.swift in Sources */,
 				D24BB10E2561C0C40096DBEE /* AddCartViewModel.swift in Sources */,

@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import SwiftUI
 
 
 enum RecipeCollectionType {
@@ -175,10 +176,12 @@ class RecipeCollectionViewController: UIViewController, UpdateVCDelegate, Presen
             }
         }
         else {
-            let vc = CookViewController()
-            vc.viewModel = viewModel.viewModelForNewRecipe()
-            vc.updateVCDelegate = self
-            present(vc, animated: true, completion: nil)
+            let controller = UIHostingController(rootView: CreateRecipeView())
+            present(controller, animated: true)
+//            let vc = CookViewController()
+//            vc.viewModel = viewModel.viewModelForNewRecipe()
+//            vc.updateVCDelegate = self
+//            present(vc, animated: true, completion: nil)
         }
     }
     
