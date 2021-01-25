@@ -62,8 +62,6 @@ class PopupEditViewModel: DetailViewModelType {
                                     objectParameter: product.measure,
                                     newParameter: savedMeasure)
         
-        
-        // HERE
         if let date = Configuration.createDateFromString(newDate) {
             RealmDataManager.changeElementIn(object: product,
                                              keyValue: "expirationDate",

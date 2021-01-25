@@ -55,11 +55,13 @@ class RecipeViewModel: DetailViewModelType {
                 if let selectedProduct = chosenProducts[recipeProduct.name] {
                     //If the quantity of the product in Recipe is less than in the Fridge substracts it, else deletes it from the fridge
                     if recipeProduct.quantity >= selectedProduct.quantity {
+                        CloudManager.deleteRecordFromCloud(ofObject: selectedProduct)
                         RealmDataManager.deleteFromRealm(object: selectedProduct)
                     }
                     else{
                         let newQuantity = selectedProduct.quantity - recipeProduct.quantity
                         RealmDataManager.changeElementIn(object: selectedProduct, keyValue: "quantity", objectParameter: selectedProduct.quantity, newParameter: newQuantity)
+                        CloudManager.updateChildInCloud(childObject: selectedProduct)
                     }
                 }
         }
